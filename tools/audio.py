@@ -307,12 +307,13 @@ def pack_menu():
         "systembrowse": mixdown([(0, tap(1400, 0.04, 1.0, seed=3)), (0, bloop(FS6, 0.06, 0.18, 0.012, 1.05))]),
         "quicksysselect": mixdown([(0, tap(1400, 0.035, 0.9, seed=4)), (at(0.055), tap(1750, 0.035, 0.9, seed=5)),
                                    (0, air(0.14, 1500, 3500, 0.12, seed=6))]),
-        # open: a soft tap, then two warm notes going up on a light air swell
-        "select": mixdown([(0, tap(1500, 0.03, 0.8, seed=7)), (at(0.012), bloop(D6, 0.42, 0.9, 0.09)),
-                           (at(0.07), bloop(A6, 0.55, 0.7, 0.12)), (0, air(0.26, 700, 3200, 0.16, seed=8))]),
-        # back: the same, mirrored - two notes going down on a falling air swell
-        "back": mixdown([(0, tap(1300, 0.03, 0.75, seed=9)), (at(0.012), bloop(A6, 0.35, 0.75, 0.07, 1.1)),
-                         (at(0.07), bloop(D6, 0.45, 0.75, 0.09, 1.1)), (0, air(0.22, 3200, 700, 0.14, 0.3, seed=10))]),
+        # open / back: the same soft tap as moving the cursor, then two short,
+        # gentle notes (a sweet major third, no air, barely any slide) - up to
+        # open, down to go back
+        "select": mixdown([(0, tap(1400, 0.035, 0.8, seed=7)), (at(0.01), bloop(D6, 0.3, 0.7, 0.055, 1.03)),
+                           (at(0.075), bloop(FS6, 0.38, 0.6, 0.07, 1.03))]),
+        "back": mixdown([(0, tap(1300, 0.035, 0.75, seed=9)), (at(0.01), bloop(FS6, 0.28, 0.6, 0.05, 1.03)),
+                         (at(0.075), bloop(D6, 0.34, 0.6, 0.065, 1.03))]),
         # favourite: a quick, sparkly little rise of four notes
         "favorite": mixdown([(at(i * 0.045), bloop(f, 0.4, 0.6 + 0.08 * i, 0.07)) for i, f in
                              enumerate((D6, FS6, A6, D7))]),
@@ -321,7 +322,7 @@ def pack_menu():
                           [(at(0.3 + i * 0.03), bloop(f, 1.1, 0.55, 0.3, 1.06)) for i, f in
                            enumerate((D5, A5, D6, FS6, A6))]),
     }
-    targets = {"scroll": -28.5, "systembrowse": -28, "quicksysselect": -26, "select": -21, "back": -22,
+    targets = {"scroll": -28.5, "systembrowse": -28, "quicksysselect": -26, "select": -24, "back": -25,
                "favorite": -22, "launch": -20}
     out = {}
     for k, v in sounds.items():

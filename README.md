@@ -72,7 +72,7 @@ pieces - a felt-soft tap, a warm "bloop" that settles onto its note and a
 gentle air swell - in one key, through the same small warm room, with no
 harsh clicks or hiss, and levelled to the same loudness. Moving the cursor
 always makes the same quiet tap; opening something plays two warm notes going
-up, going back plays them going down, favouriting sparkles up four notes, and
+up (a soft tap and two short, sweet notes), going back plays them going down, favouriting sparkles up four notes, and
 starting a game rises into a soft open chord.
 
 ## Features
