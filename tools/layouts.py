@@ -132,7 +132,7 @@ def bubbles(L, z="2"):
     for v, els in L.views.items():
         blocks = []
         for etype, name, p in els:
-            if name.startswith(("background", "bubble")) or name in L.opaque_names[v]:
+            if name.startswith(("background", "bubble", "backdrop")) or name in L.opaque_names[v]:
                 continue
             r = _rect(L, etype, p)
             if r and not any(_inside(r, o) for o in L.opaque[v]):
@@ -173,6 +173,17 @@ def background(L, path, tile_h=0.09, overlay=None):
         if overlay:
             L.add(v, "image", "backgroundOverlay", pos="0 0", size="1 1", path=IMG + overlay,
                   opacity="${overlayOpacity}", zIndex="1")
+
+
+def backdrop(L, view, gameselector=None):
+    """Faint full-screen artwork of the selected (or featured) game behind
+    everything, fading in as you move - like the artwork backdrops of modern
+    handheld launchers. Fan art first, then the screenshot."""
+    p = dict(pos="0 0", cropSize="1 1", imageType="fanart, screenshot", scrollFadeIn="true",
+             opacity="${artOpacity}", saturation="0.85", zIndex="1.5")
+    if gameselector:
+        p["gameselector"] = gameselector
+    L.add(view, "image", "backdrop", **p)
 
 
 def clock(L, view, x, y, origin, fs="fsStatus", date=False, color="${subColor}", font=FONT_BLACK, name="clock",
@@ -368,6 +379,8 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     for v in ("system", "gamelist"):  # HOME-menu background pattern chosen by the colour scheme
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + "${bgPattern}", tile="true",
               tileSize="0 ${bgTile}", color="${bgColor}", zIndex="0")
+    backdrop(L, "system", "featured")
+    backdrop(L, "gamelist")
 
     sys_geo = dict(up=(0.035, 0.555), lo=(0.595, 0.915)) if mode == "row" else \
         dict(up=(0.035, 0.47), lo=(0.51, 0.915))
@@ -377,17 +390,7 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
         ly0, ly1 = g["lo"]
         L.panel(view, "upperScreen", px, uy0, pw, uy1 - uy0)
         L.panel(view, "lowerScreen", px, ly0, pw, ly1 - ly0)
-        hy = (uy1 + ly0) / 2 - 0.011
-        for i, hx in enumerate((px + 0.10, px + pw - 0.30)):
-            L.img(view, f"hinge{i}", hx, hy, 0.20, 0.022, IMG + "pill.png", z=4, color="${borderColor}")
         L.rect(view, "statusDivider", px + 0.02, uy0 + 0.067, pw - 0.04, 0.0028, "${dividerColor}", z=7)
-        if decor:
-            sw = min(0.085, side * 0.42)
-            sh = sw * 150 / 110
-            uc = (uy0 + uy1) / 2
-            for i, cx in enumerate((side / 2, W - side / 2)):
-                L.add(view, "image", f"speaker{i}", pos=L.pair(cx, uc), origin="0.5 0.5",
-                      size=L.pair(sw, sh), path=IMG + "speaker.png", color="${decoColor}", zIndex="3")
         sy = uy0 + 0.034
         clock(L, view, px + 0.03, sy, "0 0.5")
         if decor:
@@ -401,11 +404,12 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     v = "system"
     k = 1.0 if mode == "row" else 0.84
     L.add(v, "gameselector", "featured", selection="random", gameCount="1")
-    L.add(v, "gameselector", "recent", selection="lastplayed", gameCount="3")
-    tile = 0.34 * k
-    tx, ty = px + 0.045, uy0 + 0.088 + (0.007 if mode == "row" else 0.0)
+    # system tile and name, centred on the top screen
+    tile = 0.36 * k
+    cy = (uy0 + 0.07 + uy1) / 2
+    tx, ty = px + 0.05, cy - tile / 2
     L.img(v, "systemTile", tx, ty, tile, tile, sysimg + "${system.theme}.png", z=20, default=sysimg + "_default.png")
-    nx = tx + tile + 0.04
+    nx = tx + tile + 0.045
     if wide:
         prev_h = (uy1 - uy0 - 0.12)
         prev_w = min(0.56, prev_h * 16 / 9)
@@ -413,19 +417,10 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
         name_w = prev_x - 0.04 - nx
     else:
         name_w = px + pw - 0.04 - nx
-    system_name(L, nx, uy0 + 0.09, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3ds")
-    system_info(L, v, nx, uy0 + 0.09 + 0.132 * k, name_w)
-    count_pill(L, nx + 0.012, uy0 + 0.09 + 0.18 * k)
-    rl = uy0 + 0.09 + 0.245 * k
-    L.text(v, "recentLabel", nx, rl, name_w, 0.03, "fsSmall", FONT_BOLD, "${subColor}",
-           text="Jump back in", letterCase="uppercase")
-    cov_h = min(0.13, uy1 - 0.02 - (rl + 0.04))
-    cov_w = cov_h * 0.77
-    for i in range(3):
-        cx = nx + cov_w / 2 + i * (cov_w + 0.025)
-        L.add(v, "image", f"recentCover{i}", pos=L.pair(cx, rl + 0.04 + cov_h), origin="0.5 1",
-              maxSize=L.pair(cov_w, cov_h), imageType=L.box, default=IMG + "nocover.png",
-              gameselector="recent", gameselectorEntry=str(i), cornerRadius=L.rad(0.006), zIndex="20")
+    ny = cy - 0.115 * k - 0.012
+    system_name(L, nx, ny, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3ds")
+    system_info(L, v, nx, ny + 0.132 * k, name_w)
+    count_pill(L, nx + 0.012, ny + 0.18 * k + 0.012)
     if wide:
         py = uy0 + 0.09 + (uy1 - uy0 - 0.09 - prev_h) / 2 - 0.005
         media(L, prev_x, py, prev_w, prev_h, view="system", gameselector="featured")
@@ -530,6 +525,7 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
     sysimg = SYS + "channelwide/"
     m = 0.05 if W >= 1.4 else 0.035
     background(L, "bg-wii.png", 0.02)
+    backdrop(L, "gamelist")
 
     # system view: wall of channels, empty slots where there is no channel
     v = "system"
@@ -614,6 +610,8 @@ def build_wiiu(W, style, layout, box="cover, 3dbox"):
     sysimg = SYS + style + "/"
     m = 0.05 if W >= 1.4 else 0.035
     background(L, "bg-wiiu.png", 0.11, overlay="wiiu-swirl.png")
+    backdrop(L, "system", "featured")
+    backdrop(L, "gamelist")
     us = 0.17  # "user" square size
 
     # system view

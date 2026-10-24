@@ -4,20 +4,20 @@ One theme, five looks. Pick them in **Menu → UI Settings → Theme variant**.
 
 | Look | What it is |
 |---|---|
-| **Channel wall** | wide channel tiles with empty slots and a curved clock bar with a blinking clock |
-| **Home screen** | framed square tiles with a Start cursor and a dock |
-| **Home screen, glossy icons** | the same with glossy icons |
-| **Dual screen, icon grid** | two screens and a hinge, systems in a grid of icons |
-| **Dual screen, icon row** | two screens, systems in a row with a breathing cursor |
+| **Channels** | wide channel tiles with empty slots and a curved clock bar with a blinking clock |
+| **Home** | framed square tiles with a Start cursor and a dock |
+| **Home Glossy** | the same with glossy icons |
+| **Dual Grid** | two screens, systems in a grid of icons |
+| **Dual Row** | two screens, systems in a row with a breathing cursor |
 
-### Channel wall
-![Channel wall](previews/esdeii-channel-wall.png)
+### Channels
+![Channels](previews/esdeii-channel-wall.png)
 
-### Home screen
-![Home screen](previews/esdeii-home-screen.png)
+### Home
+![Home](previews/esdeii-home-screen.png)
 
-### Dual screen
-![Dual screen](previews/esdeii-dual-screen.png)
+### Dual
+![Dual](previews/esdeii-dual-screen.png)
 
 ### 3D boxes in the game grid
 ![3D boxes](previews/esdeii-3d-boxes.png)
@@ -38,10 +38,11 @@ To update, download again and replace the folder.
 
 ## Customisation (Menu → UI Settings)
 
-- **Theme variant** — look · how games are shown · box art, for example
-  *Channel wall · icon grid · 3D boxes*:
-  - games as an **icon grid**, a **cover shelf** or a **game list**;
-  - **box art** or **3D boxes** for the grid and shelf. Each falls back to
+- **Theme variant** — look · how games are shown, plus **3D** for 3D boxes,
+  for example *Channels · Grid · 3D*:
+  - looks: **Channels**, **Home**, **Home Glossy**, **Dual Grid**, **Dual Row**;
+  - games as a **Grid** of icons, a **Shelf** of covers or a **List**;
+  - **box art**, or **3D boxes** with *· 3D*. Each falls back to
     the other, so games scraped with only 3D boxes (or only covers) still
     show their art.
 - **Theme color scheme** — Silver Menu, Cloud White, Ice White, Cosmo Black,
@@ -68,10 +69,12 @@ game swells into a bright chord.
 ## Features
 
 - Softly drifting bubbles in the background, tinted with your colour scheme.
-  They only float in free space, never behind the clock, text or games, and
-  they fade in and out, so when ES-DE restarts them (it does that every time
-  you pick another system or open a game list) new bubbles simply rise
-  instead of jumping back to where they started.
+  They only float in free space, never behind the clock, text or games.
+  ES-DE restarts them every time you pick another system or open a game
+  list; they are simply there straight away, no fade-in.
+- Faint artwork of the selected game (fan art, else the screenshot) behind
+  the game list, fading in as you move; the Home and Dual looks show the
+  featured game's artwork behind the systems.
 - Rounded console-style lettering (M PLUS Rounded 1c).
 - **Empty slots** fill the rest of every grid, like the blank channels on
   a console menu (plain, without any logo).
@@ -84,7 +87,6 @@ game swells into a bright chord.
 - System info line: maker, release year and type for every console.
 - Game count, clock, date, battery and Wi-Fi.
 - **Featured game**: a random game from the selected system.
-- **Jump back in** (dual screen): your three most recently played games.
 - Game details: release date, players, developer, genre, last played, play
   time, rating, badges and a scrolling description.
 - Game videos (start after 1 s), with the scraped **game logo** in the corner.
@@ -106,10 +108,11 @@ game swells into a bright chord.
 
 ## Media used
 
-- Grids, shelves and "Jump back in" use **box art** or **3D boxes**
+- Grids and shelves use **box art** or **3D boxes**
   (your choice, each falling back to the other).
 - The game screen uses the **screenshot**, then title screen, then
   miximage, plus the game **video** and **marquee** (logo).
+- The faint backdrop uses **fan art**, then the **screenshot**.
 
 ## Changing things
 

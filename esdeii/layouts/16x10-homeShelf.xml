@@ -17,6 +17,16 @@
             <opacity>${overlayOpacity}</opacity>
             <zIndex>1</zIndex>
         </image>
+        <image name="backdrop">
+            <pos>0 0</pos>
+            <cropSize>1 1</cropSize>
+            <imageType>fanart, screenshot</imageType>
+            <scrollFadeIn>true</scrollFadeIn>
+            <opacity>${artOpacity}</opacity>
+            <saturation>0.85</saturation>
+            <zIndex>1.5</zIndex>
+            <gameselector>featured</gameselector>
+        </image>
         <gameselector name="featured">
             <selection>random</selection>
             <gameCount>1</gameCount>
@@ -430,6 +440,15 @@
             <path>./../assets/images/wiiu-swirl.png</path>
             <opacity>${overlayOpacity}</opacity>
             <zIndex>1</zIndex>
+        </image>
+        <image name="backdrop">
+            <pos>0 0</pos>
+            <cropSize>1 1</cropSize>
+            <imageType>fanart, screenshot</imageType>
+            <scrollFadeIn>true</scrollFadeIn>
+            <opacity>${artOpacity}</opacity>
+            <saturation>0.85</saturation>
+            <zIndex>1.5</zIndex>
         </image>
         <image name="userSystem">
             <pos>0.0844 0.115</pos>

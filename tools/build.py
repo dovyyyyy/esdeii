@@ -31,7 +31,7 @@ def scheme(bg, panel, border, text, sub, accent, screen, tile, deco, divider, di
     return dict(bgColor=bg, panelColor=panel, borderColor=border, shadowColor=shadow, textColor=text,
                 subColor=sub, accentColor=accent, accentText=accent_text, screenColor=screen, tileColor=tile,
                 decoColor=deco, dividerColor=divider, dimText=dim, overlayOpacity=overlay,
-                bubbleOpacity="0.45" if dark else "0.6")
+                bubbleOpacity="0.45" if dark else "0.6", artOpacity="0.22" if dark else "0.13")
 
 
 S = {
@@ -79,17 +79,17 @@ REST = ["cosmoBlack", "flameRed", "aquaBlue", "mintGreen", "lavender", "sunset",
 
 # One theme, several looks. Each look is (variant prefix, layout builder, style, label).
 LOOKS = [
-    ("wall", "ii", "channelwide", "Channel wall"),
-    ("home", "ii", "plaza", "Home screen"),
-    ("homeGlossy", "ii", "glossy", "Home screen, glossy icons"),
-    ("duoGrid", "3ds", "glossy|grid", "Dual screen, icon grid"),
-    ("duoRow", "3ds", "glossy|row", "Dual screen, icon row"),
+    ("wall", "ii", "channelwide", "Channels"),
+    ("home", "ii", "plaza", "Home"),
+    ("homeGlossy", "ii", "glossy", "Home Glossy"),
+    ("duoGrid", "3ds", "glossy|grid", "Dual Grid"),
+    ("duoRow", "3ds", "glossy|row", "Dual Row"),
 ]
 # How games are shown, and which scraped box art the grid / shelf use.
 # ES-DE takes up to two image types: the second is used when the first is missing,
 # so "box art" still shows 3D boxes for games that only have those (and vice versa).
-GAME_VIEWS = [("Grid", "icon grid"), ("Shelf", "cover shelf"), ("List", "game list")]
-BOX_ART = [("", "box art", "cover, 3dbox"), ("3D", "3D boxes", "3dbox, cover")]
+GAME_VIEWS = [("Grid", "Grid"), ("Shelf", "Shelf"), ("List", "List")]
+BOX_ART = [("", "", "cover, 3dbox"), ("3D", "3D", "3dbox, cover")]
 
 THEMES = {
     "esdeii": dict(looks=LOOKS, sounds="menu",
@@ -173,18 +173,6 @@ def images(fontdir):
     g.line([(T // 2, 0), (T // 2, T)], fill=(246, 247, 249), width=1)
     bg.save(os.path.join(d, "bg-grid.png"))
 
-    def speaker(dr, s, img):
-        W, H = img.size
-        for i in range(3):
-            for j in range(6):
-                cx = W / 2 + (i - 1) * 26 * s + (13 * s if j % 2 else 0) - 6 * s
-                cy = 20 * s + j * 22 * s
-                dr.ellipse([cx - 7 * s, cy - 7 * s, cx + 7 * s, cy + 7 * s], fill=(255, 255, 255, 255))
-    ss((110, 150), speaker).save(os.path.join(d, "speaker.png"))
-    ss((240, 30), lambda dr, s, img: dr.rounded_rectangle([0, 0, img.size[0] - 1, img.size[1] - 1],
-                                                           radius=img.size[1] / 2, fill=(255, 255, 255, 255))
-       ).save(os.path.join(d, "pill.png"))
-
     star = "M50 6 L62.9 34.2 L93.8 37.6 L70.8 58.4 L77.2 88.8 L50 73.4 L22.8 88.8 L29.2 58.4 L6.2 37.6 L37.1 34.2 Z"
     for name, fill in (("star-filled.svg", "#FFC21A"), ("star-unfilled.svg", "#B9C0CA")):
         with open(os.path.join(d, name), "w") as fh:
@@ -262,7 +250,7 @@ def write_theme(key, cfg, fontdir, imgdir, dump):
     for prefix, builder, style, llabel in cfg["looks"]:
         for view, vdesc in GAME_VIEWS:
             for bkey, bdesc, btypes in (BOX_ART if view != "List" else BOX_ART[:1]):
-                label = f"{llabel} · {vdesc}" + (f" · {bdesc}" if view != "List" else "")
+                label = f"{llabel} · {vdesc}" + (f" · {bdesc}" if bdesc else "")
                 variants.append((f"{prefix}{view}{bkey}", label, (builder, style, view.lower(), btypes)))
 
     files = {}

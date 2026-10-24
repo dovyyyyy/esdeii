@@ -10,6 +10,16 @@
             <color>${bgColor}</color>
             <zIndex>0</zIndex>
         </image>
+        <image name="backdrop">
+            <pos>0 0</pos>
+            <cropSize>1 1</cropSize>
+            <imageType>fanart, screenshot</imageType>
+            <scrollFadeIn>true</scrollFadeIn>
+            <opacity>${artOpacity}</opacity>
+            <saturation>0.85</saturation>
+            <zIndex>1.5</zIndex>
+            <gameselector>featured</gameselector>
+        </image>
         <image name="upperScreenShadow">
             <pos>0.108 0.038</pos>
             <size>0.784 0.532</size>
@@ -58,42 +68,12 @@
             <zIndex>5.2</zIndex>
             <cornerRadius>0.0157</cornerRadius>
         </image>
-        <image name="hinge0">
-            <pos>0.1569 0.564</pos>
-            <size>0.0923 0.022</size>
-            <path>./../assets/images/pill.png</path>
-            <zIndex>4</zIndex>
-            <color>${borderColor}</color>
-        </image>
-        <image name="hinge1">
-            <pos>0.7508 0.564</pos>
-            <size>0.0923 0.022</size>
-            <path>./../assets/images/pill.png</path>
-            <zIndex>4</zIndex>
-            <color>${borderColor}</color>
-        </image>
         <image name="statusDivider">
             <pos>0.12 0.102</pos>
             <size>0.76 0.0028</size>
             <path>./../assets/images/white.png</path>
             <color>${dividerColor}</color>
             <zIndex>7</zIndex>
-        </image>
-        <image name="speaker0">
-            <pos>0.0554 0.295</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0392 0.1159</size>
-            <path>./../assets/images/speaker.png</path>
-            <color>${decoColor}</color>
-            <zIndex>3</zIndex>
-        </image>
-        <image name="speaker1">
-            <pos>0.9446 0.295</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0392 0.1159</size>
-            <path>./../assets/images/speaker.png</path>
-            <color>${decoColor}</color>
-            <zIndex>3</zIndex>
         </image>
         <clock name="clock">
             <pos>0.1246 0.069</pos>
@@ -135,20 +115,16 @@
             <selection>random</selection>
             <gameCount>1</gameCount>
         </gameselector>
-        <gameselector name="recent">
-            <selection>lastplayed</selection>
-            <gameCount>3</gameCount>
-        </gameselector>
         <image name="systemTile">
-            <pos>0.1315 0.13</pos>
-            <size>0.1569 0.34</size>
+            <pos>0.1338 0.15</pos>
+            <size>0.1662 0.36</size>
             <path>./../systems/glossy/${system.theme}.png</path>
             <zIndex>20</zIndex>
             <default>./../systems/glossy/_default.png</default>
         </image>
         <text name="systemName">
-            <pos>0.3069 0.125</pos>
-            <size>0.2869 0.125</size>
+            <pos>0.3208 0.203</pos>
+            <size>0.2731 0.125</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>${fsName3ds}</fontSize>
             <color>${textColor}</color>
@@ -158,8 +134,8 @@
             <lineSpacing>1.1</lineSpacing>
         </text>
         <text name="systemInfo">
-            <pos>0.3069 0.257</pos>
-            <size>0.2869 0.032</size>
+            <pos>0.3208 0.335</pos>
+            <size>0.2731 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
             <color>${subColor}</color>
@@ -168,7 +144,7 @@
             <horizontalAlignment>left</horizontalAlignment>
         </text>
         <text name="gameCount">
-            <pos>0.3125 0.305</pos>
+            <pos>0.3263 0.395</pos>
             <size>0 0</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsCount}</fontSize>
@@ -180,49 +156,6 @@
             <backgroundCornerRadius>0.0138</backgroundCornerRadius>
             <lineSpacing>1.6</lineSpacing>
         </text>
-        <text name="recentLabel">
-            <pos>0.3069 0.37</pos>
-            <size>0.2869 0.03</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsSmall}</fontSize>
-            <color>${subColor}</color>
-            <zIndex>40</zIndex>
-            <text>Jump back in</text>
-            <letterCase>uppercase</letterCase>
-        </text>
-        <image name="recentCover0">
-            <pos>0.3291 0.535</pos>
-            <origin>0.5 1</origin>
-            <maxSize>0.0444 0.125</maxSize>
-            <imageType>3dbox, cover</imageType>
-            <default>./../assets/images/nocover.png</default>
-            <gameselector>recent</gameselector>
-            <gameselectorEntry>0</gameselectorEntry>
-            <cornerRadius>0.0028</cornerRadius>
-            <zIndex>20</zIndex>
-        </image>
-        <image name="recentCover1">
-            <pos>0.3851 0.535</pos>
-            <origin>0.5 1</origin>
-            <maxSize>0.0444 0.125</maxSize>
-            <imageType>3dbox, cover</imageType>
-            <default>./../assets/images/nocover.png</default>
-            <gameselector>recent</gameselector>
-            <gameselectorEntry>1</gameselectorEntry>
-            <cornerRadius>0.0028</cornerRadius>
-            <zIndex>20</zIndex>
-        </image>
-        <image name="recentCover2">
-            <pos>0.4411 0.535</pos>
-            <origin>0.5 1</origin>
-            <maxSize>0.0444 0.125</maxSize>
-            <imageType>3dbox, cover</imageType>
-            <default>./../assets/images/nocover.png</default>
-            <gameselector>recent</gameselector>
-            <gameselectorEntry>2</gameselectorEntry>
-            <cornerRadius>0.0028</cornerRadius>
-            <zIndex>20</zIndex>
-        </image>
         <image name="mediaScreen">
             <pos>0.6123 0.135</pos>
             <size>0.2585 0.4</size>
@@ -389,6 +322,15 @@
             <color>${bgColor}</color>
             <zIndex>0</zIndex>
         </image>
+        <image name="backdrop">
+            <pos>0 0</pos>
+            <cropSize>1 1</cropSize>
+            <imageType>fanart, screenshot</imageType>
+            <scrollFadeIn>true</scrollFadeIn>
+            <opacity>${artOpacity}</opacity>
+            <saturation>0.85</saturation>
+            <zIndex>1.5</zIndex>
+        </image>
         <image name="upperScreenShadow">
             <pos>0.108 0.038</pos>
             <size>0.784 0.462</size>
@@ -437,42 +379,12 @@
             <zIndex>5.2</zIndex>
             <cornerRadius>0.0157</cornerRadius>
         </image>
-        <image name="hinge0">
-            <pos>0.1569 0.494</pos>
-            <size>0.0923 0.022</size>
-            <path>./../assets/images/pill.png</path>
-            <zIndex>4</zIndex>
-            <color>${borderColor}</color>
-        </image>
-        <image name="hinge1">
-            <pos>0.7508 0.494</pos>
-            <size>0.0923 0.022</size>
-            <path>./../assets/images/pill.png</path>
-            <zIndex>4</zIndex>
-            <color>${borderColor}</color>
-        </image>
         <image name="statusDivider">
             <pos>0.12 0.102</pos>
             <size>0.76 0.0028</size>
             <path>./../assets/images/white.png</path>
             <color>${dividerColor}</color>
             <zIndex>7</zIndex>
-        </image>
-        <image name="speaker0">
-            <pos>0.0554 0.26</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0392 0.1159</size>
-            <path>./../assets/images/speaker.png</path>
-            <color>${decoColor}</color>
-            <zIndex>3</zIndex>
-        </image>
-        <image name="speaker1">
-            <pos>0.9446 0.26</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0392 0.1159</size>
-            <path>./../assets/images/speaker.png</path>
-            <color>${decoColor}</color>
-            <zIndex>3</zIndex>
         </image>
         <clock name="clock">
             <pos>0.1246 0.069</pos>
@@ -810,7 +722,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble4">
-            <pos>0.12 0.5</pos>
+            <pos>0.1292 0.5</pos>
             <origin>0.5 0.5</origin>
             <size>0.0554 0.12</size>
             <path>./../assets/images/anim-bubble-c.json</path>
@@ -820,7 +732,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble5">
-            <pos>0.8769 0.5</pos>
+            <pos>0.8677 0.5</pos>
             <origin>0.5 0.5</origin>
             <size>0.0508 0.11</size>
             <path>./../assets/images/anim-bubble-a.json</path>

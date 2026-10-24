@@ -200,7 +200,7 @@ def render(key, scheme, view):
                     r.paste(cover(cw, ch, int(p.get("gameselectorEntry", 0)) + 3, cf, b3), x, y, cw, ch, radius=rad)
                 elif name not in ("mediaFallback", "gameLogo"):
                     x, y, w, h = r.box(p)
-                    r.paste(screenshot(w, h), x, y, w, h, radius=rad)
+                    r.paste(screenshot(w, h), x, y, w, h, radius=rad, op=op)
                 continue
             fn = r.path(r.res(p["path"]))
             if not os.path.exists(fn):

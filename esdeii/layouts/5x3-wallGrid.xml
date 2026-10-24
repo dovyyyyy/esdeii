@@ -306,6 +306,15 @@
             <color>${bgColor}</color>
             <zIndex>0</zIndex>
         </image>
+        <image name="backdrop">
+            <pos>0 0</pos>
+            <cropSize>1 1</cropSize>
+            <imageType>fanart, screenshot</imageType>
+            <scrollFadeIn>true</scrollFadeIn>
+            <opacity>${artOpacity}</opacity>
+            <saturation>0.85</saturation>
+            <zIndex>1.5</zIndex>
+        </image>
         <text name="systemLabel">
             <pos>0.03 0.03</pos>
             <size>0.6 0.06</size>

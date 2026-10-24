@@ -324,25 +324,23 @@ def lottie_cursor(path, frame_png, S=400):
     im.save(frame_png)
 
 
-def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=12, seconds=7.0, delay=0.0, fade_s=1.4):
-    """One soft bubble that fades in, drifts slowly upward and fades out again.
+def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=12, seconds=7.0, fade_s=1.4):
+    """One soft bubble that drifts slowly upward and fades out at the end.
 
-    The theme places several of these around the screen. ES-DE restarts every
-    animation when you move to another system or open a game list, so each
-    bubble starts invisible and fades in: a restart looks like new bubbles
-    rising instead of bubbles jumping back to where they began. The end of the
-    loop is invisible too, so the jump back to the start is never seen.
+    It is fully visible from the very first frame, so whenever ES-DE restarts
+    the animation (every time you move to another system or open a game list)
+    the bubbles are simply there straight away. Only the end of the loop fades
+    out, so the jump back to the start is never seen as a jump.
     Each one is small and short, so ES-DE renders the frames once, keeps them
     in its Lottie frame cache and just replays them."""
     C, d = 200, 116
     paint = ({"ty": "st", "c": _st([1, 1, 1, 1]), "o": _st(100), "w": _st(8), "lc": 2, "lj": 2, "nm": "s"}
              if ring else FILL)
     op = int(round(fps * seconds))
-    a = int(round(fps * delay))
-    fi = int(round(fps * fade_s))
+    fo = int(round(fps * fade_s))
     dx, dy = drift
     shape = [{"ty": "el", "d": 1, "s": _st([d, d]), "p": _st([0, 0]), "nm": "e"}, paint]
-    opacity = _anim([(0, 0), (a, 0), (a + fi, 20), (op - fi, 20), (op, 0)])
+    opacity = _anim([(0, 20), (op - fo, 20), (op, 0)])
     pos = _anim([(0, [C / 2 - dx, C / 2 - dy, 0]), (op, [C / 2 + dx, C / 2 + dy, 0])])
     scale_ = _anim([(0, [92, 92, 100]), (op, [104, 104, 100])])
     _write_lottie(path, C, C, fps, op, [_layer(1, shape, op, opacity=opacity, position=pos, scale_=scale_)])
@@ -355,12 +353,11 @@ def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=12, seconds=7.0
     im.save(frame_png)
 
 
-# Different lengths and start delays, so the bubbles never pulse in step and
-# appear one after another after ES-DE restarts them.
-BUBBLES = {"anim-bubble-a": dict(drift=(22, -34), seconds=7.0, delay=0.0),
-           "anim-bubble-b": dict(ring=True, drift=(-20, -32), seconds=8.5, delay=1.1),
-           "anim-bubble-c": dict(drift=(10, -36), seconds=6.0, delay=2.2),
-           "anim-bubble-d": dict(ring=True, drift=(16, -30), seconds=9.5, delay=3.2)}
+# Different lengths, so the bubbles never loop in step.
+BUBBLES = {"anim-bubble-a": dict(drift=(22, -34), seconds=7.0),
+           "anim-bubble-b": dict(ring=True, drift=(-20, -32), seconds=8.5),
+           "anim-bubble-c": dict(drift=(10, -36), seconds=6.0),
+           "anim-bubble-d": dict(ring=True, drift=(16, -30), seconds=9.5)}
 
 
 def build_all(img_dir, fontpath, frames_dir=None):
