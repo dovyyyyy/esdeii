@@ -56,8 +56,8 @@ To update, download again and replace the folder.
   ES-DE always draws the clock, battery and button prompts on top of
   everything and never moves them, so the theme keeps the surfaces under
   them still instead of sliding them away. On Channels the game count sits
-  on the left of the clock bar and slides in and out with its page (from one
-  game list to the next it just changes in place); in the Dual looks the clock sits in a strip above the two
+  on the left of the clock bar and stays there with it, switching to the new
+  numbers; in the Dual looks the clock sits in a strip above the two
   screens, so the screens slide away underneath it. Everything else slides
   with the page in both directions.
 - **Theme aspect ratio** — leave on Automatic (16:9, 16:10, 3:2, 4:3, 5:3,
@@ -103,9 +103,6 @@ game swells into a bright chord.
   pill in the Dual looks.
 - **Empty slots** fill the rest of every grid, like the blank channels on
   a console menu (plain, without any logo).
-- On the channel wall the background lines glide up and ease to a stop each
-  time you move to another system, like the console menu settling after a
-  page turn. The animation plays once, so it costs nothing while you look.
 - Descriptions and long names scroll at half speed with a pause at the
   start, so they are easy to read.
   They are tiny, so they cost almost nothing to draw.

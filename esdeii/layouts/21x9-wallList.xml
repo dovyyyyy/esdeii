@@ -4,18 +4,12 @@
         <image name="background">
             <pos>0 0</pos>
             <size>1 1</size>
-            <path>./../assets/images/white.png</path>
+            <path>./../assets/images/bg-wii.png</path>
+            <tile>true</tile>
+            <tileSize>0 0.02</tileSize>
             <color>${bgColor}</color>
             <zIndex>0</zIndex>
         </image>
-        <animation name="backgroundLines">
-            <pos>0 0</pos>
-            <size>1 1</size>
-            <path>./../assets/images/anim-lines.json</path>
-            <color>${bgColor}</color>
-            <iterationCount>1</iterationCount>
-            <zIndex>0.5</zIndex>
-        </animation>
         <text name="systemName">
             <pos>0.0211 0.03</pos>
             <size>0.58 0.06</size>
@@ -252,6 +246,7 @@
             <zIndex>62</zIndex>
             <origin>0 0.5</origin>
             <systemdata>gamecount</systemdata>
+            <stationary>always</stationary>
         </text>
         <systemstatus name="systemStatus">
             <pos>0.9705 0.905</pos>
@@ -801,8 +796,7 @@
             <path>./../assets/images/wii-bar.png</path>
             <zIndex>60</zIndex>
             <color>${panelColor}</color>
-            <stationary>withinView</stationary>
-            <renderDuringTransitions>false</renderDuringTransitions>
+            <stationary>always</stationary>
         </image>
         <image name="menuBarLine">
             <pos>0 0.752</pos>
@@ -811,8 +805,7 @@
             <zIndex>60.1</zIndex>
             <color>${accentColor}</color>
             <opacity>0.85</opacity>
-            <stationary>withinView</stationary>
-            <renderDuringTransitions>false</renderDuringTransitions>
+            <stationary>always</stationary>
         </image>
         <clock name="clock">
             <pos>0.5 0.893</pos>
@@ -841,7 +834,7 @@
             <color>${subColor}</color>
             <horizontalAlignment>left</horizontalAlignment>
             <zIndex>62</zIndex>
-            <stationary>withinView</stationary>
+            <stationary>always</stationary>
         </gamelistinfo>
         <systemstatus name="systemStatus">
             <pos>0.9705 0.905</pos>

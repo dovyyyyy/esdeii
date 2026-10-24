@@ -259,7 +259,7 @@
         </image>
         <image name="upperScreenShadow">
             <pos>0.021 0.081</pos>
-            <size>0.958 0.459</size>
+            <size>0.958 0.439</size>
             <path>./../assets/images/white.png</path>
             <color>${shadowColor}</color>
             <zIndex>5</zIndex>
@@ -267,7 +267,7 @@
         </image>
         <image name="upperScreenBorder">
             <pos>0.021 0.072</pos>
-            <size>0.958 0.459</size>
+            <size>0.958 0.439</size>
             <path>./../assets/images/white.png</path>
             <color>${borderColor}</color>
             <zIndex>5.1</zIndex>
@@ -275,31 +275,31 @@
         </image>
         <image name="upperScreen">
             <pos>0.0262 0.078</pos>
-            <size>0.9475 0.447</size>
+            <size>0.9475 0.427</size>
             <path>./../assets/images/white.png</path>
             <color>${panelColor}</color>
             <zIndex>5.2</zIndex>
             <cornerRadius>0.0298</cornerRadius>
         </image>
         <image name="lowerScreenShadow">
-            <pos>0.021 0.568</pos>
-            <size>0.958 0.362</size>
+            <pos>0.021 0.548</pos>
+            <size>0.958 0.382</size>
             <path>./../assets/images/white.png</path>
             <color>${shadowColor}</color>
             <zIndex>5</zIndex>
             <cornerRadius>0.035</cornerRadius>
         </image>
         <image name="lowerScreenBorder">
-            <pos>0.021 0.559</pos>
-            <size>0.958 0.362</size>
+            <pos>0.021 0.539</pos>
+            <size>0.958 0.382</size>
             <path>./../assets/images/white.png</path>
             <color>${borderColor}</color>
             <zIndex>5.1</zIndex>
             <cornerRadius>0.035</cornerRadius>
         </image>
         <image name="lowerScreen">
-            <pos>0.0262 0.565</pos>
-            <size>0.9475 0.35</size>
+            <pos>0.0262 0.545</pos>
+            <size>0.9475 0.37</size>
             <path>./../assets/images/white.png</path>
             <color>${panelColor}</color>
             <zIndex>5.2</zIndex>
@@ -347,7 +347,7 @@
         </helpsystem>
         <image name="heroBase">
             <pos>0.0262 0.078</pos>
-            <size>0.9475 0.447</size>
+            <size>0.9475 0.427</size>
             <path>./../assets/images/white.png</path>
             <color>${screenColor}</color>
             <zIndex>6</zIndex>
@@ -355,15 +355,15 @@
         </image>
         <image name="heroArt">
             <pos>0.0262 0.078</pos>
-            <cropSize>0.9475 0.447</cropSize>
+            <cropSize>0.9475 0.427</cropSize>
             <imageType>fanart, screenshot, titlescreen</imageType>
             <cornerRadius>0.0298</cornerRadius>
             <zIndex>7</zIndex>
             <scrollFadeIn>true</scrollFadeIn>
         </image>
         <image name="heroShade">
-            <pos>0.0262 0.2121</pos>
-            <size>0.9475 0.3129</size>
+            <pos>0.0262 0.2061</pos>
+            <size>0.9475 0.2989</size>
             <path>./../assets/images/white.png</path>
             <color>00000000</color>
             <zIndex>9</zIndex>
@@ -372,7 +372,7 @@
             <gradientType>vertical</gradientType>
         </image>
         <image name="mediaScreen">
-            <pos>0.0455 0.121</pos>
+            <pos>0.0455 0.111</pos>
             <size>0.4737 0.361</size>
             <path>./../assets/images/white.png</path>
             <color>${screenColor}</color>
@@ -380,7 +380,7 @@
             <cornerRadius>0.014</cornerRadius>
         </image>
         <image name="mediaFallback">
-            <pos>0.2824 0.3015</pos>
+            <pos>0.2824 0.2915</pos>
             <origin>0.5 0.5</origin>
             <maxSize>0.259 0.296</maxSize>
             <imageType>cover, 3dbox</imageType>
@@ -389,7 +389,7 @@
             <zIndex>13</zIndex>
         </image>
         <video name="gameVideo">
-            <pos>0.0455 0.121</pos>
+            <pos>0.0455 0.111</pos>
             <zIndex>14</zIndex>
             <imageType>screenshot, titlescreen, miximage</imageType>
             <scrollFadeIn>true</scrollFadeIn>
@@ -400,7 +400,7 @@
             <fadeInTime>0.35</fadeInTime>
         </video>
         <image name="gameLogo">
-            <pos>0.0647 0.462</pos>
+            <pos>0.0647 0.452</pos>
             <origin>0 1</origin>
             <maxSize>0.199 0.1083</maxSize>
             <imageType>marquee</imageType>
@@ -409,7 +409,7 @@
         </image>
         <image name="infoCard">
             <pos>0.5385 0.1</pos>
-            <size>0.416 0.403</size>
+            <size>0.416 0.383</size>
             <path>./../assets/images/white.png</path>
             <color>000000A6</color>
             <zIndex>10</zIndex>
@@ -600,13 +600,13 @@
             <zIndex>45</zIndex>
         </gamelistinfo>
         <carousel name="gamelistcarousel">
-            <pos>0.0507 0.577</pos>
-            <size>0.8985 0.326</size>
+            <pos>0.0507 0.557</pos>
+            <size>0.8985 0.346</size>
             <type>horizontal</type>
             <imageType>cover, 3dbox</imageType>
-            <itemSize>0.1646 0.2543</itemSize>
+            <itemSize>0.1747 0.2699</itemSize>
             <itemScale>1.2</itemScale>
-            <maxItemCount>4.6247</maxItemCount>
+            <maxItemCount>4.3574</maxItemCount>
             <imageFit>contain</imageFit>
             <imageCornerRadius>0.007</imageCornerRadius>
             <unfocusedItemOpacity>1</unfocusedItemOpacity>
