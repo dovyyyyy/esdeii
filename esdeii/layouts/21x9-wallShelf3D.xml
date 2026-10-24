@@ -12,7 +12,7 @@
         </image>
         <text name="systemName">
             <pos>0.0211 0.03</pos>
-            <size>0.6 0.06</size>
+            <size>0.58 0.06</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>${fsWiiHeader}</fontSize>
             <color>${textColor}</color>
@@ -23,7 +23,7 @@
         </text>
         <text name="systemInfo">
             <pos>0.0211 0.092</pos>
-            <size>0.6 0.032</size>
+            <size>0.58 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
             <color>${subColor}</color>
@@ -217,7 +217,6 @@
             <zIndex>60</zIndex>
             <color>${panelColor}</color>
             <stationary>always</stationary>
-            <renderDuringTransitions>true</renderDuringTransitions>
         </image>
         <image name="menuBarLine">
             <pos>0 0.752</pos>
@@ -227,7 +226,6 @@
             <color>${accentColor}</color>
             <opacity>0.85</opacity>
             <stationary>always</stationary>
-            <renderDuringTransitions>true</renderDuringTransitions>
         </image>
         <clock name="clock">
             <pos>0.5 0.893</pos>
@@ -247,15 +245,104 @@
             <format>%a %d/%m</format>
             <scope>view</scope>
         </clock>
+        <text name="barCountOutline0">
+            <pos>0.978 0.0578</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="barCountOutline1">
+            <pos>0.9789 0.0578</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="barCountOutline2">
+            <pos>0.9798 0.0578</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="barCountOutline3">
+            <pos>0.978 0.06</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="barCountOutline4">
+            <pos>0.9798 0.06</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="barCountOutline5">
+            <pos>0.978 0.0622</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="barCountOutline6">
+            <pos>0.9789 0.0622</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="barCountOutline7">
+            <pos>0.9798 0.0622</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
         <text name="barCount">
-            <pos>0.0295 0.905</pos>
-            <size>0.3523 0.04</size>
+            <pos>0.9789 0.06</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsCount}</fontSize>
             <color>${subColor}</color>
-            <zIndex>62</zIndex>
-            <origin>0 0.5</origin>
             <systemdata>gamecount</systemdata>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>40</zIndex>
         </text>
         <systemstatus name="systemStatus">
             <pos>0.9705 0.905</pos>
@@ -298,7 +385,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
-            <pos>0.6497 0.06</pos>
+            <pos>0.9788 0.16</pos>
             <origin>0.5 0.5</origin>
             <size>0.0422 0.1</size>
             <path>./../assets/images/anim-bubble-b.json</path>
@@ -307,7 +394,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubbleBehind0">
-            <pos>0.3459 0.46</pos>
+            <pos>0.4978 0.46</pos>
             <origin>0.5 0.5</origin>
             <size>0.0928 0.22</size>
             <path>./../assets/images/anim-bubble-d.json</path>
@@ -316,7 +403,7 @@
             <zIndex>6</zIndex>
         </animation>
         <animation name="bubbleBehind1">
-            <pos>0.7425 0.6</pos>
+            <pos>0.2109 0.64</pos>
             <origin>0.5 0.5</origin>
             <size>0.0844 0.2</size>
             <path>./../assets/images/anim-bubble-c.json</path>
@@ -325,7 +412,7 @@
             <zIndex>6</zIndex>
         </animation>
         <animation name="bubbleBehind2">
-            <pos>0.1181 0.64</pos>
+            <pos>0.7594 0.38</pos>
             <origin>0.5 0.5</origin>
             <size>0.0759 0.18</size>
             <path>./../assets/images/anim-bubble-a.json</path>
@@ -334,7 +421,7 @@
             <zIndex>6</zIndex>
         </animation>
         <animation name="bubbleBehind3">
-            <pos>0.9028 0.22</pos>
+            <pos>0.3122 0.22</pos>
             <origin>0.5 0.5</origin>
             <size>0.0675 0.16</size>
             <path>./../assets/images/anim-bubble-b.json</path>
@@ -362,25 +449,185 @@
             <saturation>0.85</saturation>
             <zIndex>1.5</zIndex>
         </image>
+        <text name="systemLabelOutline0">
+            <pos>0.0202 0.0278</pos>
+            <size>0.58 0.06</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsWiiHeader}</fontSize>
+            <color>${panelColor}</color>
+            <text>${system.fullName}</text>
+            <verticalAlignment>top</verticalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemLabelOutline1">
+            <pos>0.0211 0.0278</pos>
+            <size>0.58 0.06</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsWiiHeader}</fontSize>
+            <color>${panelColor}</color>
+            <text>${system.fullName}</text>
+            <verticalAlignment>top</verticalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemLabelOutline2">
+            <pos>0.022 0.0278</pos>
+            <size>0.58 0.06</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsWiiHeader}</fontSize>
+            <color>${panelColor}</color>
+            <text>${system.fullName}</text>
+            <verticalAlignment>top</verticalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemLabelOutline3">
+            <pos>0.0202 0.03</pos>
+            <size>0.58 0.06</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsWiiHeader}</fontSize>
+            <color>${panelColor}</color>
+            <text>${system.fullName}</text>
+            <verticalAlignment>top</verticalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemLabelOutline4">
+            <pos>0.022 0.03</pos>
+            <size>0.58 0.06</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsWiiHeader}</fontSize>
+            <color>${panelColor}</color>
+            <text>${system.fullName}</text>
+            <verticalAlignment>top</verticalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemLabelOutline5">
+            <pos>0.0202 0.0322</pos>
+            <size>0.58 0.06</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsWiiHeader}</fontSize>
+            <color>${panelColor}</color>
+            <text>${system.fullName}</text>
+            <verticalAlignment>top</verticalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemLabelOutline6">
+            <pos>0.0211 0.0322</pos>
+            <size>0.58 0.06</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsWiiHeader}</fontSize>
+            <color>${panelColor}</color>
+            <text>${system.fullName}</text>
+            <verticalAlignment>top</verticalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemLabelOutline7">
+            <pos>0.022 0.0322</pos>
+            <size>0.58 0.06</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsWiiHeader}</fontSize>
+            <color>${panelColor}</color>
+            <text>${system.fullName}</text>
+            <verticalAlignment>top</verticalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
         <text name="systemLabel">
             <pos>0.0211 0.03</pos>
-            <size>0.6 0.06</size>
+            <size>0.58 0.06</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>${fsWiiHeader}</fontSize>
             <color>${textColor}</color>
-            <zIndex>40</zIndex>
             <text>${system.fullName}</text>
             <verticalAlignment>top</verticalAlignment>
+            <zIndex>40</zIndex>
+        </text>
+        <text name="systemInfoOutline0">
+            <pos>0.0202 0.0898</pos>
+            <size>0.58 0.032</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsSmall}</fontSize>
+            <color>${panelColor}</color>
+            <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemInfoOutline1">
+            <pos>0.0211 0.0898</pos>
+            <size>0.58 0.032</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsSmall}</fontSize>
+            <color>${panelColor}</color>
+            <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemInfoOutline2">
+            <pos>0.022 0.0898</pos>
+            <size>0.58 0.032</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsSmall}</fontSize>
+            <color>${panelColor}</color>
+            <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemInfoOutline3">
+            <pos>0.0202 0.092</pos>
+            <size>0.58 0.032</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsSmall}</fontSize>
+            <color>${panelColor}</color>
+            <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemInfoOutline4">
+            <pos>0.022 0.092</pos>
+            <size>0.58 0.032</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsSmall}</fontSize>
+            <color>${panelColor}</color>
+            <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemInfoOutline5">
+            <pos>0.0202 0.0942</pos>
+            <size>0.58 0.032</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsSmall}</fontSize>
+            <color>${panelColor}</color>
+            <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemInfoOutline6">
+            <pos>0.0211 0.0942</pos>
+            <size>0.58 0.032</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsSmall}</fontSize>
+            <color>${panelColor}</color>
+            <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </text>
+        <text name="systemInfoOutline7">
+            <pos>0.022 0.0942</pos>
+            <size>0.58 0.032</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsSmall}</fontSize>
+            <color>${panelColor}</color>
+            <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>39.9</zIndex>
         </text>
         <text name="systemInfo">
             <pos>0.0211 0.092</pos>
-            <size>0.6 0.032</size>
+            <size>0.58 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
             <color>${subColor}</color>
-            <zIndex>40</zIndex>
             <text>${sysInfo}</text>
             <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>40</zIndex>
         </text>
         <image name="infoCardShadow">
             <pos>0.0186 0.153</pos>
@@ -417,16 +664,16 @@
         </text>
         <image name="mediaScreen">
             <pos>0.0316 0.238</pos>
-            <size>0.1435 0.2268</size>
+            <size>0.1561 0.2467</size>
             <path>./../assets/images/white.png</path>
             <color>${screenColor}</color>
             <zIndex>18</zIndex>
             <cornerRadius>0.0068</cornerRadius>
         </image>
         <image name="mediaFallback">
-            <pos>0.1034 0.3514</pos>
+            <pos>0.1097 0.3613</pos>
             <origin>0.5 0.5</origin>
-            <maxSize>0.0785 0.186</maxSize>
+            <maxSize>0.0853 0.2023</maxSize>
             <imageType>3dbox, cover</imageType>
             <default>./../assets/images/noimage.png</default>
             <cornerRadius>0.0051</cornerRadius>
@@ -437,23 +684,23 @@
             <zIndex>20</zIndex>
             <imageType>screenshot, titlescreen, miximage</imageType>
             <scrollFadeIn>true</scrollFadeIn>
-            <cropSize>0.1435 0.2268</cropSize>
+            <cropSize>0.1561 0.2467</cropSize>
             <imageCornerRadius>0.0068</imageCornerRadius>
             <videoCornerRadius>0.0068</videoCornerRadius>
             <delay>1.0</delay>
             <fadeInTime>0.35</fadeInTime>
         </video>
         <image name="gameLogo">
-            <pos>0.0409 0.4448</pos>
+            <pos>0.0409 0.4647</pos>
             <origin>0 1</origin>
-            <maxSize>0.0603 0.068</maxSize>
+            <maxSize>0.0656 0.074</maxSize>
             <imageType>marquee</imageType>
             <scrollFadeIn>true</scrollFadeIn>
             <zIndex>21</zIndex>
         </image>
         <text name="releasedLabel">
-            <pos>0.1878 0.238</pos>
-            <size>0.0864 0.024</size>
+            <pos>0.2004 0.238</pos>
+            <size>0.0802 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
@@ -463,8 +710,8 @@
             <metadataElement>true</metadataElement>
         </text>
         <datetime name="released">
-            <pos>0.1878 0.26</pos>
-            <size>0.0864 0.032</size>
+            <pos>0.2004 0.26</pos>
+            <size>0.0802 0.032</size>
             <metadata>releasedate</metadata>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
@@ -473,8 +720,8 @@
             <format>%Y-%m-%d</format>
         </datetime>
         <text name="playersLabel">
-            <pos>0.2848 0.238</pos>
-            <size>0.0864 0.024</size>
+            <pos>0.2911 0.238</pos>
+            <size>0.0802 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
@@ -484,8 +731,8 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="players">
-            <pos>0.2848 0.26</pos>
-            <size>0.0864 0.032</size>
+            <pos>0.2911 0.26</pos>
+            <size>0.0802 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
@@ -494,8 +741,8 @@
             <defaultValue>Unknown</defaultValue>
         </text>
         <text name="developerLabel">
-            <pos>0.1878 0.298</pos>
-            <size>0.0864 0.024</size>
+            <pos>0.2004 0.298</pos>
+            <size>0.0802 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
@@ -505,8 +752,8 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="developer">
-            <pos>0.1878 0.32</pos>
-            <size>0.0864 0.032</size>
+            <pos>0.2004 0.32</pos>
+            <size>0.0802 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
@@ -515,8 +762,8 @@
             <defaultValue>Unknown</defaultValue>
         </text>
         <text name="genreLabel">
-            <pos>0.2848 0.298</pos>
-            <size>0.0864 0.024</size>
+            <pos>0.2911 0.298</pos>
+            <size>0.0802 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
@@ -526,8 +773,8 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="genre">
-            <pos>0.2848 0.32</pos>
-            <size>0.0864 0.032</size>
+            <pos>0.2911 0.32</pos>
+            <size>0.0802 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
@@ -536,8 +783,8 @@
             <defaultValue>Unknown</defaultValue>
         </text>
         <text name="lastPlayedLabel">
-            <pos>0.1878 0.358</pos>
-            <size>0.0864 0.024</size>
+            <pos>0.2004 0.358</pos>
+            <size>0.0802 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
@@ -547,8 +794,8 @@
             <metadataElement>true</metadataElement>
         </text>
         <datetime name="lastPlayed">
-            <pos>0.1878 0.38</pos>
-            <size>0.0864 0.032</size>
+            <pos>0.2004 0.38</pos>
+            <size>0.0802 0.032</size>
             <metadata>lastplayed</metadata>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
@@ -556,8 +803,8 @@
             <defaultValue>Never</defaultValue>
         </datetime>
         <text name="playTimeLabel">
-            <pos>0.2848 0.358</pos>
-            <size>0.0864 0.024</size>
+            <pos>0.2911 0.358</pos>
+            <size>0.0802 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
@@ -567,8 +814,8 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="playTime">
-            <pos>0.2848 0.38</pos>
-            <size>0.0864 0.032</size>
+            <pos>0.2911 0.38</pos>
+            <size>0.0802 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
@@ -576,7 +823,7 @@
             <metadata>playtime</metadata>
         </text>
         <rating name="gameRating">
-            <pos>0.1878 0.424</pos>
+            <pos>0.2004 0.424</pos>
             <size>0 0.028</size>
             <filledPath>./../assets/images/star-filled.svg</filledPath>
             <unfilledPath>./../assets/images/star-unfilled.svg</unfilledPath>
@@ -586,7 +833,7 @@
         <badges name="gameBadges">
             <pos>0.3734 0.422</pos>
             <origin>1 0</origin>
-            <size>0.102 0.032</size>
+            <size>0.0951 0.032</size>
             <horizontalAlignment>right</horizontalAlignment>
             <direction>row</direction>
             <lines>1</lines>
@@ -596,7 +843,7 @@
             <zIndex>45</zIndex>
         </badges>
         <text name="descriptionLabel">
-            <pos>0.0316 0.4898</pos>
+            <pos>0.0316 0.5097</pos>
             <size>0.3417 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
@@ -607,8 +854,8 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="gameDescription">
-            <pos>0.0316 0.5218</pos>
-            <size>0.3417 0.1832</size>
+            <pos>0.0316 0.5417</pos>
+            <size>0.3417 0.1633</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Medium.ttf</fontPath>
             <fontSize>${fsDesc}</fontSize>
             <color>${dimText}</color>
@@ -649,7 +896,6 @@
             <zIndex>60</zIndex>
             <color>${panelColor}</color>
             <stationary>always</stationary>
-            <renderDuringTransitions>false</renderDuringTransitions>
         </image>
         <image name="menuBarLine">
             <pos>0 0.752</pos>
@@ -659,7 +905,6 @@
             <color>${accentColor}</color>
             <opacity>0.85</opacity>
             <stationary>always</stationary>
-            <renderDuringTransitions>false</renderDuringTransitions>
         </image>
         <clock name="clock">
             <pos>0.5 0.893</pos>
@@ -679,15 +924,95 @@
             <format>%a %d/%m</format>
             <scope>view</scope>
         </clock>
+        <gamelistinfo name="gamelistInfoOutline0">
+            <pos>0.978 0.0578</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </gamelistinfo>
+        <gamelistinfo name="gamelistInfoOutline1">
+            <pos>0.9789 0.0578</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </gamelistinfo>
+        <gamelistinfo name="gamelistInfoOutline2">
+            <pos>0.9798 0.0578</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </gamelistinfo>
+        <gamelistinfo name="gamelistInfoOutline3">
+            <pos>0.978 0.06</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </gamelistinfo>
+        <gamelistinfo name="gamelistInfoOutline4">
+            <pos>0.9798 0.06</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </gamelistinfo>
+        <gamelistinfo name="gamelistInfoOutline5">
+            <pos>0.978 0.0622</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </gamelistinfo>
+        <gamelistinfo name="gamelistInfoOutline6">
+            <pos>0.9789 0.0622</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </gamelistinfo>
+        <gamelistinfo name="gamelistInfoOutline7">
+            <pos>0.9798 0.0622</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsCount}</fontSize>
+            <color>${panelColor}</color>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>39.9</zIndex>
+        </gamelistinfo>
         <gamelistinfo name="gamelistInfo">
-            <pos>0.0295 0.905</pos>
-            <origin>0 0.5</origin>
-            <size>0.3523 0.04</size>
+            <pos>0.9789 0.06</pos>
+            <origin>1 0.5</origin>
+            <size>0.34 0.045</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsCount}</fontSize>
             <color>${subColor}</color>
-            <horizontalAlignment>left</horizontalAlignment>
-            <zIndex>62</zIndex>
+            <horizontalAlignment>right</horizontalAlignment>
+            <zIndex>40</zIndex>
         </gamelistinfo>
         <systemstatus name="systemStatus">
             <pos>0.9705 0.905</pos>
@@ -711,32 +1036,5 @@
             <backgroundVerticalPadding>0.01 0.01</backgroundVerticalPadding>
             <backgroundCornerRadius>0.0169</backgroundCornerRadius>
         </helpsystem>
-        <animation name="bubble0">
-            <pos>0.9872 0.06</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0506 0.12</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble1">
-            <pos>0.6497 0.06</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0464 0.11</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble2">
-            <pos>0.8184 0.08</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0422 0.1</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
     </view>
 </theme>

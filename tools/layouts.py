@@ -181,9 +181,13 @@ def picker_bubbles(L, blocks, placed, n=4):
     between the icons and never cover one."""
     v = "system"
     area = None
-    for etype, name, p in L.views[v]:
-        if name in ("systemgrid", "systemcarousel"):
-            area = _rect(L, etype, p)
+    inner = getattr(L, "bubble_area", None)  # a screen to decorate instead of the picker
+    if inner:
+        area = inner
+    else:
+        for etype, name, p in L.views[v]:
+            if name in ("systemgrid", "systemcarousel"):
+                area = _rect(L, etype, p)
     if not area:
         return
     # the panel the systems sit on and the empty slots don't count - the
@@ -195,10 +199,10 @@ def picker_bubbles(L, blocks, placed, n=4):
         if name.startswith(("background", "bubble", "backdrop", "emptySlot")) or name in skip:
             continue
         r = _rect(L, etype, p)
-        if not r or _inside(r, grow):
+        if not r or (not inner and _inside(r, grow)):
             continue
-        if etype in ("clock", "datetime", "systemstatus", "helpsystem"):
-            r = (r[0] - 0.05, r[1] - 0.05, r[2] + 0.05, r[3] + 0.05)
+        if etype in ("clock", "datetime", "systemstatus", "helpsystem") or name == "statusPill":
+            r = (r[0] - 0.03, r[1] - 0.03, r[2] + 0.03, r[3] + 0.03)
         others.append(r)
     if getattr(L, "bottom_clock", False):
         others.append((L.W / 2 - 0.45, 0.6, L.W / 2 + 0.45, 1.0))
@@ -272,7 +276,20 @@ def help_(L, view, x, y, origin="0 0.5", fs="fsHelp", pill=False):
     L.add(view, "helpsystem", "help", **p)
 
 
-GLASS = "000000A6"  # dark see-through pill / card on top of artwork
+GLASS = "000000A6"
+OUTLINE = 0.0022  # outline thickness (height units)
+
+
+def outlined(L, view, etype, name, outline="${panelColor}", **p):
+    """An element with a thin outline in the panel colour (eight copies nudged
+    around it, drawn just underneath), so it stays readable on any artwork."""
+    x, y = (float(t) for t in p["pos"].split())
+    z = float(p.get("zIndex", 40))
+    for i, (dx, dy) in enumerate(((-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1))):
+        q = dict(p)
+        q.update(pos=f"{f(x + dx * OUTLINE / L.W)} {f(y + dy * OUTLINE)}", color=outline, zIndex=f(z - 0.1))
+        L.add(view, etype, f"{name}Outline{i}", **q)
+    L.add(view, etype, name, **p)  # dark see-through pill / card on top of artwork
 
 
 def status_bar(L, view, xr, y, w=0.5, h=0.052, z=30, glass=True):
@@ -282,8 +299,7 @@ def status_bar(L, view, xr, y, w=0.5, h=0.052, z=30, glass=True):
     # move, so their pill stays put too (stationary) and looks the same in
     # both views, while the screens slide underneath.
     bg, fg = GLASS, "FFFFFF"
-    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, bg, h / 2, z=z, stationary="always",
-           renderDuringTransitions="true" if view == "system" else "false")
+    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, bg, h / 2, z=z, stationary="always")
     clock(L, view, xr - w + 0.024, y, "0 0.5", fs="fsPill", color=fg, font=FONT_BOLD, fmt="%H:%M   %d/%m")
     L.add(view, "systemstatus", "systemStatus", pos=L.pair(xr - 0.022, y), origin="1 0.5", height="${fsPill}",
           color=fg, fontPath=FONT_BOLD, scope="view")
@@ -578,6 +594,10 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     # top screen = the selected game's artwork and video, details on a glass card
     uh = uy1 - uy0
     hero(L, v, px, uy0, pw, uh)
+    # system list: no bubbles among the systems on the lower screen (the icons
+    # are see-through at the edges); they float on the clean top screen instead
+    sy = geo["system"]["up"]
+    L.bubble_area = (px + 0.02, sy[0] + 0.02, px + pw - 0.02, sy[1] - 0.02)
     L.rect(v, "heroShade", px, uy0 + uh * 0.3, pw, uh * 0.7, "00000000", 0.034, z=9, colorEnd="000000C8",
            gradientType="vertical")
     glass_text(L, v, "systemLabel", px + 0.022, uy0 + 0.045, "fsPill", text="${system.fullName}")
@@ -585,21 +605,21 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     cx0 = px + pw - cw - 0.022
     cy0, cy1 = uy0 + 0.09, uy1 - 0.022
     L.rect(v, "infoCard", cx0, cy0, cw, cy1 - cy0, GLASS, 0.026, z=10)
-    info(L, cx0 + 0.025, cy0 + 0.02, cw - 0.05, cy1 - 0.018, name=False, sub="FFFFFFA8", dim="FFFFFF")
-    # left side: the title on top, then the box art and a small screen with the
-    # screenshot / video - each in its own space, nothing overlaps
-    lx0, lx1 = px + 0.024, cx0 - 0.024
-    L.text(v, "gameName", lx0, cy0 - 0.005, lx1 - lx0, 0.1, "fsGameName", FONT_BLACK, "FFFFFF",
+    # card: title and a small box art on top, the details underneath
+    cov_h = 0.1
+    cov_w = cov_h * (0.9 if L.box3d else 0.74)
+    L.add(v, "image", "heroCover", pos=L.pair(cx0 + cw - 0.022, cy0 + 0.02), origin="1 0",
+          maxSize=L.pair(cov_w, cov_h), imageType=L.box, cornerRadius=L.rad(0.006), scrollFadeIn="true",
+          zIndex="12")
+    L.text(v, "gameName", cx0 + 0.025, cy0 + 0.015, cw - 0.075 - cov_w, 0.1, "fsGameName", FONT_BLACK, "FFFFFF",
            metadata="name", verticalAlignment="top", lineSpacing="1.15")
-    sy0 = cy0 + 0.11
-    sh = cy1 - sy0
-    cov_w = min(sh * (0.9 if L.box3d else 0.74), (lx1 - lx0) * 0.3)
-    L.add(v, "image", "heroCover", pos=L.pair(lx0, cy1), origin="0 1", maxSize=L.pair(cov_w, sh),
-          imageType=L.box, cornerRadius=L.rad(0.008), scrollFadeIn="true", zIndex="12")
-    sx0 = lx0 + cov_w + 0.022
-    sw = min(sh * 1.5, lx1 - sx0)
-    sh2 = sw / 1.5
-    media(L, sx0, cy1 - sh2, sw, sh2, r=0.014, z=12)
+    info(L, cx0 + 0.025, cy0 + 0.115, cw - 0.05, cy1 - 0.018, name=False, sub="FFFFFFA8", dim="FFFFFF")
+    # left side: one big screen with the screenshot / video, on its own
+    lx0, lx1 = px + 0.024, cx0 - 0.024
+    sh = cy1 - cy0
+    sw = min(sh * 1.5, lx1 - lx0)
+    sh = sw / 1.5
+    media(L, lx0 + (lx1 - lx0 - sw) / 2, cy0 + (cy1 - cy0 - sh) / 2, sw, sh, r=0.016, z=12)
     L.add(v, "gamelistinfo", "gamelistInfo", pos=L.pair(px + pw - 0.022, 0.958), origin="1 0.5",
           size=L.pair(pw * 0.3, 0.034), fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}",
           horizontalAlignment="right", zIndex="45")
@@ -617,7 +637,7 @@ def wii_bottom(L, view, W, m):
     # The clock, date, battery and button prompts are drawn by ES-DE on top of
     # everything and never move, so the bar under them stays put too
     # (stationary) while the pages slide.
-    still = dict(stationary="always", renderDuringTransitions="true" if view == "system" else "false")
+    still = dict(stationary="always")
     L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}", **still)
     # the bar image is solid below its curved top edge
     L.solid(view, ("menuBar", "menuBarLine"), 0, by + (1 - by) * 110 / 300, W, 1.0)
@@ -628,14 +648,17 @@ def wii_bottom(L, view, W, m):
           fontSize="${fsWiiClock}", color="${subColor}", format="%H:%M", scope="view")
     L.add(view, "clock", "date", pos=L.pair(W / 2, 0.962), origin="0.5 0.5", fontPath=FONT_BOLD,
           fontSize="${fsSmall}", color="${subColor}", format="%a %d/%m", scope="view")
-    side_w = max(0.2, W / 2 - 0.3 - m)
+    # The game count lives in the page header (top right), not on the bar, so
+    # it slides in and out with the page in both directions; the bar only
+    # holds what ES-DE draws on top anyway (clock, date, battery, prompts).
     if view == "system":
-        L.text(view, "barCount", m + 0.02, 0.905, side_w, 0.04, "fsCount", FONT_BOLD, "${subColor}",
-               origin="0 0.5", systemdata="gamecount", z=62)
+        outlined(L, view, "text", "barCount", pos=L.pair(W - m, 0.06), origin="1 0.5", size=L.pair(W * 0.34, 0.045),
+                 fontPath=FONT_BOLD, fontSize="${fsCount}", color="${subColor}", systemdata="gamecount",
+                 horizontalAlignment="right", zIndex="40")
     else:
-        L.add(view, "gamelistinfo", "gamelistInfo", pos=L.pair(m + 0.02, 0.905), origin="0 0.5",
-              size=L.pair(side_w, 0.04), fontPath=FONT_BOLD, fontSize="${fsCount}", color="${subColor}",
-              horizontalAlignment="left", zIndex="62")
+        outlined(L, view, "gamelistinfo", "gamelistInfo", pos=L.pair(W - m, 0.06), origin="1 0.5",
+                 size=L.pair(W * 0.34, 0.045), fontPath=FONT_BOLD, fontSize="${fsCount}", color="${subColor}",
+                 horizontalAlignment="right", zIndex="40")
     status(L, view, W - m - 0.02, 0.905)
     # button prompts sit in the dip above the bar, clear of the title
     help_(L, view, W / 2, 0.795, origin="0.5 0.5", fs="fsSmall", pill=True)
@@ -650,8 +673,8 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
 
     # system view: wall of channels, empty slots where there is no channel
     v = "system"
-    system_name(L, m, 0.03, W * 0.6, 0.06, "fsWiiHeader", lines=1)
-    system_info(L, v, m, 0.092, W * 0.6)
+    system_name(L, m, 0.03, W * 0.58, 0.06, "fsWiiHeader", lines=1)
+    system_info(L, v, m, 0.092, W * 0.58)
     aspect = icons.WT_W / icons.WT_H
     sp = 0.026
     gy0, gy1 = 0.145, 0.728
@@ -675,19 +698,21 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
 
     # gamelist view: info column on the left, games on the right
     v = "gamelist"
-    L.text(v, "systemLabel", m, 0.03, W * 0.6, 0.06, "fsWiiHeader", FONT_BLACK, "${textColor}",
-           text="${system.fullName}", verticalAlignment="top")
-    system_info(L, v, m, 0.092, W * 0.6)
+    outlined(L, v, "text", "systemLabel", pos=L.pair(m, 0.03), size=L.pair(W * 0.58, 0.06), fontPath=FONT_BLACK,
+             fontSize="${fsWiiHeader}", color="${textColor}", text="${system.fullName}", verticalAlignment="top",
+             zIndex="40")
+    outlined(L, v, "text", "systemInfo", pos=L.pair(m, 0.092), size=L.pair(W * 0.58, 0.032), fontPath=FONT_BOLD,
+             fontSize="${fsSmall}", color="${subColor}", text="${sysInfo}", horizontalAlignment="left", zIndex="40")
     lw = min(0.86, (W - 2 * m) * 0.52)
     top, bot = 0.15, 0.725
     L.panel(v, "infoCard", m, top, lw, bot - top, r=0.03)
     x0, iw = m + 0.025, lw - 0.05
     L.text(v, "gameName", x0, top + 0.02, iw, 0.055, "fsGameName", FONT_BLACK, "${textColor}", metadata="name")
     ry = top + 0.088
-    mh = min(0.23, iw * 0.42 / 1.5)
+    mh = min(0.27, (iw - 0.03 - 0.41) / 1.5)  # as big as possible, leaving room for the details
     mw = mh * 1.5
     fw = iw - mw - 0.03
-    if fw >= 0.36:  # screen on the left, details beside it, description underneath
+    if mh >= 0.2:  # screen on the left, details beside it, description underneath
         media(L, x0, ry, mw, mh)
         dy = ry + mh + 0.025
         info(L, x0 + mw + 0.03, ry, fw, ry + mh, name=False, desc_col=(x0, dy, iw, bot - 0.02 - dy))
@@ -709,24 +734,12 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
 # ================================================================== ESDEIIU (tablet console home)
 def wiiu_dock(L, view, W, m):
     # the dock holds the button prompts (drawn by ES-DE, never moving), so it stays put too
-    still = dict(stationary="always", renderDuringTransitions="true" if view == "system" else "false")
+    still = dict(stationary="always")
     L.rect(view, "dockShadow", m, 0.872, W - 2 * m, 0.09, "${shadowColor}", 0.045, z=58, **still)
     L.rect(view, "dock", m, 0.865, W - 2 * m, 0.09, "${panelColor}", 0.045, z=58.1, **still)
     L.solid(view, ("dock", "dockShadow"), m + 0.02, 0.865, W - m - 0.02, 0.955)
-    roomy = W >= 1.6
-    help_(L, view, W / 2, 0.91, origin="0.5 0.5", fs="fsSmall" if roomy else "fsHelp")
-    if not roomy:
-        return
-    sw = min(0.36, W / 2 - 0.5 - m)
-    if view == "system":
-        L.text(view, "dockLabel", m + 0.04, 0.892, sw, 0.026, "fsLabel", FONT_BOLD, "${subColor}",
-               text="Featured", letterCase="uppercase", z=62)
-        L.text(view, "dockFeatured", m + 0.04, 0.918, sw, 0.034, "fsSmall", FONT_BOLD, "${textColor}",
-               metadata="name", gameselector="featured", systemNameSuffix="false", z=62)
-    else:
-        L.add(view, "gamelistinfo", "dockInfo", pos=L.pair(m + 0.04, 0.91), origin="0 0.5", size=L.pair(sw, 0.034),
-              fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left",
-              zIndex="62")
+    # only the button prompts sit on the dock (ES-DE draws them on top anyway)
+    help_(L, view, W / 2, 0.91, origin="0.5 0.5", fs="fsSmall" if W >= 1.6 else "fsHelp")
 
 
 def wiiu_top(L, view, W, m):
@@ -786,12 +799,14 @@ def build_wiiu(W, style, layout, box="cover, 3dbox"):
     L.add(v, "image", "userSystem", pos=L.pair(m + us / 2, 0.03 + us / 2), origin="0.5 0.5",
           size=L.pair(us * 1.0, us * 1.0), path=sysimg + "${system.theme}.png", default=sysimg + "_default.png",
           zIndex="11")
-    L.text(v, "systemLabel", tx, 0.045, W - m - 0.3 - tx, 0.06, "fsWiiHeader", FONT_BLACK, "${textColor}",
-           text="${system.fullName}", verticalAlignment="top")
-    system_info(L, v, tx, 0.115, W * 0.42)
-    if W < 1.6:
-        L.add(v, "gamelistinfo", "gamelistInfo", pos=L.pair(tx, 0.175), origin="0 0.5", size=L.pair(W * 0.4, 0.034),
-              fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left", zIndex="45")
+    outlined(L, v, "text", "systemLabel", pos=L.pair(tx, 0.045), size=L.pair(W - m - 0.3 - tx, 0.06),
+             fontPath=FONT_BLACK, fontSize="${fsWiiHeader}", color="${textColor}", text="${system.fullName}",
+             verticalAlignment="top", zIndex="40")
+    outlined(L, v, "text", "systemInfo", pos=L.pair(tx, 0.115), size=L.pair(W * 0.42, 0.032), fontPath=FONT_BOLD,
+             fontSize="${fsSmall}", color="${subColor}", text="${sysInfo}", horizontalAlignment="left", zIndex="40")
+    outlined(L, v, "gamelistinfo", "gamelistInfo", pos=L.pair(tx, 0.175), origin="0 0.5",
+             size=L.pair(W * 0.4, 0.034), fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}",
+             horizontalAlignment="left", zIndex="45")
     wiiu_top(L, v, W, m)
     top, bot = 0.225, 0.52
     mw = min((bot - top - 0.03) * 1.5, (W - 2 * m) * 0.46)

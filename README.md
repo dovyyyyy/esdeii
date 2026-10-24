@@ -56,8 +56,9 @@ To update, download again and replace the folder.
   put under the clock, battery and button prompts) or *Snappy* (instant).
   ES-DE always draws the clock, battery and button prompts on top of
   everything and never moves them, so the theme keeps the surfaces under
-  them still instead of sliding them away. The game count on them slides in
-  and out smoothly in both directions.
+  them still instead of sliding them away. Everything else - including the
+  game count, which sits in the page header - slides with the page in both
+  directions.
 - **Theme aspect ratio** — leave on Automatic (16:9, 16:10, 3:2, 4:3, 5:3,
   5:4, 8:7, 19.5:9, 20:9 and 21:9 are included).
 - Navigation sounds can be turned off in ES-DE's **Sound settings**.
@@ -79,16 +80,19 @@ game swells into a bright chord.
   in the middle of the bottom of the screen. Each one glides slowly out to one
   side, back through the middle to the other side and back again, in an
   endless loop (when ES-DE restarts it, it only moves back a little).
-- A few bubbles also float **behind the systems** you choose from, in the gaps
-  between the icons (never over an icon).
+- A few bubbles also float **behind the systems** you choose from (Channels and
+  Home), in the gaps between the icons; in the Dual looks they float on the
+  clean top screen instead, never near the console icons.
+- Headers over the game artwork (system name, info, game count) have a thin
+  outline so they stay readable on any custom art.
 - Faint artwork of the selected game (fan art, else the screenshot) behind
   the game list, fading in as you move. The system list never shows game
   artwork.
 - Rounded console-style lettering (M PLUS Rounded 1c).
 - **Artwork top screen** (Dual looks, inspired by iiSU and Cocoon): the top
   screen is filled edge to edge with the game's fan art or screenshot, and
-  the details sit on a dark glass card. On the left: the title, then the box
-  art and a small screen with the screenshot and video, each in its own space. In the system list the top screen
+  the title, a small box art and the details sit on a dark glass card, and a
+  big screen with the screenshot and video sits on its own on the left. In the system list the top screen
   shows the system plus a framed **Featured** game (a picture in a frame, not
   a background).
 - **Status pills**: clock, date and battery on rounded pills (Dual and Home

@@ -66,7 +66,6 @@
             <zIndex>30</zIndex>
             <cornerRadius>0.0162</cornerRadius>
             <stationary>always</stationary>
-            <renderDuringTransitions>true</renderDuringTransitions>
         </image>
         <clock name="clock">
             <pos>0.595 0.08</pos>
@@ -277,37 +276,19 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubbleBehind0">
-            <pos>0.4875 0.78</pos>
+            <pos>0.575 0.46</pos>
             <origin>0.5 0.5</origin>
-            <size>0.1375 0.22</size>
+            <size>0.1 0.16</size>
             <path>./../assets/images/anim-bubble-d.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
             <zIndex>6</zIndex>
         </animation>
         <animation name="bubbleBehind1">
-            <pos>0.225 0.76</pos>
+            <pos>0.35 0.12</pos>
             <origin>0.5 0.5</origin>
-            <size>0.125 0.2</size>
+            <size>0.0875 0.14</size>
             <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>6</zIndex>
-        </animation>
-        <animation name="bubbleBehind2">
-            <pos>0.7375 0.68</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.1125 0.18</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>6</zIndex>
-        </animation>
-        <animation name="bubbleBehind3">
-            <pos>0.8375 0.84</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.1 0.16</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
             <zIndex>6</zIndex>
@@ -388,7 +369,6 @@
             <zIndex>30</zIndex>
             <cornerRadius>0.0162</cornerRadius>
             <stationary>always</stationary>
-            <renderDuringTransitions>false</renderDuringTransitions>
         </image>
         <clock name="clock">
             <pos>0.595 0.08</pos>
@@ -469,8 +449,28 @@
             <zIndex>10</zIndex>
             <cornerRadius>0.0162</cornerRadius>
         </image>
+        <image name="heroCover">
+            <pos>0.8788 0.145</pos>
+            <origin>1 0</origin>
+            <maxSize>0.0462 0.1</maxSize>
+            <imageType>cover, 3dbox</imageType>
+            <cornerRadius>0.0037</cornerRadius>
+            <scrollFadeIn>true</scrollFadeIn>
+            <zIndex>12</zIndex>
+        </image>
+        <text name="gameName">
+            <pos>0.5831 0.14</pos>
+            <size>0.2319 0.1</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
+            <fontSize>${fsGameName}</fontSize>
+            <color>FFFFFF</color>
+            <zIndex>40</zIndex>
+            <metadata>name</metadata>
+            <verticalAlignment>top</verticalAlignment>
+            <lineSpacing>1.15</lineSpacing>
+        </text>
         <text name="releasedLabel">
-            <pos>0.5831 0.145</pos>
+            <pos>0.5831 0.24</pos>
             <size>0.1375 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
@@ -481,7 +481,7 @@
             <metadataElement>true</metadataElement>
         </text>
         <datetime name="released">
-            <pos>0.5831 0.167</pos>
+            <pos>0.5831 0.262</pos>
             <size>0.1375 0.032</size>
             <metadata>releasedate</metadata>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
@@ -491,7 +491,7 @@
             <format>%Y-%m-%d</format>
         </datetime>
         <text name="playersLabel">
-            <pos>0.7363 0.145</pos>
+            <pos>0.7363 0.24</pos>
             <size>0.1375 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
@@ -502,7 +502,7 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="players">
-            <pos>0.7363 0.167</pos>
+            <pos>0.7363 0.262</pos>
             <size>0.1375 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
@@ -512,7 +512,7 @@
             <defaultValue>Unknown</defaultValue>
         </text>
         <text name="developerLabel">
-            <pos>0.5831 0.205</pos>
+            <pos>0.5831 0.3</pos>
             <size>0.1375 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
@@ -523,7 +523,7 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="developer">
-            <pos>0.5831 0.227</pos>
+            <pos>0.5831 0.322</pos>
             <size>0.1375 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
@@ -533,7 +533,7 @@
             <defaultValue>Unknown</defaultValue>
         </text>
         <text name="genreLabel">
-            <pos>0.7363 0.205</pos>
+            <pos>0.7363 0.3</pos>
             <size>0.1375 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
@@ -544,7 +544,7 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="genre">
-            <pos>0.7363 0.227</pos>
+            <pos>0.7363 0.322</pos>
             <size>0.1375 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
@@ -554,7 +554,7 @@
             <defaultValue>Unknown</defaultValue>
         </text>
         <text name="lastPlayedLabel">
-            <pos>0.5831 0.265</pos>
+            <pos>0.5831 0.36</pos>
             <size>0.1375 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
@@ -565,7 +565,7 @@
             <metadataElement>true</metadataElement>
         </text>
         <datetime name="lastPlayed">
-            <pos>0.5831 0.287</pos>
+            <pos>0.5831 0.382</pos>
             <size>0.1375 0.032</size>
             <metadata>lastplayed</metadata>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
@@ -574,7 +574,7 @@
             <defaultValue>Never</defaultValue>
         </datetime>
         <text name="playTimeLabel">
-            <pos>0.7363 0.265</pos>
+            <pos>0.7363 0.36</pos>
             <size>0.1375 0.024</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
@@ -585,7 +585,7 @@
             <metadataElement>true</metadataElement>
         </text>
         <text name="playTime">
-            <pos>0.7363 0.287</pos>
+            <pos>0.7363 0.382</pos>
             <size>0.1375 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
@@ -594,7 +594,7 @@
             <metadata>playtime</metadata>
         </text>
         <rating name="gameRating">
-            <pos>0.5831 0.331</pos>
+            <pos>0.5831 0.426</pos>
             <size>0 0.028</size>
             <filledPath>./../assets/images/star-filled.svg</filledPath>
             <unfilledPath>./../assets/images/star-unfilled.svg</unfilledPath>
@@ -602,7 +602,7 @@
             <zIndex>45</zIndex>
         </rating>
         <badges name="gameBadges">
-            <pos>0.8769 0.329</pos>
+            <pos>0.8769 0.424</pos>
             <origin>1 0</origin>
             <size>0.1616 0.032</size>
             <horizontalAlignment>right</horizontalAlignment>
@@ -613,69 +613,38 @@
             <slots>favorite completed kidgame broken controller altemulator manual</slots>
             <zIndex>45</zIndex>
         </badges>
-        <text name="gameDescription">
-            <pos>0.5831 0.371</pos>
-            <size>0.2938 0.074</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Medium.ttf</fontPath>
-            <fontSize>${fsDesc}</fontSize>
-            <color>FFFFFF</color>
-            <zIndex>40</zIndex>
-            <metadata>description</metadata>
-            <lineSpacing>1.3</lineSpacing>
-            <containerStartDelay>5</containerStartDelay>
-        </text>
-        <text name="gameName">
-            <pos>0.1087 0.12</pos>
-            <size>0.4438 0.1</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
-            <fontSize>${fsGameName}</fontSize>
-            <color>FFFFFF</color>
-            <zIndex>40</zIndex>
-            <metadata>name</metadata>
-            <verticalAlignment>top</verticalAlignment>
-            <lineSpacing>1.15</lineSpacing>
-        </text>
-        <image name="heroCover">
-            <pos>0.1087 0.463</pos>
-            <origin>0 1</origin>
-            <maxSize>0.1054 0.228</maxSize>
-            <imageType>cover, 3dbox</imageType>
-            <cornerRadius>0.005</cornerRadius>
-            <scrollFadeIn>true</scrollFadeIn>
-            <zIndex>12</zIndex>
-        </image>
         <image name="mediaScreen">
-            <pos>0.228 0.235</pos>
-            <size>0.2137 0.228</size>
+            <pos>0.1722 0.125</pos>
+            <size>0.3169 0.338</size>
             <path>./../assets/images/white.png</path>
             <color>${screenColor}</color>
             <zIndex>12</zIndex>
-            <cornerRadius>0.0087</cornerRadius>
+            <cornerRadius>0.01</cornerRadius>
         </image>
         <image name="mediaFallback">
-            <pos>0.3348 0.349</pos>
+            <pos>0.3306 0.294</pos>
             <origin>0.5 0.5</origin>
-            <maxSize>0.1168 0.187</maxSize>
+            <maxSize>0.1732 0.2772</maxSize>
             <imageType>cover, 3dbox</imageType>
             <default>./../assets/images/noimage.png</default>
             <cornerRadius>0.0075</cornerRadius>
             <zIndex>13</zIndex>
         </image>
         <video name="gameVideo">
-            <pos>0.228 0.235</pos>
+            <pos>0.1722 0.125</pos>
             <zIndex>14</zIndex>
             <imageType>screenshot, titlescreen, miximage</imageType>
             <scrollFadeIn>true</scrollFadeIn>
-            <cropSize>0.2137 0.228</cropSize>
-            <imageCornerRadius>0.0087</imageCornerRadius>
-            <videoCornerRadius>0.0087</videoCornerRadius>
+            <cropSize>0.3169 0.338</cropSize>
+            <imageCornerRadius>0.01</imageCornerRadius>
+            <videoCornerRadius>0.01</videoCornerRadius>
             <delay>1.0</delay>
             <fadeInTime>0.35</fadeInTime>
         </video>
         <image name="gameLogo">
-            <pos>0.2417 0.443</pos>
+            <pos>0.1859 0.443</pos>
             <origin>0 1</origin>
-            <maxSize>0.0898 0.0684</maxSize>
+            <maxSize>0.1331 0.1014</maxSize>
             <imageType>marquee</imageType>
             <scrollFadeIn>true</scrollFadeIn>
             <zIndex>15</zIndex>
