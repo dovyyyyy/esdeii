@@ -68,8 +68,8 @@
         <gamelistToGamelist>slide</gamelistToGamelist>
         <systemToGamelist>slide</systemToGamelist>
         <gamelistToSystem>slide</gamelistToSystem>
-        <startupToSystem>fade</startupToSystem>
-        <startupToGamelist>fade</startupToGamelist>
+        <startupToSystem>instant</startupToSystem>
+        <startupToGamelist>instant</startupToGamelist>
     </transitions>
     <transitions name="esdeiiSnappy">
         <label>Snappy</label>
@@ -77,17 +77,8 @@
         <gamelistToGamelist>instant</gamelistToGamelist>
         <systemToGamelist>instant</systemToGamelist>
         <gamelistToSystem>instant</gamelistToSystem>
-        <startupToSystem>fade</startupToSystem>
-        <startupToGamelist>fade</startupToGamelist>
-    </transitions>
-    <transitions name="esdeiiFade">
-        <label>Fade</label>
-        <systemToSystem>instant</systemToSystem>
-        <gamelistToGamelist>instant</gamelistToGamelist>
-        <systemToGamelist>fade</systemToGamelist>
-        <gamelistToSystem>fade</gamelistToSystem>
-        <startupToSystem>fade</startupToSystem>
-        <startupToGamelist>fade</startupToGamelist>
+        <startupToSystem>instant</startupToSystem>
+        <startupToGamelist>instant</startupToGamelist>
     </transitions>
 
     <variant name="wallGrid">

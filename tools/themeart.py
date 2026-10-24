@@ -324,26 +324,21 @@ def lottie_cursor(path, frame_png, S=400):
     im.save(frame_png)
 
 
-def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=12, seconds=7.0, fade_s=1.4):
-    """One soft bubble that drifts slowly upward and fades out at the end.
-
-    It is fully visible from the very first frame, so whenever ES-DE restarts
-    the animation (every time you move to another system or open a game list)
-    the bubbles are simply there straight away. Only the end of the loop fades
-    out, so the jump back to the start is never seen as a jump.
+def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=12, seconds=7.0):
+    """One soft bubble gliding slowly from one side to the other. The theme
+    plays it back and forth (direction=alternate), so it drifts over, eases to
+    a stop and glides back - a smooth endless loop that never fades or jumps.
     Each one is small and short, so ES-DE renders the frames once, keeps them
     in its Lottie frame cache and just replays them."""
     C, d = 200, 116
     paint = ({"ty": "st", "c": _st([1, 1, 1, 1]), "o": _st(100), "w": _st(8), "lc": 2, "lj": 2, "nm": "s"}
              if ring else FILL)
     op = int(round(fps * seconds))
-    fo = int(round(fps * fade_s))
     dx, dy = drift
     shape = [{"ty": "el", "d": 1, "s": _st([d, d]), "p": _st([0, 0]), "nm": "e"}, paint]
-    opacity = _anim([(0, 20), (op - fo, 20), (op, 0)])
     pos = _anim([(0, [C / 2 - dx, C / 2 - dy, 0]), (op, [C / 2 + dx, C / 2 + dy, 0])])
-    scale_ = _anim([(0, [92, 92, 100]), (op, [104, 104, 100])])
-    _write_lottie(path, C, C, fps, op, [_layer(1, shape, op, opacity=opacity, position=pos, scale_=scale_)])
+    scale_ = _anim([(0, [96, 96, 100]), (op, [104, 104, 100])])
+    _write_lottie(path, C, C, fps, op, [_layer(1, shape, op, opacity=_st(20), position=pos, scale_=scale_)])
     im = Image.new("RGBA", (C, C), (0, 0, 0, 0))
     box = [C / 2 - d / 2, C / 2 - d / 2, C / 2 + d / 2, C / 2 + d / 2]
     if ring:
@@ -353,11 +348,11 @@ def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=12, seconds=7.0
     im.save(frame_png)
 
 
-# Different lengths, so the bubbles never loop in step.
-BUBBLES = {"anim-bubble-a": dict(drift=(22, -34), seconds=7.0),
-           "anim-bubble-b": dict(ring=True, drift=(-20, -32), seconds=8.5),
-           "anim-bubble-c": dict(drift=(10, -36), seconds=6.0),
-           "anim-bubble-d": dict(ring=True, drift=(16, -30), seconds=9.5)}
+# Mostly sideways, a little up or down; different lengths so they never move in step.
+BUBBLES = {"anim-bubble-a": dict(drift=(36, -8), seconds=7.0),
+           "anim-bubble-b": dict(ring=True, drift=(-34, 10), seconds=8.5),
+           "anim-bubble-c": dict(drift=(34, 12), seconds=6.0),
+           "anim-bubble-d": dict(ring=True, drift=(-36, -10), seconds=9.5)}
 
 
 def build_all(img_dir, fontpath, frames_dir=None):

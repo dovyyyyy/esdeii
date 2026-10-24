@@ -216,6 +216,7 @@
             <path>./../assets/images/wii-bar.png</path>
             <zIndex>60</zIndex>
             <color>${panelColor}</color>
+            <stationary>always</stationary>
         </image>
         <image name="menuBarLine">
             <pos>0 0.752</pos>
@@ -224,6 +225,7 @@
             <zIndex>60.1</zIndex>
             <color>${accentColor}</color>
             <opacity>0.85</opacity>
+            <stationary>always</stationary>
         </image>
         <clock name="clockHours">
             <pos>0.4941 0.893</pos>
@@ -249,6 +251,7 @@
             <size>0 ${fsColon}</size>
             <path>./../assets/images/anim-colon.json</path>
             <color>${subColor}</color>
+            <stationary>always</stationary>
             <zIndex>62</zIndex>
         </animation>
         <clock name="date">
@@ -287,6 +290,10 @@
             <iconColor>${subColor}</iconColor>
             <letterCase>capitalize</letterCase>
             <entrySpacing>0.012</entrySpacing>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0093 0.0093</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.01 0.01</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.0169</backgroundCornerRadius>
         </helpsystem>
         <animation name="bubble0">
             <pos>0.9872 0.68</pos>
@@ -295,7 +302,7 @@
             <path>./../assets/images/anim-bubble-a.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble1">
@@ -305,7 +312,7 @@
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
@@ -315,7 +322,7 @@
             <path>./../assets/images/anim-bubble-b.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
     </view>
@@ -400,13 +407,16 @@
             <zIndex>19</zIndex>
         </image>
         <video name="gameVideo">
-            <pos>0.0295 0.17</pos>
+            <pos>0.2025 0.295</pos>
+            <origin>0.5 0.5</origin>
             <zIndex>20</zIndex>
             <imageType>screenshot, titlescreen, miximage</imageType>
             <scrollFadeIn>true</scrollFadeIn>
-            <cropSize>0.3459 0.25</cropSize>
+            <maxSize>0.3459 0.25</maxSize>
+            <imageCropSize>0.3459 0.25</imageCropSize>
             <imageCornerRadius>0.0068</imageCornerRadius>
             <videoCornerRadius>0.0068</videoCornerRadius>
+            <pillarboxes>false</pillarboxes>
             <delay>1.0</delay>
             <fadeInTime>0.35</fadeInTime>
         </video>
@@ -595,6 +605,7 @@
             <path>./../assets/images/wii-bar.png</path>
             <zIndex>60</zIndex>
             <color>${panelColor}</color>
+            <stationary>always</stationary>
         </image>
         <image name="menuBarLine">
             <pos>0 0.752</pos>
@@ -603,6 +614,7 @@
             <zIndex>60.1</zIndex>
             <color>${accentColor}</color>
             <opacity>0.85</opacity>
+            <stationary>always</stationary>
         </image>
         <clock name="clockHours">
             <pos>0.4941 0.893</pos>
@@ -628,6 +640,7 @@
             <size>0 ${fsColon}</size>
             <path>./../assets/images/anim-colon.json</path>
             <color>${subColor}</color>
+            <stationary>always</stationary>
             <zIndex>62</zIndex>
         </animation>
         <clock name="date">
@@ -666,6 +679,10 @@
             <iconColor>${subColor}</iconColor>
             <letterCase>capitalize</letterCase>
             <entrySpacing>0.012</entrySpacing>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0093 0.0093</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.01 0.01</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.0169</backgroundCornerRadius>
         </helpsystem>
         <animation name="bubble0">
             <pos>0.9872 0.06</pos>
@@ -674,7 +691,7 @@
             <path>./../assets/images/anim-bubble-a.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble1">
@@ -684,7 +701,7 @@
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
@@ -694,7 +711,7 @@
             <path>./../assets/images/anim-bubble-b.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
     </view>

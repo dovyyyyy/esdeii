@@ -336,6 +336,7 @@
             <fsFeat>0.026</fsFeat>
             <fsColon>0.07</fsColon>
             <fsPill>0.026</fsPill>
+            <fsName3dsSmall>0.042</fsName3dsSmall>
         </variables>
     </fontSize>
     <fontSize name="large">
@@ -356,6 +357,7 @@
             <fsFeat>0.0296</fsFeat>
             <fsColon>0.0798</fsColon>
             <fsPill>0.0296</fsPill>
+            <fsName3dsSmall>0.0479</fsName3dsSmall>
         </variables>
     </fontSize>
     <fontSize name="small">
@@ -376,6 +378,7 @@
             <fsFeat>0.0229</fsFeat>
             <fsColon>0.0616</fsColon>
             <fsPill>0.0229</fsPill>
+            <fsName3dsSmall>0.037</fsName3dsSmall>
         </variables>
     </fontSize>
     <fontSize name="x-large">
@@ -396,6 +399,7 @@
             <fsFeat>0.0333</fsFeat>
             <fsColon>0.0896</fsColon>
             <fsPill>0.0333</fsPill>
+            <fsName3dsSmall>0.0538</fsName3dsSmall>
         </variables>
     </fontSize>
     <fontSize name="x-small">
@@ -416,6 +420,7 @@
             <fsFeat>0.0203</fsFeat>
             <fsColon>0.0546</fsColon>
             <fsPill>0.0203</fsPill>
+            <fsName3dsSmall>0.0328</fsName3dsSmall>
         </variables>
     </fontSize>
 

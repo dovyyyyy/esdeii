@@ -143,6 +143,8 @@ def bubbles(L, z="2"):
                 m = 0.05
                 r = (r[0] - m, r[1] - m, r[2] + m, r[3] + m)
             blocks.append(r)
+        # and never in the middle of the bottom, where the clocks and prompts are
+        blocks.append((L.W / 2 - 0.42, 0.6, L.W / 2 + 0.42, 1.0))
         placed = []
         step = 0.02
         cands = [(i * step, j * step) for i in range(1, int(L.W / step)) for j in range(1, int(1 / step))]
@@ -167,7 +169,7 @@ def bubbles(L, z="2"):
             kind = BUBBLE_KINDS[i % len(BUBBLE_KINDS)]
             L.add(v, "animation", f"bubble{i}", pos=L.pair(cx, cy), origin="0.5 0.5", size=L.pair(size, size),
                   path=IMG + f"anim-bubble-{kind}.json", color="${accentColor}", opacity="${bubbleOpacity}",
-                  direction="normal", zIndex=z)
+                  direction="alternate", zIndex=z)
 
 
 def background(L, path, tile_h=0.09, overlay=None):
@@ -216,8 +218,11 @@ GLASS = "000000A6"  # dark see-through pill / card on top of artwork
 def status_bar(L, view, xr, y, w=0.5, h=0.052, z=30, glass=True):
     """Clock, date and battery on one pill (right edge at xr): dark glass on
     top of artwork, or the plain tile colour on a normal screen."""
-    bg, fg = (GLASS, "FFFFFF") if glass else ("${tileColor}", "${subColor}")
-    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, bg, h / 2, z=z)
+    # The clock and battery are drawn by ES-DE on top of everything and never
+    # move, so their pill stays put too (stationary) and looks the same in
+    # both views, while the screens slide underneath.
+    bg, fg = GLASS, "FFFFFF"
+    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, bg, h / 2, z=z, stationary="always")
     clock(L, view, xr - w + 0.024, y, "0 0.5", fs="fsPill", color=fg, font=FONT_BOLD, fmt="%H:%M   %d/%m")
     L.add(view, "systemstatus", "systemStatus", pos=L.pair(xr - 0.022, y), origin="1 0.5", height="${fsPill}",
           color=fg, fontPath=FONT_BOLD, scope="view")
@@ -241,9 +246,6 @@ def hero(L, view, x, y, w, h, r=0.034, gameselector=None):
     else:
         p["scrollFadeIn"] = "true"
     L.add(view, "image", "heroArt", **p)
-    if not gameselector:
-        L.add(view, "video", "gameVideo", pos=L.pair(x, y), cropSize=L.pair(w, h), videoCornerRadius=L.rad(r),
-              delay="1.5", fadeInTime="0.6", scrollFadeIn="true", zIndex="8")
 
 
 def media(L, x, y, w, h, r=0.016, z=18, view="gamelist", gameselector=None):
@@ -256,9 +258,12 @@ def media(L, x, y, w, h, r=0.016, z=18, view="gamelist", gameselector=None):
         cov["gameselector"] = gameselector
     L.add(view, "image", "mediaFallback", **cov)
     if view == "gamelist":
-        L.add(view, "video", "gameVideo", pos=L.pair(x, y), zIndex=f(z + 2),
-              imageType="screenshot, titlescreen, miximage", scrollFadeIn="true", cropSize=L.pair(w, h),
-              imageCornerRadius=L.rad(r), videoCornerRadius=L.rad(r), delay="1.0", fadeInTime="0.35")
+        # The screenshot fills the screen (cropped); the video is fitted inside
+        # it at its own shape (never cropped or stretched), on the dark screen.
+        L.add(view, "video", "gameVideo", pos=L.pair(x + w / 2, y + h / 2), origin="0.5 0.5", zIndex=f(z + 2),
+              imageType="screenshot, titlescreen, miximage", scrollFadeIn="true", maxSize=L.pair(w, h),
+              imageCropSize=L.pair(w, h), imageCornerRadius=L.rad(r), videoCornerRadius=L.rad(r),
+              pillarboxes="false", delay="1.0", fadeInTime="0.35")
         # scraped game logo (marquee) in the corner of the screen, like a title banner
         L.add(view, "image", "gameLogo", pos=L.pair(x + 0.022, y + h - 0.02), origin="0 1",
               maxSize=L.pair(w * 0.42, h * 0.3), imageType="marquee", scrollFadeIn="true", zIndex=f(z + 3))
@@ -438,21 +443,42 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
         status_bar(L, view, px + pw - 0.022, uy0 + 0.045, w=min(0.5, pw * 0.4), glass=view == "gamelist")
         help_(L, view, px + 0.022, 0.958, fs="fsHelp", pill=True)
 
-    # system view: top screen = the system itself on a clean screen (no game art here)
+    # system view: top screen = the system, plus a framed "Featured" game on
+    # the right (a picture in a frame, not a background)
     uy0, uy1 = geo["system"]["up"]
     ly0, ly1 = geo["system"]["lo"]
     v = "system"
     k = 1.0 if mode == "row" else 0.84
-    tile = 0.36 * k
+    L.add(v, "gameselector", "featured", selection="random", gameCount="1")
+    top, bot = uy0 + 0.09, uy1 - 0.035
+    prev_w = min(0.5, pw * 0.3)
+    prev_h = min(prev_w * 9 / 16, bot - top - 0.045)
+    prev_w = prev_h * 16 / 9
+    tile = 0.27 * k
+    nx = px + 0.05 + tile + 0.04
+    name_w = px + pw - 0.04 - prev_w - 0.045 - nx
+    featured = name_w >= 0.4
+    if not featured:
+        tile = 0.36 * k
+        nx = px + 0.05 + tile + 0.045
+        name_w = px + pw - 0.04 - nx
     cy = (uy0 + 0.07 + uy1) / 2
-    tx, ty = px + 0.05, cy - tile / 2
-    L.img(v, "systemTile", tx, ty, tile, tile, sysimg + "${system.theme}.png", z=20, default=sysimg + "_default.png")
-    nx = tx + tile + 0.045
-    name_w = px + pw - 0.04 - nx
+    L.img(v, "systemTile", px + 0.05, cy - tile / 2, tile, tile, sysimg + "${system.theme}.png", z=20,
+          default=sysimg + "_default.png")
     ny = cy - 0.115 * k - 0.012
-    system_name(L, nx, ny, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3ds")
+    system_name(L, nx, ny, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3dsSmall" if featured else "fsName3ds")
     system_info(L, v, nx, ny + 0.132 * k, name_w)
     count_pill(L, nx + 0.012, ny + 0.18 * k + 0.012)
+    if featured:
+        fx = px + pw - 0.04 - prev_w
+        fy = top + 0.03 + (bot - top - 0.03 - prev_h) / 2
+        L.text(v, "featuredLabel", fx + 0.004, fy - 0.008, prev_w, 0.026, "fsLabel", FONT_BOLD, "${subColor}",
+               origin="0 1", text="Featured", letterCase="uppercase")
+        media(L, fx, fy, prev_w, prev_h, view="system", gameselector="featured")
+        ch = 0.05  # caption bar along the bottom of the frame
+        L.rect(v, "featuredBar", fx, fy + prev_h - ch, prev_w, ch, GLASS, 0, z=23)
+        L.text(v, "featuredName", fx + 0.016, fy + prev_h - ch, prev_w - 0.032, ch, "fsPill", FONT_BOLD, "FFFFFF",
+               metadata="name", gameselector="featured", systemNameSuffix="false", z=24)
 
     # system view: bottom screen
     if mode == "row":
@@ -506,6 +532,12 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     nx = px + 0.03 + cov_w + 0.025
     L.text(v, "gameName", nx, uy1 - 0.03 - 0.11, cx0 - 0.03 - nx, 0.11, "fsGameName", FONT_BLACK, "FFFFFF",
            metadata="name", verticalAlignment="bottom", lineSpacing="1.15")
+    # the video plays in the free area left of the card, fitted at its own shape
+    # (never cropped or stretched), covering the box art and title while it runs
+    vx0, vx1, vy0, vy1 = px + 0.022, cx0 - 0.022, cy0, cy1
+    L.add(v, "video", "gameVideo", pos=L.pair((vx0 + vx1) / 2, (vy0 + vy1) / 2), origin="0.5 0.5",
+          maxSize=L.pair(vx1 - vx0, vy1 - vy0), imageType="none", delay="1.5", fadeInType="transparent",
+          fadeInTime="0.6", scrollFadeIn="true", videoCornerRadius=L.rad(0.016), zIndex="13")
     L.add(v, "gamelistinfo", "gamelistInfo", pos=L.pair(px + pw - 0.022, 0.958), origin="1 0.5",
           size=L.pair(pw * 0.3, 0.034), fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}",
           horizontalAlignment="right", zIndex="45")
@@ -519,18 +551,21 @@ def wii_bottom(L, view, W, m):
     """Curved clock bar: game count, a clock with a blinking colon, the date
     underneath, and battery / Wi-Fi."""
     by = 0.752
-    L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}")
+    # The clock, date, battery and button prompts are drawn by ES-DE on top of
+    # everything and never move, so the bar under them stays put too
+    # (stationary) while the pages slide.
+    L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}", stationary="always")
     # the bar image is solid below its curved top edge
     L.solid(view, ("menuBar", "menuBarLine"), 0, by + (1 - by) * 110 / 300, W, 1.0)
     L.img(view, "menuBarLine", 0, by, W, 1 - by, IMG + "wii-bar-line.png", z=60.1, color="${accentColor}",
-          opacity="0.85")
+          opacity="0.85", stationary="always")
     # clock: hours | blinking colon | minutes (hidden while the ES-DE menu is open)
     cy, gap = 0.893, 0.014
     for name, fmt, x, org in (("clockHours", "%H", W / 2 - gap, "1 0.5"), ("clockMinutes", "%M", W / 2 + gap, "0 0.5")):
         L.add(view, "clock", name, pos=L.pair(x, cy), origin=org, fontPath=FONT_BLACK, fontSize="${fsWiiClock}",
               color="${subColor}", format=fmt, scope="view")
     L.add(view, "animation", "clockColon", pos=L.pair(W / 2, cy - 0.004), origin="0.5 0.5",
-          size="0 ${fsColon}", path=IMG + "anim-colon.json", color="${subColor}", zIndex="62")
+          size="0 ${fsColon}", path=IMG + "anim-colon.json", color="${subColor}", stationary="always", zIndex="62")
     L.add(view, "clock", "date", pos=L.pair(W / 2, 0.962), origin="0.5 0.5", fontPath=FONT_BOLD,
           fontSize="${fsSmall}", color="${subColor}", format="%a %d/%m", scope="view")
     side_w = max(0.2, W / 2 - 0.3 - m)
@@ -543,7 +578,7 @@ def wii_bottom(L, view, W, m):
               horizontalAlignment="left", zIndex="62")
     status(L, view, W - m - 0.02, 0.905)
     # button prompts sit in the dip above the bar, clear of the title
-    help_(L, view, W / 2, 0.795, origin="0.5 0.5", fs="fsSmall")
+    help_(L, view, W / 2, 0.795, origin="0.5 0.5", fs="fsSmall", pill=True)
 
 
 def build_wii(W, style, layout, box="cover, 3dbox"):
@@ -601,8 +636,9 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
 
 # ================================================================== ESDEIIU (tablet console home)
 def wiiu_dock(L, view, W, m):
-    L.rect(view, "dockShadow", m, 0.872, W - 2 * m, 0.09, "${shadowColor}", 0.045, z=58)
-    L.rect(view, "dock", m, 0.865, W - 2 * m, 0.09, "${panelColor}", 0.045, z=58.1)
+    # the dock holds the button prompts (drawn by ES-DE, never moving), so it stays put too
+    L.rect(view, "dockShadow", m, 0.872, W - 2 * m, 0.09, "${shadowColor}", 0.045, z=58, stationary="always")
+    L.rect(view, "dock", m, 0.865, W - 2 * m, 0.09, "${panelColor}", 0.045, z=58.1, stationary="always")
     L.solid(view, ("dock", "dockShadow"), m + 0.02, 0.865, W - m - 0.02, 0.955)
     roomy = W >= 1.6
     help_(L, view, W / 2, 0.91, origin="0.5 0.5", fs="fsSmall" if roomy else "fsHelp")

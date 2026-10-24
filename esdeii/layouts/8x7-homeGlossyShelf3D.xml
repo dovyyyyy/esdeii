@@ -211,6 +211,7 @@
             <color>${shadowColor}</color>
             <zIndex>58</zIndex>
             <cornerRadius>0.0394</cornerRadius>
+            <stationary>always</stationary>
         </image>
         <image name="dock">
             <pos>0.0306 0.865</pos>
@@ -219,6 +220,7 @@
             <color>${panelColor}</color>
             <zIndex>58.1</zIndex>
             <cornerRadius>0.0394</cornerRadius>
+            <stationary>always</stationary>
         </image>
         <helpsystem name="help">
             <pos>0.5 0.91</pos>
@@ -237,7 +239,7 @@
             <path>./../assets/images/anim-bubble-a.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble1">
@@ -247,17 +249,17 @@
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
-            <pos>0.07 0.74</pos>
+            <pos>0.0525 0.74</pos>
             <origin>0.5 0.5</origin>
             <size>0.1138 0.13</size>
             <path>./../assets/images/anim-bubble-b.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble3">
@@ -267,7 +269,7 @@
             <path>./../assets/images/anim-bubble-d.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble4">
@@ -277,7 +279,7 @@
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble5">
@@ -287,7 +289,7 @@
             <path>./../assets/images/anim-bubble-a.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
     </view>
@@ -422,13 +424,16 @@
             <zIndex>19</zIndex>
         </image>
         <video name="gameVideo">
-            <pos>0.0438 0.24</pos>
+            <pos>0.2597 0.3725</pos>
+            <origin>0.5 0.5</origin>
             <zIndex>20</zIndex>
             <imageType>screenshot, titlescreen, miximage</imageType>
             <scrollFadeIn>true</scrollFadeIn>
-            <cropSize>0.4318 0.265</cropSize>
+            <maxSize>0.4318 0.265</maxSize>
+            <imageCropSize>0.4318 0.265</imageCropSize>
             <imageCornerRadius>0.0192</imageCornerRadius>
             <videoCornerRadius>0.0192</videoCornerRadius>
+            <pillarboxes>false</pillarboxes>
             <delay>1.0</delay>
             <fadeInTime>0.35</fadeInTime>
         </video>
@@ -649,6 +654,7 @@
             <color>${shadowColor}</color>
             <zIndex>58</zIndex>
             <cornerRadius>0.0394</cornerRadius>
+            <stationary>always</stationary>
         </image>
         <image name="dock">
             <pos>0.0306 0.865</pos>
@@ -657,6 +663,7 @@
             <color>${panelColor}</color>
             <zIndex>58.1</zIndex>
             <cornerRadius>0.0394</cornerRadius>
+            <stationary>always</stationary>
         </image>
         <helpsystem name="help">
             <pos>0.5 0.91</pos>

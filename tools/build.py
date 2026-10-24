@@ -101,16 +101,14 @@ RETIRED = ("esde3ds", "esdeiiu", "music")  # older folders merged into esdeii
 FONT_SIZES = {"medium": 1.0, "large": 1.14, "small": 0.88, "x-large": 1.28, "x-small": 0.78}
 FS_BASE = dict(fsTitle=0.056, fsName3ds=0.05, fsWiiHeader=0.05, fsWiiClock=0.075, fsGameName=0.041,
                fsLabel=0.019, fsMeta=0.027, fsDesc=0.025, fsList=0.031, fsStatus=0.03, fsHelp=0.028,
-               fsCount=0.03, fsSmall=0.022, fsFeat=0.026, fsColon=0.07, fsPill=0.026)
+               fsCount=0.03, fsSmall=0.022, fsFeat=0.026, fsColon=0.07, fsPill=0.026, fsName3dsSmall=0.042)
 TRANSITIONS = [  # the first one is used when "Automatic" is selected
     # whole pages glide in and out, like flipping through the console menu
     ("smooth", "Smooth", dict(systemToSystem="instant", gamelistToGamelist="slide", systemToGamelist="slide",
-                              gamelistToSystem="slide", startupToSystem="fade", startupToGamelist="fade")),
+                              gamelistToSystem="slide", startupToSystem="instant", startupToGamelist="instant")),
     ("snappy", "Snappy", dict(systemToSystem="instant", gamelistToGamelist="instant",
-                              systemToGamelist="instant", gamelistToSystem="instant", startupToSystem="fade",
-                              startupToGamelist="fade")),
-    ("fade", "Fade", dict(systemToSystem="instant", gamelistToGamelist="instant", systemToGamelist="fade",
-                          gamelistToSystem="fade", startupToSystem="fade", startupToGamelist="fade")),
+                              systemToGamelist="instant", gamelistToSystem="instant", startupToSystem="instant",
+                              startupToGamelist="instant")),
 ]
 
 

@@ -62,16 +62,17 @@
             <pos>0.5776 0.054</pos>
             <size>0.3808 0.052</size>
             <path>./../assets/images/white.png</path>
-            <color>${tileColor}</color>
+            <color>000000A6</color>
             <zIndex>30</zIndex>
             <cornerRadius>0.0208</cornerRadius>
+            <stationary>always</stationary>
         </image>
         <clock name="clock">
             <pos>0.5968 0.08</pos>
             <origin>0 0.5</origin>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsPill}</fontSize>
-            <color>${subColor}</color>
+            <color>FFFFFF</color>
             <format>%H:%M   %d/%m</format>
             <scope>view</scope>
         </clock>
@@ -79,7 +80,7 @@
             <pos>0.9408 0.08</pos>
             <origin>1 0.5</origin>
             <height>${fsPill}</height>
-            <color>${subColor}</color>
+            <color>FFFFFF</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
         </systemstatus>
@@ -97,6 +98,10 @@
             <backgroundVerticalPadding>0.01 0.01</backgroundVerticalPadding>
             <backgroundCornerRadius>0.032</backgroundCornerRadius>
         </helpsystem>
+        <gameselector name="featured">
+            <selection>random</selection>
+            <gameCount>1</gameCount>
+        </gameselector>
         <image name="systemTile">
             <pos>0.064 0.15</pos>
             <size>0.288 0.36</size>
@@ -245,6 +250,7 @@
             <color>000000A6</color>
             <zIndex>30</zIndex>
             <cornerRadius>0.0208</cornerRadius>
+            <stationary>always</stationary>
         </image>
         <clock name="clock">
             <pos>0.5968 0.08</pos>
@@ -293,15 +299,6 @@
             <zIndex>7</zIndex>
             <scrollFadeIn>true</scrollFadeIn>
         </image>
-        <video name="gameVideo">
-            <pos>0.024 0.035</pos>
-            <cropSize>0.952 0.45</cropSize>
-            <videoCornerRadius>0.0272</videoCornerRadius>
-            <delay>1.5</delay>
-            <fadeInTime>0.6</fadeInTime>
-            <scrollFadeIn>true</scrollFadeIn>
-            <zIndex>8</zIndex>
-        </video>
         <image name="heroShade">
             <pos>0.024 0.17</pos>
             <size>0.952 0.315</size>
@@ -509,6 +506,18 @@
             <verticalAlignment>bottom</verticalAlignment>
             <lineSpacing>1.15</lineSpacing>
         </text>
+        <video name="gameVideo">
+            <pos>0.2913 0.294</pos>
+            <origin>0.5 0.5</origin>
+            <maxSize>0.4994 0.338</maxSize>
+            <imageType>none</imageType>
+            <delay>1.5</delay>
+            <fadeInType>transparent</fadeInType>
+            <fadeInTime>0.6</fadeInTime>
+            <scrollFadeIn>true</scrollFadeIn>
+            <videoCornerRadius>0.0128</videoCornerRadius>
+            <zIndex>13</zIndex>
+        </video>
         <gamelistinfo name="gamelistInfo">
             <pos>0.9584 0.958</pos>
             <origin>1 0.5</origin>

@@ -62,16 +62,17 @@
             <pos>0.58 0.054</pos>
             <size>0.3125 0.052</size>
             <path>./../assets/images/white.png</path>
-            <color>${tileColor}</color>
+            <color>000000A6</color>
             <zIndex>30</zIndex>
             <cornerRadius>0.0162</cornerRadius>
+            <stationary>always</stationary>
         </image>
         <clock name="clock">
             <pos>0.595 0.08</pos>
             <origin>0 0.5</origin>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsPill}</fontSize>
-            <color>${subColor}</color>
+            <color>FFFFFF</color>
             <format>%H:%M   %d/%m</format>
             <scope>view</scope>
         </clock>
@@ -79,7 +80,7 @@
             <pos>0.8788 0.08</pos>
             <origin>1 0.5</origin>
             <height>${fsPill}</height>
-            <color>${subColor}</color>
+            <color>FFFFFF</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
         </systemstatus>
@@ -97,18 +98,22 @@
             <backgroundVerticalPadding>0.01 0.01</backgroundVerticalPadding>
             <backgroundCornerRadius>0.025</backgroundCornerRadius>
         </helpsystem>
+        <gameselector name="featured">
+            <selection>random</selection>
+            <gameCount>1</gameCount>
+        </gameselector>
         <image name="systemTile">
-            <pos>0.125 0.1363</pos>
-            <size>0.189 0.3024</size>
+            <pos>0.125 0.1741</pos>
+            <size>0.1417 0.2268</size>
             <path>./../systems/glossy/${system.theme}.png</path>
             <zIndex>20</zIndex>
             <default>./../systems/glossy/_default.png</default>
         </image>
         <text name="systemName">
-            <pos>0.3421 0.1789</pos>
-            <size>0.5391 0.115</size>
+            <pos>0.2917 0.1789</pos>
+            <size>0.3176 0.115</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
-            <fontSize>${fsName3ds}</fontSize>
+            <fontSize>${fsName3dsSmall}</fontSize>
             <color>${textColor}</color>
             <zIndex>40</zIndex>
             <text>${system.fullName}</text>
@@ -116,8 +121,8 @@
             <lineSpacing>1.1</lineSpacing>
         </text>
         <text name="systemInfo">
-            <pos>0.3421 0.2898</pos>
-            <size>0.5391 0.032</size>
+            <pos>0.2917 0.2898</pos>
+            <size>0.3176 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
             <color>${subColor}</color>
@@ -126,7 +131,7 @@
             <horizontalAlignment>left</horizontalAlignment>
         </text>
         <text name="gameCount">
-            <pos>0.3496 0.3421</pos>
+            <pos>0.2992 0.3421</pos>
             <size>0 0</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsCount}</fontSize>
@@ -137,6 +142,61 @@
             <backgroundMargins>0.0087 0.0087</backgroundMargins>
             <backgroundCornerRadius>0.0187</backgroundCornerRadius>
             <lineSpacing>1.6</lineSpacing>
+        </text>
+        <text name="featuredLabel">
+            <pos>0.64 0.1773</pos>
+            <size>0.2437 0.026</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsLabel}</fontSize>
+            <color>${subColor}</color>
+            <zIndex>40</zIndex>
+            <origin>0 1</origin>
+            <text>Featured</text>
+            <letterCase>uppercase</letterCase>
+        </text>
+        <image name="mediaScreen">
+            <pos>0.6375 0.1853</pos>
+            <size>0.2437 0.2194</size>
+            <path>./../assets/images/white.png</path>
+            <color>${screenColor}</color>
+            <zIndex>18</zIndex>
+            <cornerRadius>0.01</cornerRadius>
+        </image>
+        <image name="mediaFallback">
+            <pos>0.7594 0.295</pos>
+            <origin>0.5 0.5</origin>
+            <maxSize>0.1124 0.1799</maxSize>
+            <imageType>cover, 3dbox</imageType>
+            <default>./../assets/images/noimage.png</default>
+            <cornerRadius>0.0075</cornerRadius>
+            <zIndex>19</zIndex>
+            <gameselector>featured</gameselector>
+        </image>
+        <image name="featuredImage">
+            <pos>0.6375 0.1853</pos>
+            <cropSize>0.2437 0.2194</cropSize>
+            <imageType>screenshot, titlescreen, miximage</imageType>
+            <gameselector>featured</gameselector>
+            <cornerRadius>0.01</cornerRadius>
+            <zIndex>20</zIndex>
+        </image>
+        <image name="featuredBar">
+            <pos>0.6375 0.3547</pos>
+            <size>0.2437 0.05</size>
+            <path>./../assets/images/white.png</path>
+            <color>000000A6</color>
+            <zIndex>23</zIndex>
+        </image>
+        <text name="featuredName">
+            <pos>0.6475 0.3547</pos>
+            <size>0.2237 0.05</size>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsPill}</fontSize>
+            <color>FFFFFF</color>
+            <zIndex>24</zIndex>
+            <metadata>name</metadata>
+            <gameselector>featured</gameselector>
+            <systemNameSuffix>false</systemNameSuffix>
         </text>
         <image name="emptySlot0">
             <pos>0.1431 0.5295</pos>
@@ -253,7 +313,7 @@
             <path>./../assets/images/anim-bubble-a.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble1">
@@ -263,7 +323,7 @@
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
@@ -273,7 +333,7 @@
             <path>./../assets/images/anim-bubble-b.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble3">
@@ -283,7 +343,7 @@
             <path>./../assets/images/anim-bubble-d.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble4">
@@ -293,7 +353,7 @@
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
     </view>
@@ -371,6 +431,7 @@
             <color>000000A6</color>
             <zIndex>30</zIndex>
             <cornerRadius>0.0162</cornerRadius>
+            <stationary>always</stationary>
         </image>
         <clock name="clock">
             <pos>0.595 0.08</pos>
@@ -419,15 +480,6 @@
             <zIndex>7</zIndex>
             <scrollFadeIn>true</scrollFadeIn>
         </image>
-        <video name="gameVideo">
-            <pos>0.0938 0.035</pos>
-            <cropSize>0.8125 0.45</cropSize>
-            <videoCornerRadius>0.0213</videoCornerRadius>
-            <delay>1.5</delay>
-            <fadeInTime>0.6</fadeInTime>
-            <scrollFadeIn>true</scrollFadeIn>
-            <zIndex>8</zIndex>
-        </video>
         <image name="heroShade">
             <pos>0.0938 0.17</pos>
             <size>0.8125 0.315</size>
@@ -635,6 +687,18 @@
             <verticalAlignment>bottom</verticalAlignment>
             <lineSpacing>1.15</lineSpacing>
         </text>
+        <video name="gameVideo">
+            <pos>0.3306 0.294</pos>
+            <origin>0.5 0.5</origin>
+            <maxSize>0.4463 0.338</maxSize>
+            <imageType>none</imageType>
+            <delay>1.5</delay>
+            <fadeInType>transparent</fadeInType>
+            <fadeInTime>0.6</fadeInTime>
+            <scrollFadeIn>true</scrollFadeIn>
+            <videoCornerRadius>0.01</videoCornerRadius>
+            <zIndex>13</zIndex>
+        </video>
         <gamelistinfo name="gamelistInfo">
             <pos>0.8925 0.958</pos>
             <origin>1 0.5</origin>
@@ -804,7 +868,7 @@
             <path>./../assets/images/anim-bubble-a.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble1">
@@ -814,7 +878,7 @@
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
@@ -824,7 +888,7 @@
             <path>./../assets/images/anim-bubble-b.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble3">
@@ -834,7 +898,7 @@
             <path>./../assets/images/anim-bubble-d.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble4">
@@ -844,7 +908,7 @@
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
+            <direction>alternate</direction>
             <zIndex>2</zIndex>
         </animation>
     </view>
