@@ -224,104 +224,16 @@
             <format>%a %d/%m</format>
             <scope>view</scope>
         </clock>
-        <text name="barCountOutline0">
-            <pos>0.9765 0.0578</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </text>
-        <text name="barCountOutline1">
-            <pos>0.9775 0.0578</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </text>
-        <text name="barCountOutline2">
-            <pos>0.9785 0.0578</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </text>
-        <text name="barCountOutline3">
-            <pos>0.9765 0.06</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </text>
-        <text name="barCountOutline4">
-            <pos>0.9785 0.06</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </text>
-        <text name="barCountOutline5">
-            <pos>0.9765 0.0622</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </text>
-        <text name="barCountOutline6">
-            <pos>0.9775 0.0622</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </text>
-        <text name="barCountOutline7">
-            <pos>0.9785 0.0622</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </text>
         <text name="barCount">
-            <pos>0.9775 0.06</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
+            <pos>0.0315 0.905</pos>
+            <size>0.3425 0.04</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsCount}</fontSize>
             <color>${subColor}</color>
+            <zIndex>62</zIndex>
+            <origin>0 0.5</origin>
             <systemdata>gamecount</systemdata>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>40</zIndex>
+            <stationary>always</stationary>
         </text>
         <systemstatus name="systemStatus">
             <pos>0.9685 0.905</pos>
@@ -364,7 +276,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
-            <pos>0.954 0.18</pos>
+            <pos>0.954 0.08</pos>
             <origin>0.5 0.5</origin>
             <size>0.0675 0.15</size>
             <path>./../assets/images/anim-bubble-b.json</path>
@@ -382,7 +294,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble4">
-            <pos>0.054 0.46</pos>
+            <pos>0.639 0.06</pos>
             <origin>0.5 0.5</origin>
             <size>0.054 0.12</size>
             <path>./../assets/images/anim-bubble-c.json</path>
@@ -391,16 +303,25 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble5">
-            <pos>0.981 0.34</pos>
+            <pos>0.792 0.06</pos>
             <origin>0.5 0.5</origin>
-            <size>0.045 0.1</size>
+            <size>0.0495 0.11</size>
             <path>./../assets/images/anim-bubble-a.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
             <zIndex>2</zIndex>
         </animation>
+        <animation name="bubble6">
+            <pos>0.981 0.34</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.045 0.1</size>
+            <path>./../assets/images/anim-bubble-b.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <zIndex>2</zIndex>
+        </animation>
         <animation name="bubbleBehind0">
-            <pos>0.504 0.38</pos>
+            <pos>0.36 0.44</pos>
             <origin>0.5 0.5</origin>
             <size>0.099 0.22</size>
             <path>./../assets/images/anim-bubble-d.json</path>
@@ -409,7 +330,7 @@
             <zIndex>6</zIndex>
         </animation>
         <animation name="bubbleBehind1">
-            <pos>0.261 0.26</pos>
+            <pos>0.756 0.52</pos>
             <origin>0.5 0.5</origin>
             <size>0.09 0.2</size>
             <path>./../assets/images/anim-bubble-c.json</path>
@@ -418,7 +339,7 @@
             <zIndex>6</zIndex>
         </animation>
         <animation name="bubbleBehind2">
-            <pos>0.747 0.44</pos>
+            <pos>0.558 0.48</pos>
             <origin>0.5 0.5</origin>
             <size>0.081 0.18</size>
             <path>./../assets/images/anim-bubble-a.json</path>
@@ -427,7 +348,7 @@
             <zIndex>6</zIndex>
         </animation>
         <animation name="bubbleBehind3">
-            <pos>0.216 0.66</pos>
+            <pos>0.198 0.22</pos>
             <origin>0.5 0.5</origin>
             <size>0.072 0.16</size>
             <path>./../assets/images/anim-bubble-b.json</path>
@@ -930,95 +851,16 @@
             <format>%a %d/%m</format>
             <scope>view</scope>
         </clock>
-        <gamelistinfo name="gamelistInfoOutline0">
-            <pos>0.9765 0.0578</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </gamelistinfo>
-        <gamelistinfo name="gamelistInfoOutline1">
-            <pos>0.9775 0.0578</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </gamelistinfo>
-        <gamelistinfo name="gamelistInfoOutline2">
-            <pos>0.9785 0.0578</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </gamelistinfo>
-        <gamelistinfo name="gamelistInfoOutline3">
-            <pos>0.9765 0.06</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </gamelistinfo>
-        <gamelistinfo name="gamelistInfoOutline4">
-            <pos>0.9785 0.06</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </gamelistinfo>
-        <gamelistinfo name="gamelistInfoOutline5">
-            <pos>0.9765 0.0622</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </gamelistinfo>
-        <gamelistinfo name="gamelistInfoOutline6">
-            <pos>0.9775 0.0622</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </gamelistinfo>
-        <gamelistinfo name="gamelistInfoOutline7">
-            <pos>0.9785 0.0622</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsCount}</fontSize>
-            <color>${panelColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>39.9</zIndex>
-        </gamelistinfo>
         <gamelistinfo name="gamelistInfo">
-            <pos>0.9775 0.06</pos>
-            <origin>1 0.5</origin>
-            <size>0.34 0.045</size>
+            <pos>0.0315 0.905</pos>
+            <origin>0 0.5</origin>
+            <size>0.3425 0.04</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsCount}</fontSize>
             <color>${subColor}</color>
-            <horizontalAlignment>right</horizontalAlignment>
-            <zIndex>40</zIndex>
+            <horizontalAlignment>left</horizontalAlignment>
+            <zIndex>62</zIndex>
+            <stationary>always</stationary>
         </gamelistinfo>
         <systemstatus name="systemStatus">
             <pos>0.9685 0.905</pos>
@@ -1042,5 +884,32 @@
             <backgroundVerticalPadding>0.01 0.01</backgroundVerticalPadding>
             <backgroundCornerRadius>0.018</backgroundCornerRadius>
         </helpsystem>
+        <animation name="bubble0">
+            <pos>0.981 0.06</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.054 0.12</size>
+            <path>./../assets/images/anim-bubble-a.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble1">
+            <pos>0.639 0.06</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0495 0.11</size>
+            <path>./../assets/images/anim-bubble-c.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble2">
+            <pos>0.81 0.08</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.045 0.1</size>
+            <path>./../assets/images/anim-bubble-b.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <zIndex>2</zIndex>
+        </animation>
     </view>
 </theme>

@@ -121,26 +121,6 @@
         <label>Home · List</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="homeGlossyGrid">
-        <label>Home Glossy · Grid</label>
-        <selectable>true</selectable>
-    </variant>
-    <variant name="homeGlossyGrid3D">
-        <label>Home Glossy · Grid · 3D</label>
-        <selectable>true</selectable>
-    </variant>
-    <variant name="homeGlossyShelf">
-        <label>Home Glossy · Shelf</label>
-        <selectable>true</selectable>
-    </variant>
-    <variant name="homeGlossyShelf3D">
-        <label>Home Glossy · Shelf · 3D</label>
-        <selectable>true</selectable>
-    </variant>
-    <variant name="homeGlossyList">
-        <label>Home Glossy · List</label>
-        <selectable>true</selectable>
-    </variant>
     <variant name="duoGridGrid">
         <label>Dual Grid · Grid</label>
         <selectable>true</selectable>

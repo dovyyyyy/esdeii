@@ -81,7 +81,6 @@ REST = ["cosmoBlack", "flameRed", "aquaBlue", "mintGreen", "lavender", "sunset",
 LOOKS = [
     ("wall", "ii", "channelwide", "Channels"),
     ("home", "ii", "plaza", "Home"),
-    ("homeGlossy", "ii", "glossy", "Home Glossy"),
     ("duoGrid", "3ds", "glossy|grid", "Dual Grid"),
     ("duoRow", "3ds", "glossy|row", "Dual Row"),
 ]

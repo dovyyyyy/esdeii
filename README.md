@@ -1,14 +1,13 @@
 # esdeii — console-menu theme for ES-DE
 
-One theme, five looks. Pick them in **Menu → UI Settings → Theme variant**.
+One theme, four looks. Pick them in **Menu → UI Settings → Theme variant**.
 
 | Look | What it is |
 |---|---|
 | **Channels** | wide channel tiles with empty slots and a curved clock bar with a big clock |
-| **Home** | framed square tiles with a Start cursor and a dock |
-| **Home Glossy** | the same with glossy icons |
+| **Home** | framed square tiles with a glowing cursor, a big video screen and a dock |
 | **Dual Grid** | two screens: game artwork on top, systems in a grid of icons below |
-| **Dual Row** | two screens: game artwork on top, systems in a row with a breathing cursor |
+| **Dual Row** | two screens: game artwork on top, systems in a row |
 
 ### Channels
 ![Channels](previews/esdeii-channel-wall.png)
@@ -40,7 +39,7 @@ To update, download again and replace the folder.
 
 - **Theme variant** — look · how games are shown, plus **3D** for 3D boxes,
   for example *Channels · Grid · 3D*:
-  - looks: **Channels**, **Home**, **Home Glossy**, **Dual Grid**, **Dual Row**;
+  - looks: **Channels**, **Home**, **Dual Grid**, **Dual Row**;
   - games as a **Grid** of icons, a **Shelf** of covers or a **List**;
   - **box art**, or **3D boxes** with *· 3D*. Each falls back to
     the other, so games scraped with only 3D boxes (or only covers) still
@@ -56,9 +55,11 @@ To update, download again and replace the folder.
   put under the clock, battery and button prompts) or *Snappy* (instant).
   ES-DE always draws the clock, battery and button prompts on top of
   everything and never moves them, so the theme keeps the surfaces under
-  them still instead of sliding them away. Everything else - including the
-  game count, which sits in the page header - slides with the page in both
-  directions.
+  them still instead of sliding them away. On Channels the game count sits
+  on the left of the clock bar and stays still with it (it just shows the
+  new numbers); in the Dual looks the clock sits in a strip above the two
+  screens, so the screens slide away underneath it. Everything else slides
+  with the page in both directions.
 - **Theme aspect ratio** — leave on Automatic (16:9, 16:10, 3:2, 4:3, 5:3,
   5:4, 8:7, 19.5:9, 20:9 and 21:9 are included).
 - Navigation sounds can be turned off in ES-DE's **Sound settings**.
@@ -82,25 +83,27 @@ game swells into a bright chord.
   endless loop (when ES-DE restarts it, it only moves back a little).
 - A few bubbles also float **behind the systems** you choose from (Channels and
   Home), in the gaps between the icons; in the Dual looks they float on the
-  clean top screen instead, never near the console icons.
-- Headers over the game artwork (system name, info, game count) have a thin
+  clean top screen instead, never near the console icons. Dual Row keeps
+  its bubbles to the system list only.
+- Headers over the game artwork (system name and info) have a thin
   outline so they stay readable on any custom art.
 - Faint artwork of the selected game (fan art, else the screenshot) behind
   the game list, fading in as you move. The system list never shows game
   artwork.
 - Rounded console-style lettering (M PLUS Rounded 1c).
 - **Artwork top screen** (Dual looks, inspired by iiSU and Cocoon): the top
-  screen is filled edge to edge with the game's fan art or screenshot, and
-  the title, a small box art and the details sit on a dark glass card, and a
-  big screen with the screenshot and video sits on its own on the left. In the system list the top screen
+  screen is filled edge to edge with the game's fan art or screenshot; a big
+  screen with the screenshot and video on the left and a dark glass card with
+  the system, title, a small box art and the details on the right fill it
+  between them. In the system list the top screen
   shows the system plus a framed **Featured** game (a picture in a frame, not
   a background).
 - **Status pills**: clock, date and battery on rounded pills (Dual and Home
-  looks), and the button prompts on a pill in the Dual looks.
+  looks; in the Dual looks above the screens), and the button prompts on a
+  pill in the Dual looks.
 - **Empty slots** fill the rest of every grid, like the blank channels on
   a console menu (plain, without any logo).
-- Small animations: blinking clock colon, a nudging
-  page arrow on the channel wall and a breathing cursor in the icon row.
+- Small animations: a nudging page arrow on the channel wall.
   They are tiny, so they cost almost nothing to draw.
 - The clock, date and battery hide while the ES-DE menu is open.
 - Icons for all 197 systems ES-DE supports, each drawn after its real

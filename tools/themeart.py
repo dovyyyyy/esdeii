@@ -127,7 +127,7 @@ def wii_selector(path, W=480, H=300):
 
 
 def wiiu_selector(path, fontpath, S=360, colour=(31, 184, 232)):
-    """Cyan glass frame with a 'Start' tab, drawn over the selected tile."""
+    """Cyan glass frame drawn over the selected tile (no lettering)."""
     x0, y0, x1, y1 = icons.BODY
     img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
     glow = Image.new("L", (S, S), 0)
@@ -141,14 +141,6 @@ def wiiu_selector(path, fontpath, S=360, colour=(31, 184, 232)):
     ImageDraw.Draw(hl).rounded_rectangle([(x0 - 1) * 4, (y0 - 1) * 4, (x1 + 1) * 4, (y1 + 1) * 4],
                                          radius=(icons.RAD + 1) * 4, outline=255, width=2 * 4)
     img.paste((255, 255, 255, 255), (0, 0), scale(hl.resize((S, S), Image.LANCZOS), 0.7))
-    # Start tab
-    tab = (S * 0.26, y1 - 30, S * 0.74, y1 + 10)
-    tb = Image.new("L", (S * 4, S * 4), 0)
-    ImageDraw.Draw(tb).rounded_rectangle([v * 4 for v in tab], radius=20 * 4, fill=255)
-    img.paste(mix(colour, (255, 255, 255), 0.1) + (255,), (0, 0), tb.resize((S, S), Image.LANCZOS))
-    f = ImageFont.truetype(fontpath, 26)
-    ImageDraw.Draw(img).text(((tab[0] + tab[2]) / 2, (tab[1] + tab[3]) / 2), "Start", font=f,
-                             fill=(255, 255, 255, 255), anchor="mm")
     img.save(path, optimize=True)
 
 
