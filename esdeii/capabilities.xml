@@ -14,8 +14,10 @@
     <aspectRatio>21:9</aspectRatio>
 
     <fontSize>medium</fontSize>
-    <fontSize>small</fontSize>
     <fontSize>large</fontSize>
+    <fontSize>small</fontSize>
+    <fontSize>x-large</fontSize>
+    <fontSize>x-small</fontSize>
 
     <colorScheme name="silverMenu">
         <label>Silver Menu</label>
@@ -60,6 +62,15 @@
         <label>Dark + system colours</label>
     </colorScheme>
 
+    <transitions name="esdeiiSnappy">
+        <label>Snappy</label>
+        <systemToSystem>instant</systemToSystem>
+        <gamelistToGamelist>instant</gamelistToGamelist>
+        <systemToGamelist>instant</systemToGamelist>
+        <gamelistToSystem>instant</gamelistToSystem>
+        <startupToSystem>fade</startupToSystem>
+        <startupToGamelist>fade</startupToGamelist>
+    </transitions>
     <transitions name="esdeiiSlide">
         <label>Slide</label>
         <systemToSystem>instant</systemToSystem>
@@ -78,48 +89,105 @@
         <startupToSystem>fade</startupToSystem>
         <startupToGamelist>fade</startupToGamelist>
     </transitions>
-    <transitions name="esdeiiInstant">
-        <label>Instant</label>
-        <systemToSystem>instant</systemToSystem>
-        <gamelistToGamelist>instant</gamelistToGamelist>
-        <systemToGamelist>instant</systemToGamelist>
-        <gamelistToSystem>instant</gamelistToSystem>
-    </transitions>
 
-    <variant name="channelwideGrid">
-        <label>Channel wall + icon grid</label>
+    <variant name="wallGrid">
+        <label>Channel wall · icon grid · box art</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="channelwideList">
-        <label>Channel wall + game list</label>
+    <variant name="wallGrid3D">
+        <label>Channel wall · icon grid · 3D boxes</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="channelwideShelf">
-        <label>Channel wall + cover shelf</label>
+    <variant name="wallShelf">
+        <label>Channel wall · cover shelf · box art</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="plazaGrid">
-        <label>Home screen + icon grid</label>
+    <variant name="wallShelf3D">
+        <label>Channel wall · cover shelf · 3D boxes</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="plazaList">
-        <label>Home screen + game list</label>
+    <variant name="wallList">
+        <label>Channel wall · game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="plazaShelf">
-        <label>Home screen + cover shelf</label>
+    <variant name="homeGrid">
+        <label>Home screen · icon grid · box art</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="glossyGrid">
-        <label>Home screen, glossy icons + icon grid</label>
+    <variant name="homeGrid3D">
+        <label>Home screen · icon grid · 3D boxes</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="glossyList">
-        <label>Home screen, glossy icons + game list</label>
+    <variant name="homeShelf">
+        <label>Home screen · cover shelf · box art</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="glossyShelf">
-        <label>Home screen, glossy icons + cover shelf</label>
+    <variant name="homeShelf3D">
+        <label>Home screen · cover shelf · 3D boxes</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="homeList">
+        <label>Home screen · game list</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="homeGlossyGrid">
+        <label>Home screen, glossy icons · icon grid · box art</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="homeGlossyGrid3D">
+        <label>Home screen, glossy icons · icon grid · 3D boxes</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="homeGlossyShelf">
+        <label>Home screen, glossy icons · cover shelf · box art</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="homeGlossyShelf3D">
+        <label>Home screen, glossy icons · cover shelf · 3D boxes</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="homeGlossyList">
+        <label>Home screen, glossy icons · game list</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoGridGrid">
+        <label>Dual screen, icon grid · icon grid · box art</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoGridGrid3D">
+        <label>Dual screen, icon grid · icon grid · 3D boxes</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoGridShelf">
+        <label>Dual screen, icon grid · cover shelf · box art</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoGridShelf3D">
+        <label>Dual screen, icon grid · cover shelf · 3D boxes</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoGridList">
+        <label>Dual screen, icon grid · game list</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoRowGrid">
+        <label>Dual screen, icon row · icon grid · box art</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoRowGrid3D">
+        <label>Dual screen, icon row · icon grid · 3D boxes</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoRowShelf">
+        <label>Dual screen, icon row · cover shelf · box art</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoRowShelf3D">
+        <label>Dual screen, icon row · cover shelf · 3D boxes</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="duoRowList">
+        <label>Dual screen, icon row · game list</label>
         <selectable>true</selectable>
     </variant>
 </themeCapabilities>

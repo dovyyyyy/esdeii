@@ -1,20 +1,26 @@
-# esdeii — console-menu themes for ES-DE
+# esdeii — console-menu theme for ES-DE
 
-Two themes in one download:
+One theme, five looks. Pick them in **Menu → UI Settings → Theme variant**.
 
-| Theme | Look | Sounds |
-|---|---|---|
-| **ESDEII** | console menu style, with two looks: a **Channel wall** of wide tiles above a curved clock bar, or a **Home screen** of framed tiles with a Start cursor and a dock | crisp clicks, wooden tocks and glassy dings |
-| **ESDE3DS** | dual-screen handheld: two screens, hinge, HOME-menu icon grid or icon row | soft chimes |
+| Look | What it is |
+|---|---|
+| **Channel wall** | wide channel tiles with empty slots, a curved clock bar with round buttons and a blinking clock |
+| **Home screen** | framed square tiles with a Start cursor and a dock |
+| **Home screen, glossy icons** | the same with glossy icons |
+| **Dual screen, icon grid** | two screens and a hinge, systems in a grid of icons |
+| **Dual screen, icon row** | two screens, systems in a row with a breathing cursor |
 
-### ESDEII — Channel wall
+### Channel wall
 ![Channel wall](previews/esdeii-channel-wall.png)
 
-### ESDEII — Home screen
+### Home screen
 ![Home screen](previews/esdeii-home-screen.png)
 
-### ESDE3DS
-![ESDE3DS](previews/esde3ds.png)
+### Dual screen
+![Dual screen](previews/esdeii-dual-screen.png)
+
+### 3D boxes in the game grid
+![3D boxes](previews/esdeii-3d-boxes.png)
 
 *(Previews are mockups, not real ES-DE screenshots.)*
 
@@ -22,66 +28,79 @@ Two themes in one download:
 
 1. Download the latest version:
    https://github.com/dovyyyyy/esdeii/archive/refs/heads/main.zip
-2. Unzip it and copy the **esdeii** and/or **esde3ds** folders into the
-   `themes` folder inside your ES-DE data folder, e.g.
-   `Internal storage/ES-DE/themes/`.
-   If you installed an older version, delete the old `esdeiiu` folder.
-3. Restart ES-DE, open **Menu → UI Settings → Theme** and pick
-   **ESDEII** or **ESDE3DS**.
+2. Unzip it and copy the **esdeii** folder into the `themes` folder inside
+   your ES-DE data folder, e.g. `Internal storage/ES-DE/themes/`.
+   **Delete any old `esde3ds` or `esdeiiu` folders** — the dual-screen look
+   is now part of esdeii.
+3. Restart ES-DE, open **Menu → UI Settings → Theme** and pick **ESDEII**.
 
-To update, download again and replace the folders.
+To update, download again and replace the folder.
 
 ## Customisation (Menu → UI Settings)
 
-- **Theme variant** — the look and how games are shown:
-  - ESDEII: *Channel wall*, *Home screen* or *Home screen, glossy icons*,
-    each with an icon grid, game list or cover shelf.
-  - ESDE3DS: Glossy or Plaza icons, shown as a **HOME grid** (two rows of
-    icons on the bottom screen) or an **icon row**, each with an icon grid,
-    game list or cover shelf for games.
+- **Theme variant** — look · how games are shown · box art, for example
+  *Channel wall · icon grid · 3D boxes*:
+  - games as an **icon grid**, a **cover shelf** or a **game list**;
+  - **box art** or **3D boxes** for the grid and shelf. Each falls back to
+    the other, so games scraped with only 3D boxes (or only covers) still
+    show their art.
 - **Theme color scheme** — Silver Menu, Cloud White, Ice White, Cosmo Black,
   Flame Red, Aqua Blue, Mint Green, Lavender, Sunset Orange, Sakura Pink,
   Midnight Blue, Retro Pocket, plus **Light / Dark + system colours**
-  where the accent matches each console. In ESDE3DS each scheme also has
-  its own background pattern (grid, stars, stripes, waves, dots, plaid,
-  pixels).
-- **Theme font size** — small, medium, large.
-- **Theme transitions** — slide, fade or instant.
+  where the accent matches each console. In the dual-screen look each scheme
+  has its own background pattern.
+- **Theme font size** — extra small to extra large.
+- **Theme transitions** — *Snappy* (default, instant), slide or fade.
 - **Theme aspect ratio** — leave on Automatic (16:9, 16:10, 3:2, 4:3, 5:3,
   5:4, 8:7, 19.5:9, 20:9 and 21:9 are included).
 - Navigation sounds can be turned off in ES-DE's **Sound settings**.
 
 ## Features
 
+- **Empty slots** fill the rest of every grid, like the blank channels on
+  a console menu.
+- Small animations: blinking clock colon, a glowing mail button, a nudging
+  page arrow on the channel wall and a breathing cursor in the icon row.
+  They are tiny, so they cost almost nothing to draw.
+- The clock, date and battery hide while the ES-DE menu is open.
 - Icons for all 197 systems ES-DE supports, each drawn after its real
-  controller or console (PS1–PS4, Vita, Dreamcast, Saturn, Jaguar, Neo Geo,
-  keypad consoles, classic Mac, PC, Amiga, fantasy consoles and more).
-
-- Slowly drifting bubbles in the background, tinted with your colour scheme.
+  controller or console.
 - System info line: maker, release year and type for every console.
 - Game count, clock, date, battery and Wi-Fi.
 - **Featured game**: a random game from the selected system.
-- **Jump back in** (ESDE3DS): your three most recently played games.
+- **Jump back in** (dual screen): your three most recently played games.
 - Game details: release date, players, developer, genre, last played, play
   time, rating, badges and a scrolling description.
-- Game videos, with the scraped **game logo** shown in the corner.
-- Games without a screenshot (for example Android apps) show their
-  icon/cover instead.
+- Game videos (start after 1 s), with the scraped **game logo** in the corner.
+- Games without a screenshot (for example Android apps) show their box art
+  instead.
+
+## Performance
+
+- No full-screen animations: the old drifting bubbles were a full-screen
+  Lottie animation redrawn on the CPU every frame, which made scrolling feel
+  heavy on phones. They are gone.
+- The *Snappy* transition profile switches views instantly.
+- Every layout is checked against ES-DE's theme reference
+  (`tools/validate.py`), so ES-DE doesn't spend time logging bad properties.
 
 ## Media used
 
-- Grids, shelves and "Jump back in" use **box covers**.
-- The main screen uses the **screenshot**, then title screen, then miximage,
-  then the cover, plus the game **video** and **marquee** (logo).
+- Grids, shelves and "Jump back in" use **box art** or **3D boxes**
+  (your choice, each falling back to the other).
+- The game screen uses the **screenshot**, then title screen, then
+  miximage, plus the game **video** and **marquee** (logo).
 
 ## Changing things
 
-- System icons live in each theme's `systems/` folder, named after the ES-DE
+- System icons live in `esdeii/systems/<style>/`, named after the ES-DE
   system (`snes.png`, `n3ds.png` ...). Replace any with your own PNG of the
   same size.
 - Everything is generated by `tools/build.py` (layouts in `tools/layouts.py`,
   icons in `tools/icons.py` and `tools/shapes.py`, sounds in
-  `tools/audio.py`, other artwork in `tools/themeart.py`).
+  `tools/audio.py`, other artwork and the small Lottie animations in `tools/themeart.py`).
+  Rebuild with `python3 tools/build.py . <Nunito[wght].ttf> <OFL.txt> [cache]`
+  (without the variable font it reuses the fonts already in the theme).
 
 ## Credits
 

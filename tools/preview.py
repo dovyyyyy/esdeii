@@ -1,11 +1,17 @@
 """Approximate mock renderer for the esdeii layouts (not ES-DE itself).
 
-    python3 tools/preview.py <layouts.json> <repo root> <out dir> "theme|ar|variant,scheme,view,out.png" ...
+    python3 tools/preview.py <layouts.json> <repo root> <out dir> "theme|ar|variant,scheme,view,out.png[,items]" ...
+
+items = how many systems/games to show in grids (the rest show as empty slots).
+Lottie animations are drawn from still frames in $ESDEII_FRAMES (written by build.py
+to <cache>/frames).
 """
 import json, math, os, re, sys
 from PIL import Image, ImageDraw, ImageFont
 
 DATA = json.load(open(sys.argv[1]))
+FRAMES = os.environ.get("ESDEII_FRAMES", "")
+ITEMS = [99]
 ROOT = sys.argv[2]
 OUTDIR = sys.argv[3]
 H = 1080
@@ -143,10 +149,23 @@ def screenshot(w, h):
     return im.resize((max(1, int(w)), max(1, int(h))), Image.NEAREST).convert("RGBA")
 
 
-def cover(w, h, i, font):
+def is_box(t):
+    first = t.split(",")[0].strip()
+    return first in ("cover", "3dbox")
+
+
+def cover(w, h, i, font, box3d=False):
     c = hexc(COVERS[i % len(COVERS)])
     im = Image.new("RGBA", (max(1, int(w)), max(1, int(h))), c)
     d = ImageDraw.Draw(im)
+    if box3d:  # quick 3D-box look: darker spine on the left
+        sw = w * 0.16
+        d.polygon([(0, h * 0.04), (sw, 0), (sw, h), (0, h * 0.96)], fill=tuple(int(v * 0.6) for v in c[:3]) + (255,))
+        d.rectangle([sw, 0, w, h * 0.16], fill=(255, 255, 255, 230))
+        d.ellipse([sw + (w - sw) * 0.2, h * 0.32, sw + (w - sw) * 0.8, h * 0.78], fill=(255, 255, 255, 90))
+        d.text((sw + (w - sw) / 2, h * 0.88), GAMES[i % len(GAMES)].split()[0], font=font(h * 0.09),
+               fill=(255, 255, 255), anchor="mm")
+        return im
     d.rectangle([0, 0, w, h * 0.16], fill=(255, 255, 255, 230))
     d.ellipse([w * 0.2, h * 0.32, w * 0.8, h * 0.78], fill=(255, 255, 255, 90))
     d.text((w / 2, h * 0.88), GAMES[i % len(GAMES)].split()[0], font=font(h * 0.1), fill=(255, 255, 255), anchor="mm")
@@ -173,11 +192,12 @@ def render(key, scheme, view):
             col = hexc(p.get("color", "FFFFFFFF"))
             rad = float(p.get("cornerRadius", 0)) * r.Wp
             if "imageType" in p:
-                if "cover" in p["imageType"].split(",")[0]:
+                if is_box(p["imageType"]):
+                    b3 = p["imageType"].startswith("3dbox")
                     mw, mh = r.px(p["maxSize"])
-                    cw, ch = mh * 0.72, mh
+                    cw, ch = mh * (0.86 if b3 else 0.72), mh
                     x, y, w, h = r.box(p, (cw, ch))
-                    r.paste(cover(cw, ch, int(p.get("gameselectorEntry", 0)) + 3, cf), x, y, cw, ch, radius=rad)
+                    r.paste(cover(cw, ch, int(p.get("gameselectorEntry", 0)) + 3, cf, b3), x, y, cw, ch, radius=rad)
                 elif name not in ("mediaFallback", "gameLogo"):
                     x, y, w, h = r.box(p)
                     r.paste(screenshot(w, h), x, y, w, h, radius=rad)
@@ -201,6 +221,15 @@ def render(key, scheme, view):
                 r.rrect(x, y, w, h, rad, col, op)
             else:
                 r.paste(Image.open(fn), x, y, w, h, tint=col, radius=rad, op=op)
+        elif et == "animation" and FRAMES and os.path.basename(p["path"]).startswith("anim-"):
+            fr = Image.open(os.path.join(FRAMES, os.path.basename(p["path"]).replace(".json", ".png")))
+            sw, sh = r.pair(p["size"])
+            w, h = sw * r.Wp, sh * H
+            if w == 0:
+                w = h * fr.size[0] / fr.size[1]
+            x0_, y0_ = r.px(p["pos"])
+            ox, oy = r.pair(p.get("origin", "0 0"))
+            r.paste(fr, x0_ - ox * w, y0_ - oy * h, w, h, tint=hexc(p.get("color", "FFFFFFFF")), op=op)
         elif et == "animation":
             anim = json.load(open(r.path(p["path"])))
             lay_ = r.layer()
@@ -277,9 +306,10 @@ def render(key, scheme, view):
                 if cx + k * step + ww / 2 < x or cx + k * step - ww / 2 > x + w:
                     continue
                 if "imageType" in p:
+                    b3 = p["imageType"].startswith("3dbox")
                     ch = hh
-                    cw = min(ww, ch * 0.72)
-                    r.paste(cover(cw, ch, sel + k, cf), cx + k * step - cw / 2, cy - ch / 2, cw, ch,
+                    cw = min(ww, ch * (0.86 if b3 else 0.72))
+                    r.paste(cover(cw, ch, sel + k, cf, b3), cx + k * step - cw / 2, cy - ch / 2, cw, ch,
                             radius=float(p.get("imageCornerRadius", 0)) * r.Wp)
                     if k:
                         r.rrect(cx + k * step - cw / 2, cy - ch / 2, cw, ch, 4, (0, 0, 0, 60))
@@ -294,10 +324,11 @@ def render(key, scheme, view):
             sx, sy = sx * r.Wp, sy * H
             cols = max(1, int((w + sx + 1) // (iw + sx)))
             rows = max(1, int((h + sy + 1) // (ih + sy)))
-            ox = x + (w - (cols * iw + (cols - 1) * sx)) / 2
+            ox = x  # ES-DE lays items out from the left edge of the grid box
             sc = float(p["itemScale"])
             selk = 2
-            items = [(rr_, cc, rr_ * cols + cc) for rr_ in range(rows) for cc in range(cols)]
+            items = [(rr_, cc, rr_ * cols + cc) for rr_ in range(rows) for cc in range(cols)
+                     if rr_ * cols + cc < ITEMS[0]]
             for rr_, cc, k in sorted(items, key=lambda t: t[2] == selk):
                 s = sc if k == selk else 1
                 ww, hh = iw * s, ih * s
@@ -316,9 +347,10 @@ def render(key, scheme, view):
                     r.paste(Image.open(fn), ix, iy, ww, hh)
                 else:
                     irs = float(p.get("imageRelativeScale", 1))
+                    b3 = p.get("imageType", "").startswith("3dbox")
                     ch = hh * irs
-                    cw = ch * 0.72
-                    r.paste(cover(cw, ch, k, cf), ix + (ww - cw) / 2, iy + (hh - ch) / 2, cw, ch,
+                    cw = ch * (0.86 if b3 else 0.72)
+                    r.paste(cover(cw, ch, k, cf, b3), ix + (ww - cw) / 2, iy + (hh - ch) / 2, cw, ch,
                             radius=float(p.get("imageCornerRadius", 0)) * r.Wp)
                 if k == selk and "selectorImage" in p:
                     r.paste(Image.open(r.path(p["selectorImage"])), ix, iy, ww, hh, tint=hexc(p["selectorColor"]))
@@ -339,7 +371,8 @@ def render(key, scheme, view):
         elif et == "clock":
             x, y = r.px(p["pos"])
             f = r.font(p["fontPath"], float(p["fontSize"]) * H * 1.18)
-            s = "21:47" if "%H" in p["format"] else "2026-10-24"
+            s = (p["format"].replace("%H", "21").replace("%M", "47").replace("%Y", "2026").replace("%m", "10")
+                 .replace("%d", "24").replace("%a", "Sat"))
             ox, oy = r.pair(p.get("origin", "0 0"))
             tw = ImageDraw.Draw(r.img).textlength(s, font=f)
             ImageDraw.Draw(r.img).text((x - ox * tw, y), s, font=f, fill=hexc(p["color"]), anchor="lm")
@@ -380,6 +413,7 @@ def render(key, scheme, view):
 
 os.makedirs(OUTDIR, exist_ok=True)
 for job in sys.argv[4:]:
-    key, scheme, view, out = job.split(",")
+    key, scheme, view, out, *rest = job.split(",")
+    ITEMS[0] = int(rest[0]) if rest else 99
     render(key, scheme, view).save(os.path.join(OUTDIR, out))
     print("rendered", out)

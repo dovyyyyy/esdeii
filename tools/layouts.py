@@ -20,8 +20,10 @@ def f(v):
 
 
 class Layout:
-    def __init__(self, W):
+    def __init__(self, W, box="cover, 3dbox"):
         self.W = W
+        self.box = box                       # scraped box art type(s) for grids, shelves and covers
+        self.box3d = box.startswith("3dbox")
         self.views = {"system": [], "gamelist": []}
 
     def x(self, v):
@@ -65,28 +67,24 @@ class Layout:
 
 
 # ================================================================== shared pieces
-def background(L, path, tile_h=0.09, overlay=None, bubbles=True):
+def background(L, path, tile_h=0.09, overlay=None):
     for v in ("system", "gamelist"):
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + path, tile="true",
               tileSize=f"0 {f(tile_h)}", color="${bgColor}", stationary="always", zIndex="0")
         if overlay:
             L.add(v, "image", "backgroundOverlay", pos="0 0", size="1 1", path=IMG + overlay,
                   stationary="always", opacity="${overlayOpacity}", zIndex="1")
-        if bubbles:  # slow drifting bubbles (Lottie vector animation)
-            L.add(v, "animation", "bubbles", pos="0 0", size="1 1", path=IMG + "bubbles.json",
-                  color="${accentColor}", opacity="${bubbleOpacity}", scaleFactor="0.5", stationary="always",
-                  zIndex="2")
 
 
 def clock(L, view, x, y, origin, fs="fsStatus", date=False, color="${subColor}", font=FONT_BLACK, name="clock",
           fmt=None):
     L.add(view, "clock", name, pos=L.pair(x, y), origin=origin, fontPath=font, fontSize="${" + fs + "}"
-          if not fs.startswith("0") else fs, color=color, format=fmt or ("%Y-%m-%d" if date else "%H:%M"))
+          if not fs.startswith("0") else fs, color=color, format=fmt or ("%Y-%m-%d" if date else "%H:%M"), scope="view")
 
 
 def status(L, view, x, y, origin="1 0.5", fs="fsStatus"):
     L.add(view, "systemstatus", "systemStatus", pos=L.pair(x, y), origin=origin, height="${" + fs + "}",
-          color="${subColor}", fontPath=FONT_BOLD)
+          color="${subColor}", fontPath=FONT_BOLD, scope="view")
 
 
 def help_(L, view, x, y, origin="0 0.5", fs="fsHelp"):
@@ -100,14 +98,14 @@ def media(L, x, y, w, h, r=0.016, z=18, view="gamelist", gameselector=None):
     app icons) shown centred when there is no screenshot."""
     L.rect(view, "mediaScreen", x, y, w, h, "${screenColor}", r, z=z)
     cov = dict(pos=L.pair(x + w / 2, y + h / 2), origin="0.5 0.5", maxSize=L.pair(h * 0.82, h * 0.82),
-               imageType="cover", default=IMG + "noimage.png", cornerRadius=L.rad(0.012), zIndex=f(z + 1))
+               imageType=L.box, default=IMG + "noimage.png", cornerRadius=L.rad(0.012), zIndex=f(z + 1))
     if gameselector:
         cov["gameselector"] = gameselector
     L.add(view, "image", "mediaFallback", **cov)
     if view == "gamelist":
         L.add(view, "video", "gameVideo", pos=L.pair(x, y), zIndex=f(z + 2),
               imageType="screenshot, titlescreen, miximage", scrollFadeIn="true", cropSize=L.pair(w, h),
-              imageCornerRadius=L.rad(r), videoCornerRadius=L.rad(r), delay="1.6", fadeInTime="0.6")
+              imageCornerRadius=L.rad(r), videoCornerRadius=L.rad(r), delay="1.0", fadeInTime="0.35")
         # scraped game logo (marquee) in the corner of the screen, like a title banner
         L.add(view, "image", "gameLogo", pos=L.pair(x + 0.022, y + h - 0.02), origin="0 1",
               maxSize=L.pair(w * 0.42, h * 0.3), imageType="marquee", scrollFadeIn="true", zIndex=f(z + 3))
@@ -169,6 +167,26 @@ def info(L, x0, y0, w, y1, desc_col=None, two_line_name=True, view="gamelist"):
                    metadata="description", lineSpacing="1.3", containerStartDelay="5")
 
 
+def empty_slots(L, view, x, y, iw, ih, sp, cols, rows, slot, z=49):
+    """Empty placeholder tiles behind a grid, one per visible cell, like the
+    blank channel slots on a console menu. ES-DE lays grid items out from the
+    top-left corner at (iw + sp) steps (scaleInwards removes the outer margin),
+    so filled cells cover their placeholder and only empty cells show it.
+
+    slot is an image path (tinted with the tile colour) or a relative size for
+    a plain rounded square."""
+    for r in range(rows):
+        for c in range(cols):
+            cx, cy = x + c * (iw + sp), y + r * (ih + sp)
+            nm = f"emptySlot{r * cols + c}"
+            if isinstance(slot, str):
+                L.img(view, nm, cx, cy, iw, ih, slot, z=z, color="${tileColor}")
+            else:
+                k = slot
+                L.rect(view, nm, cx + iw * (1 - k) / 2, cy + ih * (1 - k) / 2, iw * k, ih * k, "${tileColor}",
+                       0.026 * k, z=z, opacity="0.55")
+
+
 def picker(L, layout, x, y, w, h, grid_style):
     """The game chooser: icon grid, text list or cover shelf."""
     v = "gamelist"
@@ -180,7 +198,10 @@ def picker(L, layout, x, y, w, h, grid_style):
         gy0 = y + (h - gh) / 2
         cols = max(1, int((w + sp) // (it + sp)))
         gw = cols * (it + sp) - sp + 0.004
-        p = dict(pos=L.pair(x + (w - gw) / 2, gy0), size=L.pair(gw, gh), imageType="cover",
+        gx0 = x + (w - gw) / 2
+        empty_slots(L, v, gx0, gy0, it, it, sp, cols, rows,
+                    IMG + "slot-empty-square.png" if grid_style.get("slot") else 0.9)
+        p = dict(pos=L.pair(gx0, gy0), size=L.pair(gw, gh), imageType=L.box,
                  itemSize=L.pair(it, it), itemScale=grid_style.get("scale", "1.1"),
                  itemSpacing=f"{f(L.x(sp))} {f(sp)}", scaleInwards="true", fractionalRows="false",
                  imageFit="contain", imageCornerRadius=L.rad(0.006), textColor="${textColor}",
@@ -207,9 +228,9 @@ def picker(L, layout, x, y, w, h, grid_style):
               horizontalMargin=f(L.x(0.016)), indicators="symbols", zIndex="50")
     else:
         ih = min(0.27, h * 0.78)
-        iw = ih * 0.74
+        iw = ih * (0.9 if L.box3d else 0.74)  # 3D boxes show the spine, so they are a bit wider
         L.add(v, "carousel", "gamelistcarousel", pos=L.pair(x, y), size=L.pair(w, h), type="horizontal",
-              imageType="cover", itemSize=L.pair(iw, ih), itemScale="1.2", maxItemCount=f(w / (iw * 1.18)),
+              imageType=L.box, itemSize=L.pair(iw, ih), itemScale="1.2", maxItemCount=f(w / (iw * 1.18)),
               imageFit="contain", imageCornerRadius=L.rad(0.008), unfocusedItemOpacity="1",
               unfocusedItemDimming="0.72", color="00000000", fontPath=FONT_BLACK, fontSize="0.024",
               textColor="${accentText}", textBackgroundColor="${accentColor}",
@@ -236,10 +257,10 @@ def count_pill(L, x, y, origin=None, z=41):
 
 
 # ================================================================== ESDE3DS (dual screen)
-def build_3ds(W, style, layout):
+def build_3ds(W, style, layout, box="cover, 3dbox"):
     """style is '<iconset>|<mode>' where mode is 'row' (DSi-style row) or 'grid' (HOME-menu grid)."""
     iconset, mode = (style.split("|") + ["row"])[:2]
-    L = Layout(W)
+    L = Layout(W, box)
     sysimg = SYS + iconset + "/"
     decor = W >= 1.6
     side = min(0.24, (W - 1.30) / 2) if decor else 0.03
@@ -248,8 +269,6 @@ def build_3ds(W, style, layout):
     for v in ("system", "gamelist"):  # HOME-menu background pattern chosen by the colour scheme
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + "${bgPattern}", tile="true",
               tileSize="0 ${bgTile}", color="${bgColor}", stationary="always", zIndex="0")
-        L.add(v, "animation", "bubbles", pos="0 0", size="1 1", path=IMG + "bubbles.json",
-              color="${accentColor}", opacity="${bubbleOpacity}", scaleFactor="0.5", stationary="always", zIndex="2")
 
     sys_geo = dict(up=(0.035, 0.555), lo=(0.595, 0.915)) if mode == "row" else \
         dict(up=(0.035, 0.47), lo=(0.51, 0.915))
@@ -306,7 +325,7 @@ def build_3ds(W, style, layout):
     for i in range(3):
         cx = nx + cov_w / 2 + i * (cov_w + 0.025)
         L.add(v, "image", f"recentCover{i}", pos=L.pair(cx, rl + 0.04 + cov_h), origin="0.5 1",
-              maxSize=L.pair(cov_w, cov_h), imageType="cover, miximage", default=IMG + "nocover.png",
+              maxSize=L.pair(cov_w, cov_h), imageType=L.box, default=IMG + "nocover.png",
               gameselector="recent", gameselectorEntry=str(i), cornerRadius=L.rad(0.006), zIndex="20")
     if wide:
         py = uy0 + 0.09 + (uy1 - uy0 - 0.09 - prev_h) / 2 - 0.005
@@ -331,14 +350,16 @@ def build_3ds(W, style, layout):
               itemVerticalAlignment="center", fastScrolling="true", zIndex="50")
         ring = item * scale * icons.BODY_FRAC + 0.034
         cy = car_y0 + car_h / 2 + item * scale * icons.BODY_OFFSET_FRAC
-        L.add(v, "image", "cursor", pos=L.pair(px + pw / 2, cy), origin="0.5 0.5", size=L.pair(ring, ring),
-              path=IMG + "cursor.png", color="${accentColor}", zIndex="55")
+        L.add(v, "animation", "cursor", pos=L.pair(px + pw / 2, cy), origin="0.5 0.5", size=L.pair(ring, ring),
+              path=IMG + "anim-cursor.json", color="${accentColor}", zIndex="55")
     else:  # HOME-menu style grid of icons with a glowing cursor
         it, sp, rows = 0.168, 0.026, 2
         gh = rows * it + (rows - 1) * sp + 0.004
         cols = max(3, int((pw - 0.06 + sp) // (it + sp)))
         gw = cols * (it + sp) - sp + 0.004
-        L.add(v, "grid", "systemgrid", pos=L.pair(px + (pw - gw) / 2, ly0 + (ly1 - ly0 - gh) / 2),
+        gx0, gy0 = px + (pw - gw) / 2, ly0 + (ly1 - ly0 - gh) / 2
+        empty_slots(L, v, gx0, gy0, it, it, sp, cols, rows, IMG + "slot-empty-square.png")
+        L.add(v, "grid", "systemgrid", pos=L.pair(gx0, gy0),
               size=L.pair(gw, gh), staticImage=sysimg + "${system.theme}.png", itemSize=L.pair(it, it),
               itemScale="1.1", itemSpacing=f"{f(L.x(sp))} {f(sp)}", scaleInwards="true", fractionalRows="false",
               imageFit="contain", selectorImage=IMG + "select-square.png", selectorColor="${accentColor}",
@@ -374,33 +395,58 @@ def build_3ds(W, style, layout):
 
 # ================================================================== ESDEII (living-room menu)
 def wii_bottom(L, view, W, m):
+    """Curved clock bar: round buttons in the raised corners, SD card, a clock
+    with a blinking colon and the date underneath."""
     by = 0.752
     L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}", stationary="always")
     L.img(view, "menuBarLine", 0, by, W, 1 - by, IMG + "wii-bar-line.png", z=60.1, color="${accentColor}",
           stationary="always", opacity="0.85")
-    L.add(view, "clock", "clock", pos=L.pair(W / 2, 0.902), origin="0.5 0.5", fontPath=FONT_BLACK,
-          fontSize="${fsWiiClock}", color="${subColor}", format="%H:%M", horizontalAlignment="center")
+    # clock: hours | blinking colon | minutes (hidden while the ES-DE menu is open)
+    cy, gap = 0.893, 0.014
+    for name, fmt, x, org in (("clockHours", "%H", W / 2 - gap, "1 0.5"), ("clockMinutes", "%M", W / 2 + gap, "0 0.5")):
+        L.add(view, "clock", name, pos=L.pair(x, cy), origin=org, fontPath=FONT_BLACK, fontSize="${fsWiiClock}",
+              color="${subColor}", format=fmt, scope="view")
+    L.add(view, "animation", "clockColon", pos=L.pair(W / 2, cy - 0.004), origin="0.5 0.5",
+          size="0 ${fsColon}", path=IMG + "anim-colon.json", color="${subColor}", stationary="always", zIndex="62")
     L.add(view, "clock", "date", pos=L.pair(W / 2, 0.962), origin="0.5 0.5", fontPath=FONT_BOLD,
-          fontSize="${fsSmall}", color="${subColor}", format="%Y-%m-%d", horizontalAlignment="center")
-    side_w = max(0.2, W / 2 - 0.3 - m)
+          fontSize="${fsSmall}", color="${subColor}", format="%a %d/%m", scope="view")
+    # round corner buttons (decorative); the mail button glows now and then
+    bs = 0.15
+    bx = max(m + bs / 2, min(W * 0.115, 0.24))
+    byc = 0.872
+    L.add(view, "image", "homeButton", pos=L.pair(bx, byc), origin="0.5 0.5", size=L.pair(bs, bs),
+          path=IMG + "button-home.png", stationary="always", zIndex="61")
+    L.add(view, "animation", "mailGlow", pos=L.pair(W - bx, byc - 0.004), origin="0.5 0.5",
+          size=L.pair(bs * 0.98, bs * 0.98), path=IMG + "anim-glow.json", color="${accentColor}",
+          stationary="always", zIndex="60.5")
+    L.add(view, "image", "mailButton", pos=L.pair(W - bx, byc), origin="0.5 0.5", size=L.pair(bs, bs),
+          path=IMG + "button-mail.png", stationary="always", zIndex="61")
+    roomy = W >= 1.5
+    tx = bx + bs / 2 + 0.02
+    if roomy:
+        L.add(view, "image", "sdCard", pos=L.pair(tx + 0.02, 0.905), origin="0.5 0.5", size=L.pair(0.05, 0.05),
+              path=IMG + "sd-card.png", color="${subColor}", stationary="always", zIndex="61")
+        tx += 0.055
+    side_w = max(0.12, W / 2 - 0.14 - tx)
     if view == "system":
-        L.text(view, "barCount", m + 0.02, 0.905, side_w, 0.04, "fsCount", FONT_BOLD, "${subColor}",
+        L.text(view, "barCount", tx, 0.905, side_w, 0.04, "fsSmall", FONT_BOLD, "${subColor}",
                origin="0 0.5", systemdata="gamecount", z=62)
     else:
-        L.add(view, "gamelistinfo", "gamelistInfo", pos=L.pair(m + 0.02, 0.905), origin="0 0.5",
-              size=L.pair(side_w, 0.04), fontPath=FONT_BOLD, fontSize="${fsCount}", color="${subColor}",
+        L.add(view, "gamelistinfo", "gamelistInfo", pos=L.pair(tx, 0.905), origin="0 0.5",
+              size=L.pair(side_w, 0.04), fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}",
               horizontalAlignment="left", zIndex="62")
-    status(L, view, W - m - 0.02, 0.905)
-    help_(L, view, W - m, 0.055, origin="1 0.5", fs="fsSmall")
+    status(L, view, W - bx - bs / 2 - 0.02, 0.905, fs="fsSmall")
+    # button prompts sit in the dip above the bar, clear of the title
+    help_(L, view, W / 2, 0.795, origin="0.5 0.5", fs="fsSmall")
 
 
-def build_wii(W, style, layout):
-    L = Layout(W)
+def build_wii(W, style, layout, box="cover, 3dbox"):
+    L = Layout(W, box)
     sysimg = SYS + "channelwide/"
     m = 0.05 if W >= 1.4 else 0.035
     background(L, "bg-wii.png", 0.02)
 
-    # system view: wall of channels
+    # system view: wall of channels, empty slots where there is no channel
     v = "system"
     system_name(L, m, 0.03, W * 0.6, 0.06, "fsWiiHeader", lines=1)
     system_info(L, v, m, 0.092, W * 0.6)
@@ -409,15 +455,20 @@ def build_wii(W, style, layout):
     gy0, gy1 = 0.145, 0.728
     ih = (gy1 - gy0 - 2 * sp) / 3
     iw = ih * aspect
-    cols = max(2, int((W - 2 * m + sp) // (iw + sp)))
+    cols = max(2, int((W - 2 * m - 0.05 + sp) // (iw + sp)))
     gw = cols * (iw + sp) - sp + 0.004
-    L.add(v, "grid", "systemgrid", pos=L.pair((W - gw) / 2, gy0), size=L.pair(gw, gy1 - gy0),
+    gx0 = (W - gw) / 2
+    empty_slots(L, v, gx0, gy0, iw, ih, sp, cols, 3, IMG + "slot-empty-wide.png")
+    L.add(v, "grid", "systemgrid", pos=L.pair(gx0, gy0), size=L.pair(gw, gy1 - gy0 + 0.004),
           staticImage=sysimg + "${system.theme}.png", itemSize=L.pair(iw, ih), itemScale="1.06",
           itemSpacing=f"{f(L.x(sp))} {f(sp)}", scaleInwards="true", fractionalRows="false", imageFit="contain",
           selectorImage=IMG + "select-wide.png", selectorColor="${accentColor}", selectorLayer="top",
           text="${system.fullName}", fontPath=FONT_BLACK, fontSize="0.026", textColor="${dimText}",
           textBackgroundColor="${panelColor}", textBackgroundCornerRadius=L.rad(0.03), textRelativeScale="0.88",
           lineSpacing="1.15", unfocusedItemOpacity="1", zIndex="50")
+    # page arrow on the right edge, nudging like the console's
+    L.add(v, "animation", "pageArrow", pos=L.pair(W - (W - gw) / 4, (gy0 + gy1) / 2), origin="0.5 0.5",
+          size=L.pair(0.04, 0.0625), path=IMG + "anim-arrow.json", color="${accentColor}", zIndex="52")
     wii_bottom(L, v, W, m)
 
     # gamelist view: info column on the left, games on the right
@@ -459,7 +510,7 @@ def wiiu_dock(L, view, W, m):
               fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left",
               zIndex="62")
     L.add(view, "clock", "date", pos=L.pair(W - m - 0.04, 0.91), origin="1 0.5", fontPath=FONT_BOLD,
-          fontSize="${fsSmall}", color="${subColor}", format="%Y-%m-%d", horizontalAlignment="right")
+          fontSize="${fsSmall}", color="${subColor}", format="%Y-%m-%d", horizontalAlignment="right", scope="view")
 
 
 def wiiu_top(L, view, W, m):
@@ -471,8 +522,8 @@ def wiiu_top(L, view, W, m):
     status(L, view, W - m, 0.1)
 
 
-def build_wiiu(W, style, layout):
-    L = Layout(W)
+def build_wiiu(W, style, layout, box="cover, 3dbox"):
+    L = Layout(W, box)
     sysimg = SYS + style + "/"
     m = 0.05 if W >= 1.4 else 0.035
     background(L, "bg-wiiu.png", 0.11, overlay="wiiu-swirl.png")
@@ -484,7 +535,7 @@ def build_wiiu(W, style, layout):
     L.img(v, "userSlot", m, 0.03, us, us, IMG + "slot-square.png", z=10)
     inner = us * (icons.ART[2] - icons.ART[0]) / icons.TILE
     L.add(v, "image", "userCover", pos=L.pair(m + us / 2, 0.03 + us / 2), origin="0.5 0.5",
-          maxSize=L.pair(inner * 0.9, inner * 0.9), imageType="cover, miximage", gameselector="featured",
+          maxSize=L.pair(inner * 0.9, inner * 0.9), imageType=L.box, gameselector="featured",
           default=IMG + "nocover.png", cornerRadius=L.rad(0.006), zIndex="11")
     tx = m + us + 0.03
     system_name(L, tx, 0.045, W - m - 0.3 - tx, 0.06, "fsWiiHeader", lines=1)
@@ -497,7 +548,9 @@ def build_wiiu(W, style, layout):
     gh = rows * it + (rows - 1) * sp
     cols = max(3, int((W - 2 * m - 0.12 + sp) // (it + sp)))
     gw = cols * (it + sp) - sp + 0.004
-    L.add(v, "grid", "systemgrid", pos=L.pair((W - gw) / 2, gy0 + (gy1 - gy0 - gh) / 2), size=L.pair(gw, gh + 0.004),
+    gx0, gy0 = (W - gw) / 2, gy0 + (gy1 - gy0 - gh) / 2
+    empty_slots(L, v, gx0, gy0, it, it, sp, cols, rows, IMG + "slot-empty-square.png")
+    L.add(v, "grid", "systemgrid", pos=L.pair(gx0, gy0), size=L.pair(gw, gh + 0.004),
           staticImage=sysimg + "${system.theme}.png", itemSize=L.pair(it, it), itemScale="1.04",
           itemSpacing=f"{f(L.x(sp))} {f(sp)}", scaleInwards="true", fractionalRows="false", imageFit="contain",
           selectorImage=IMG + "select-start.png", selectorColor="FFFFFFFF", selectorLayer="top",
@@ -539,8 +592,8 @@ def build_wiiu(W, style, layout):
     return L
 
 
-def build_ii(W, style, layout):
-    return build_wii(W, style, layout) if style == "channelwide" else build_wiiu(W, style, layout)
+def build_ii(W, style, layout, box="cover, 3dbox"):
+    return (build_wii if style == "channelwide" else build_wiiu)(W, style, layout, box)
 
 
 BUILDERS = {"3ds": build_3ds, "ii": build_ii}

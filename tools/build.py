@@ -78,37 +78,47 @@ for _k, (_p, _t) in PATTERN.items():
     S[_k][1].update(bgPattern=_p, bgTile=_t)
 REST = ["cosmoBlack", "flameRed", "aquaBlue", "mintGreen", "lavender", "sunset", "sakura", "midnight", "retroPocket"]
 
-THEMES = {
-    # styles: (icon set, system-view mode, label)
-    "esdeii": dict(builder="ii",
-                   styles=[("channelwide", None, "Channel wall"), ("plaza", None, "Home screen"),
-                           ("glossy", None, "Home screen, glossy icons")],
-                   sounds="click",
-                   schemes=["silverMenu", "cloudWhite", "iceWhite"] + REST + SYSTEM_ACCENT,
-                   blurb="console menu style (channel wall and home screen)"),
-    "esde3ds": dict(builder="3ds",
-                    styles=[("glossy", "grid", "Glossy icons, HOME grid"), ("glossy", "row", "Glossy icons, icon row"),
-                            ("plaza", "grid", "Plaza icons, HOME grid"), ("plaza", "row", "Plaza icons, icon row")],
-                    sounds="chime", schemes=["iceWhite"] + REST + ["silverMenu", "cloudWhite"] + SYSTEM_ACCENT,
-                    blurb="dual-screen handheld style"),
-}
+# One theme, several looks. Each look is (variant prefix, layout builder, style, label).
+LOOKS = [
+    ("wall", "ii", "channelwide", "Channel wall"),
+    ("home", "ii", "plaza", "Home screen"),
+    ("homeGlossy", "ii", "glossy", "Home screen, glossy icons"),
+    ("duoGrid", "3ds", "glossy|grid", "Dual screen, icon grid"),
+    ("duoRow", "3ds", "glossy|row", "Dual screen, icon row"),
+]
+# How games are shown, and which scraped box art the grid / shelf use.
+# ES-DE takes up to two image types: the second is used when the first is missing,
+# so "box art" still shows 3D boxes for games that only have those (and vice versa).
+GAME_VIEWS = [("Grid", "icon grid"), ("Shelf", "cover shelf"), ("List", "game list")]
+BOX_ART = [("", "box art", "cover, 3dbox"), ("3D", "3D boxes", "3dbox, cover")]
 
-FONT_SIZES = {"medium": 1.0, "small": 0.88, "large": 1.14}
+THEMES = {
+    "esdeii": dict(looks=LOOKS, sounds="click",
+                   schemes=["silverMenu", "cloudWhite", "iceWhite"] + REST + SYSTEM_ACCENT,
+                   blurb="console menu style (channel wall, home screen and dual screen)"),
+}
+RETIRED = ("esde3ds", "esdeiiu", "music")  # older folders merged into esdeii
+
+FONT_SIZES = {"medium": 1.0, "large": 1.14, "small": 0.88, "x-large": 1.28, "x-small": 0.78}
 FS_BASE = dict(fsTitle=0.056, fsName3ds=0.05, fsWiiHeader=0.05, fsWiiClock=0.075, fsGameName=0.041,
                fsLabel=0.019, fsMeta=0.027, fsDesc=0.025, fsList=0.031, fsStatus=0.03, fsHelp=0.028,
-               fsCount=0.03, fsSmall=0.022, fsFeat=0.026)
-TRANSITIONS = [
+               fsCount=0.03, fsSmall=0.022, fsFeat=0.026, fsColon=0.07)
+TRANSITIONS = [  # the first one is used when "Automatic" is selected
+    ("snappy", "Snappy", dict(systemToGamelist="instant", gamelistToSystem="instant", startupToSystem="fade",
+                              startupToGamelist="fade")),
     ("slide", "Slide", dict(systemToGamelist="slide", gamelistToSystem="slide", startupToSystem="fade",
                             startupToGamelist="fade")),
     ("fade", "Fade", dict(systemToGamelist="fade", gamelistToSystem="fade", startupToSystem="fade",
                           startupToGamelist="fade")),
-    ("instant", "Instant", dict(systemToGamelist="instant", gamelistToSystem="instant")),
 ]
 
 
 # ---------------------------------------------------------------- cached assets
 def fonts():
     d = os.path.join(CACHE, "fonts")
+    if not os.path.exists(os.path.join(d, "Nunito-Black.ttf")) and not os.path.exists(NUNITO_VF):
+        # no variable font given: reuse the static instances already in the repo
+        shutil.copytree(os.path.join(ROOT, "esdeii", "assets", "fonts"), d, dirs_exist_ok=True)
     if not os.path.exists(os.path.join(d, "Nunito-Black.ttf")):
         os.makedirs(d, exist_ok=True)
         for name, wght in (("Nunito-SemiBold", 600), ("Nunito-ExtraBold", 800), ("Nunito-Black", 900)):
@@ -151,12 +161,6 @@ def images(fontdir):
                                                            radius=img.size[1] / 2, fill=(255, 255, 255, 255))
        ).save(os.path.join(d, "pill.png"))
 
-    def ring(dr, s, img):
-        W = img.size[0]
-        t, rad = 16 * s, 96 * s
-        dr.rounded_rectangle([0, 0, W - 1, W - 1], radius=rad, fill=(255, 255, 255, 255))
-        dr.rounded_rectangle([t, t, W - 1 - t, W - 1 - t], radius=rad - t, fill=(0, 0, 0, 0))
-    ss((400, 400), ring).save(os.path.join(d, "cursor.png"))
     star = "M50 6 L62.9 34.2 L93.8 37.6 L70.8 58.4 L77.2 88.8 L50 73.4 L22.8 88.8 L29.2 58.4 L6.2 37.6 L37.1 34.2 Z"
     for name, fill in (("star-filled.svg", "#FFC21A"), ("star-unfilled.svg", "#B9C0CA")):
         with open(os.path.join(d, name), "w") as fh:
@@ -175,7 +179,7 @@ def images(fontdir):
     g.rounded_rectangle([16, 16, 343, 483], radius=16, fill=(238, 241, 245, 255))
     im.paste((176, 184, 194, 255), (95, 165), shapes.glyph("cart", 170))
     im.save(os.path.join(d, "nocover.png"), optimize=True)
-    themeart.build_all(d, os.path.join(fontdir, "Nunito-Black.ttf"))
+    themeart.build_all(d, os.path.join(fontdir, "Nunito-Black.ttf"), os.path.join(CACHE, "frames"))
     open(os.path.join(d, "done"), "w").close()
     return d
 
@@ -226,21 +230,21 @@ def write_theme(key, cfg, fontdir, imgdir, dump):
     shutil.copytree(fontdir, os.path.join(out, "assets", "fonts"))
     shutil.copytree(imgdir, os.path.join(out, "assets", "images"), ignore=shutil.ignore_patterns("done"))
     shutil.copytree(sounds(cfg["sounds"]), os.path.join(out, "assets", "sounds"))
-    for iconset in dict.fromkeys(st[0] for st in cfg["styles"]):
+    for iconset in dict.fromkeys(look[2].split("|")[0] for look in cfg["looks"]):
         shutil.copytree(icon_set(iconset, fontdir), os.path.join(out, "systems", iconset))
 
+    # variant = look x game view x box art (the text list has no box art to choose)
     variants = []
-    for iconset, mode, slabel in cfg["styles"]:
-        for lay, desc in GAME_LAYOUTS:
-            name = f"{iconset}{(mode or '').capitalize()}{lay}"
-            label = f"{slabel} + {desc}"
-            variants.append((name, label, iconset + ("|" + mode if mode else ""), lay.lower()))
+    for prefix, builder, style, llabel in cfg["looks"]:
+        for view, vdesc in GAME_VIEWS:
+            for bkey, bdesc, btypes in (BOX_ART if view != "List" else BOX_ART[:1]):
+                label = f"{llabel} · {vdesc}" + (f" · {bdesc}" if view != "List" else "")
+                variants.append((f"{prefix}{view}{bkey}", label, (builder, style, view.lower(), btypes)))
 
-    build = layouts.BUILDERS[cfg["builder"]]
     files = {}
     for ar, W in ASPECTS:
-        for name, _, style, lay in variants:
-            L = build(W, style, lay)
+        for name, _, (builder, style, lay, btypes) in variants:
+            L = layouts.BUILDERS[builder](W, style, lay, btypes)
             fn = f"{ar.replace(':', 'x').replace('.', '_')}-{name}.xml"
             with open(os.path.join(out, "layouts", fn), "w") as fh:
                 fh.write(f"<!-- {key} layout: {ar}, {name} (generated by tools/build.py) -->\n" + views_xml(L))
@@ -269,7 +273,7 @@ def write_theme(key, cfg, fontdir, imgdir, dump):
                 "        <gamelistToGamelist>instant</gamelistToGamelist>"]
         cap += [f"        <{k}>{v}</{k}>" for k, v in rows.items()] + ["    </transitions>"]
     cap.append("")
-    for name, label, _, _ in variants:
+    for name, label, _ in variants:
         cap += [f'    <variant name="{name}">', f"        <label>{label}</label>",
                 "        <selectable>true</selectable>", "    </variant>"]
     cap.append("</themeCapabilities>")
@@ -290,7 +294,7 @@ def write_theme(key, cfg, fontdir, imgdir, dump):
         t += [f"            <{k}>{layouts.f(v * mult)}</{k}>" for k, v in FS_BASE.items()]
         t += ["        </variables>", "    </fontSize>"]
     t.append("")
-    for name, _, _, _ in variants:
+    for name, _, _ in variants:
         t.append(f'    <variant name="{name}">')
         for ar, _ in ASPECTS:
             t += [f'        <aspectRatio name="{ar}">', f"            <include>./layouts/{files[(ar, name)]}</include>",
@@ -316,7 +320,7 @@ if __name__ == "__main__":
     dump = {} if JSON_OUT else None
     for key, cfg in THEMES.items():
         write_theme(key, cfg, fontdir, imgdir, dump)
-    for old in ("esdeiiu", "music"):  # merged into esdeii / removed
+    for old in RETIRED:
         if os.path.exists(os.path.join(ROOT, old)):
             shutil.rmtree(os.path.join(ROOT, old))
     if JSON_OUT:

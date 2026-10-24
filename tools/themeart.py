@@ -82,8 +82,8 @@ def wii_bar(path_bar, path_line, W=2400, H=300):
     line.save(path_line, optimize=True)
 
 
-def round_button(path, glyph_kind, S=300):
-    """Glossy round menu button with a grey glyph."""
+def round_button(path, glyph_kind=None, S=300, text=None, fontpath=None):
+    """Glossy round menu button with a grey glyph (or short lettering)."""
     img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
     def body(d, s, big):
         W = big.size[0]
@@ -99,10 +99,14 @@ def round_button(path, glyph_kind, S=300):
     inner = Image.new("L", (S, S), 0)
     ImageDraw.Draw(inner).ellipse([18, 14, S - 18, S - 22], fill=255)
     img.paste((150, 160, 172, 255), (0, 0), mul(shade.filter(ImageFilter.GaussianBlur(20)), inner))
-    g = shapes.glyph(glyph_kind, int(S * 0.42))
-    gx = (S - g.size[0]) // 2
-    gy = int(S * 0.46 - g.size[1] / 2)
-    img.paste((140, 147, 156, 255), (gx, gy), g)
+    if text:
+        f = ImageFont.truetype(fontpath, int(S * 0.36))
+        ImageDraw.Draw(img).text((S / 2, S * 0.44), text, font=f, fill=(140, 147, 156, 255), anchor="mm")
+    else:
+        g = shapes.glyph(glyph_kind, int(S * 0.42))
+        gx = (S - g.size[0]) // 2
+        gy = int(S * 0.46 - g.size[1] / 2)
+        img.paste((140, 147, 156, 255), (gx, gy), g)
     img.save(path, optimize=True)
 
 
@@ -185,13 +189,170 @@ def slot_wide(path):
     img.save(path, optimize=True)
 
 
-def build_all(img_dir, fontpath):
+def _scanlines(size, box, rad, step=6):
+    """Light console-menu 'empty slot' fill: soft grey with faint horizontal lines."""
+    W, H = size
+    x0, y0, x1, y1 = box
+    fill = icons._vgrad((236, 238, 241), (226, 229, 233), y0, y1, size)
+    d = ImageDraw.Draw(fill)
+    for y in range(int(y0), int(y1), step):
+        d.line([(0, y), (W, y)], fill=(244, 245, 247, 255), width=2)
+    return fill
+
+
+def _emboss_text(img, text, fontpath, cx, cy, px, mask):
+    """Faint embossed lettering (light highlight below, soft shadow above)."""
+    f = ImageFont.truetype(fontpath, px)
+    for (dx, dy), col in (((0, 2), (255, 255, 255, 150)), ((0, -1), (196, 201, 208, 150)),
+                          ((0, 0), (226, 229, 233, 255))):
+        t = Image.new("RGBA", img.size, (0, 0, 0, 0))
+        ImageDraw.Draw(t).text((cx + dx, cy + dy), text, font=f, fill=col, anchor="mm")
+        t.putalpha(mul(t.split()[3], mask))
+        img.alpha_composite(t)
+
+
+def slot_empty_wide(path, fontpath):
+    """Empty channel slot (wide), shown where the wall has no channel."""
+    W, H = icons.WT_W, icons.WT_H
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    x0, y0, x1, y1 = icons.WBODY
+    img.paste((196, 202, 210, 255), (0, 0), icons._rr(icons.WBODY, icons.WRAD, (W, H)))
+    inner = icons._rr((x0 + 3, y0 + 3, x1 - 3, y1 - 3), icons.WRAD - 3, (W, H))
+    img.paste(_scanlines((W, H), icons.WBODY, icons.WRAD), (0, 0), inner)
+    _emboss_text(img, "ii", fontpath, (x0 + x1) / 2, (y0 + y1) / 2 + 4, 120, inner)
+    img.save(path, optimize=True)
+
+
+def slot_empty_square(path, fontpath):
+    """Empty square slot, same frame geometry as the square system tiles."""
+    S = icons.TILE
+    img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+    x0, y0, x1, y1 = icons.BODY
+    img.paste((196, 202, 210, 255), (0, 0), rr_mask(icons.BODY, icons.RAD))
+    inner = rr_mask(icons.inset(icons.BODY, 3), icons.RAD - 3)
+    img.paste(_scanlines((S, S), icons.BODY, icons.RAD), (0, 0), inner)
+    _emboss_text(img, "ii", fontpath, (x0 + x1) / 2, (y0 + y1) / 2 + 4, 110, inner)
+    img.save(path, optimize=True)
+
+
+def sd_card(path, S=120):
+    """Small SD-card glyph for the bar (white, tinted in theme)."""
+    def draw(d, s, big):
+        W, H = big.size
+        pts = [(26 * s, 8 * s), (W - 22 * s, 8 * s), (W - 22 * s, H - 8 * s), (22 * s, H - 8 * s),
+               (22 * s, 30 * s), (26 * s, 26 * s)]
+        d.rounded_rectangle([22 * s, 8 * s, W - 22 * s, H - 8 * s], radius=10 * s, fill=(255, 255, 255, 255))
+        d.polygon([(22 * s, 8 * s), (44 * s, 8 * s), (22 * s, 30 * s)], fill=(0, 0, 0, 0))
+        for i in range(4):
+            x = 38 * s + i * 13 * s
+            d.rounded_rectangle([x, 18 * s, x + 7 * s, 38 * s], radius=2 * s, fill=(0, 0, 0, 0))
+    ss_draw((S, S), draw).save(path, optimize=True)
+
+
+# ---------------------------------------------------------------- small Lottie animations
+# All are tiny (a few % of the screen) so rlottie renders them cheaply, unlike a
+# full-screen animation. Shapes are white; the theme tints them with `color`.
+def _st(v):
+    return {"a": 0, "k": v}
+
+
+def _anim(keys):
+    """Animated property from [(frame, value), ...] with smooth easing."""
+    out = []
+    for n, (t, v) in enumerate(keys):
+        fr = {"t": t, "s": v if isinstance(v, list) else [v]}
+        if n < len(keys) - 1:
+            fr.update(i={"x": [0.45], "y": [1]}, o={"x": [0.55], "y": [0]})
+        out.append(fr)
+    return {"a": 1, "k": out}
+
+
+def _tr():
+    return {"ty": "tr", "p": _st([0, 0]), "a": _st([0, 0]), "s": _st([100, 100]), "r": _st(0), "o": _st(100),
+            "sk": _st(0), "sa": _st(0)}
+
+
+def _layer(i, shapes_, op, opacity=None, pos=(0, 0), position=None, scale_=None, anchor=(0, 0)):
+    return {"ddd": 0, "ind": i, "ty": 4, "nm": f"l{i}", "sr": 1, "ao": 0, "ip": 0, "op": op, "st": 0, "bm": 0,
+            "ks": {"o": opacity or _st(100), "r": _st(0), "p": position or _st([pos[0], pos[1], 0]),
+                   "a": _st([anchor[0], anchor[1], 0]), "s": scale_ or _st([100, 100, 100])},
+            "shapes": [{"ty": "gr", "nm": "g", "it": shapes_ + [_tr()]}]}
+
+
+def _write_lottie(path, w, h, fps, op, layers):
+    import json
+    with open(path, "w") as fh:
+        json.dump({"v": "5.7.4", "fr": fps, "ip": 0, "op": op, "w": w, "h": h, "nm": os.path.basename(path),
+                   "ddd": 0, "assets": [], "layers": layers}, fh, separators=(",", ":"))
+
+
+FILL = {"ty": "fl", "c": _st([1, 1, 1, 1]), "o": _st(100), "r": 1, "nm": "f"}
+
+
+def lottie_colon(path, frame_png):
+    """Blinking clock colon (1 s cycle), placed between the hour and minute clocks."""
+    dots = [{"ty": "el", "d": 1, "s": _st([17, 17]), "p": _st([20, y]), "nm": "e"} for y in (40, 82)]
+    _write_lottie(path, 40, 120, 30, 30, [_layer(1, dots + [FILL], 30,
+                                                 opacity=_anim([(0, 100), (12, 100), (16, 15), (27, 15), (30, 100)]))])
+    im = Image.new("RGBA", (40, 120), (0, 0, 0, 0))
+    for y in (40, 82):
+        ImageDraw.Draw(im).ellipse([11.5, y - 8.5, 28.5, y + 8.5], fill=(255, 255, 255, 255))
+    im.save(frame_png)
+
+
+def lottie_arrow(path, frame_png):
+    """Page arrow on the right edge of the channel wall, gently nudging right."""
+    tri = {"ty": "sh", "nm": "p", "ks": _st({"c": True, "v": [[0, -34], [30, 0], [0, 34]],
+                                              "i": [[0, 0], [0, 0], [0, 0]], "o": [[0, 0], [0, 0], [0, 0]]})}
+    stroke = {"ty": "st", "c": _st([1, 1, 1, 1]), "o": _st(100), "w": _st(10), "lc": 2, "lj": 2, "nm": "s"}
+    _write_lottie(path, 64, 100, 30, 48, [
+        _layer(1, [tri, stroke, FILL], 48, position=_anim([(0, [22, 50, 0]), (24, [32, 50, 0]), (48, [22, 50, 0])]),
+               opacity=_anim([(0, 80), (24, 100), (48, 80)]))])
+    im = Image.new("RGBA", (64, 100), (0, 0, 0, 0))
+    ImageDraw.Draw(im).polygon([(22, 16), (52, 50), (22, 84)], fill=(255, 255, 255, 255))
+    im.save(frame_png)
+
+
+def lottie_glow_ring(path, frame_png):
+    """Soft pulsing ring around the mail button (like the blinking message light)."""
+    ring = [{"ty": "el", "d": 1, "s": _st([176, 176]), "p": _st([0, 0]), "nm": "e"},
+            {"ty": "st", "c": _st([1, 1, 1, 1]), "o": _st(100), "w": _st(9), "lc": 2, "lj": 2, "nm": "s"}]
+    _write_lottie(path, 200, 200, 30, 90, [
+        _layer(1, ring, 90, pos=(100, 100), opacity=_anim([(0, 0), (20, 85), (45, 0), (90, 0)]),
+               scale_=_anim([(0, [94, 94, 100]), (45, [106, 106, 100]), (90, [106, 106, 100])]))])
+    im = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+    ImageDraw.Draw(im).ellipse([10, 10, 190, 190], outline=(255, 255, 255, 190), width=9)
+    im.save(frame_png)
+
+
+def lottie_cursor(path, frame_png, S=400):
+    """Breathing selection ring for the icon row (replaces the static cursor.png)."""
+    rect = [{"ty": "rc", "d": 1, "s": _st([S - 24, S - 24]), "p": _st([0, 0]), "r": _st(96), "nm": "r"},
+            {"ty": "st", "c": _st([1, 1, 1, 1]), "o": _st(100), "w": _st(16), "lc": 2, "lj": 2, "nm": "s"}]
+    _write_lottie(path, S, S, 30, 60, [
+        _layer(1, rect, 60, pos=(S / 2, S / 2), opacity=_anim([(0, 100), (30, 55), (60, 100)]),
+               scale_=_anim([(0, [100, 100, 100]), (30, [97, 97, 100]), (60, [100, 100, 100])]))])
+    im = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+    ImageDraw.Draw(im).rounded_rectangle([12, 12, S - 12, S - 12], radius=96, outline=(255, 255, 255, 255), width=16)
+    im.save(frame_png)
+
+
+def build_all(img_dir, fontpath, frames_dir=None):
+    frames_dir = frames_dir or img_dir
+    os.makedirs(frames_dir, exist_ok=True)
     bg_wii(os.path.join(img_dir, "bg-wii.png"))
     bg_wiiu(os.path.join(img_dir, "bg-wiiu.png"))
     wiiu_swirl(os.path.join(img_dir, "wiiu-swirl.png"))
     wii_bar(os.path.join(img_dir, "wii-bar.png"), os.path.join(img_dir, "wii-bar-line.png"))
-    bubbles_lottie(os.path.join(img_dir, "bubbles.json"))
     patterns(img_dir)
+    slot_empty_wide(os.path.join(img_dir, "slot-empty-wide.png"), fontpath)
+    slot_empty_square(os.path.join(img_dir, "slot-empty-square.png"), fontpath)
+    round_button(os.path.join(img_dir, "button-home.png"), text="ii", fontpath=fontpath)
+    round_button(os.path.join(img_dir, "button-mail.png"), "mail")
+    sd_card(os.path.join(img_dir, "sd-card.png"))
+    for fn, name in ((lottie_colon, "anim-colon"), (lottie_arrow, "anim-arrow"), (lottie_glow_ring, "anim-glow"),
+                     (lottie_cursor, "anim-cursor")):
+        fn(os.path.join(img_dir, name + ".json"), os.path.join(frames_dir, name + ".png"))
     wii_selector(os.path.join(img_dir, "select-wide.png"))
     wiiu_selector(os.path.join(img_dir, "select-start.png"), fontpath)
     square_ring(os.path.join(img_dir, "select-square.png"))
