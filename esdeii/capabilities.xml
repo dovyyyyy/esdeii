@@ -20,6 +20,9 @@
     <colorScheme name="silverMenu">
         <label>Silver Menu</label>
     </colorScheme>
+    <colorScheme name="cloudWhite">
+        <label>Cloud White</label>
+    </colorScheme>
     <colorScheme name="iceWhite">
         <label>Ice White</label>
     </colorScheme>
@@ -49,9 +52,6 @@
     </colorScheme>
     <colorScheme name="retroPocket">
         <label>Retro Pocket</label>
-    </colorScheme>
-    <colorScheme name="cloudWhite">
-        <label>Cloud White</label>
     </colorScheme>
     <colorScheme name="lightSystem">
         <label>Light + system colours</label>
@@ -86,16 +86,40 @@
         <gamelistToSystem>instant</gamelistToSystem>
     </transitions>
 
-    <variant name="grid">
-        <label>Icon grid</label>
+    <variant name="channelwideGrid">
+        <label>Channel wall + icon grid</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="list">
-        <label>Game list</label>
+    <variant name="channelwideList">
+        <label>Channel wall + game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="shelf">
-        <label>Cover shelf</label>
+    <variant name="channelwideShelf">
+        <label>Channel wall + cover shelf</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="plazaGrid">
+        <label>Home screen + icon grid</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="plazaList">
+        <label>Home screen + game list</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="plazaShelf">
+        <label>Home screen + cover shelf</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="glossyGrid">
+        <label>Home screen, glossy icons + icon grid</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="glossyList">
+        <label>Home screen, glossy icons + game list</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="glossyShelf">
+        <label>Home screen, glossy icons + cover shelf</label>
         <selectable>true</selectable>
     </variant>
 </themeCapabilities>

@@ -22,6 +22,7 @@
             <dividerColor>E5E9EF</dividerColor>
             <dimText>5A626E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="cosmoBlack">
@@ -40,6 +41,7 @@
             <dividerColor>3A404A</dividerColor>
             <dimText>C3CAD4</dimText>
             <overlayOpacity>0.08</overlayOpacity>
+            <bubbleOpacity>0.45</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="flameRed">
@@ -58,6 +60,7 @@
             <dividerColor>F1E1E0</dividerColor>
             <dimText>604E4E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="aquaBlue">
@@ -76,6 +79,7 @@
             <dividerColor>DDEBF5</dividerColor>
             <dimText>4A6072</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="mintGreen">
@@ -94,6 +98,7 @@
             <dividerColor>DDEFE4</dividerColor>
             <dimText>48604F</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="lavender">
@@ -112,6 +117,7 @@
             <dividerColor>E8E3F5</dividerColor>
             <dimText>585170</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="sunset">
@@ -130,6 +136,7 @@
             <dividerColor>F5E5D8</dividerColor>
             <dimText>64503F</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="sakura">
@@ -148,6 +155,7 @@
             <dividerColor>F6E2EA</dividerColor>
             <dimText>684B5C</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="midnight">
@@ -166,6 +174,7 @@
             <dividerColor>2C3A52</dividerColor>
             <dimText>BCC8D8</dimText>
             <overlayOpacity>0.06</overlayOpacity>
+            <bubbleOpacity>0.45</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="retroPocket">
@@ -184,6 +193,7 @@
             <dividerColor>BCC690</dividerColor>
             <dimText>1E4A1E</dimText>
             <overlayOpacity>0.25</overlayOpacity>
+            <bubbleOpacity>0.45</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="silverMenu">
@@ -202,6 +212,7 @@
             <dividerColor>E3E6EA</dividerColor>
             <dimText>5F656D</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="cloudWhite">
@@ -220,6 +231,7 @@
             <dividerColor>E4E8EC</dividerColor>
             <dimText>5A616A</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="lightSystem">
@@ -238,6 +250,7 @@
             <dividerColor>E5E9EF</dividerColor>
             <dimText>5A626E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
+            <bubbleOpacity>0.6</bubbleOpacity>
         </variables>
     </colorScheme>
     <colorScheme name="darkSystem">
@@ -256,6 +269,7 @@
             <dividerColor>3A404A</dividerColor>
             <dimText>C3CAD4</dimText>
             <overlayOpacity>0.08</overlayOpacity>
+            <bubbleOpacity>0.45</bubbleOpacity>
         </variables>
     </colorScheme>
 

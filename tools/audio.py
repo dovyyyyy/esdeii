@@ -114,28 +114,78 @@ def click(vol=0.5, pitch=2600, body=900, dur=0.03):
     return fade((nz + tk) * vol, 0.0005, 0.004)
 
 
+def room(x, length=0.22, wet=0.18):
+    """Small bright room so taps feel round instead of dry."""
+    n = int(SR * length)
+    ir = RNG.standard_normal(n) * np.exp(-np.arange(n) / (SR * length / 6))
+    ir = lowpass(ir, 7000)
+    ir /= np.sqrt(np.sum(ir ** 2))
+    dry = np.concatenate([x, np.zeros(n)])
+    y = pad_to(signal.fftconvolve(x, ir), len(dry))
+    out = dry * (1 - wet) + y * wet * 0.5
+    tail = int(SR * 0.02)
+    out[-tail:] *= np.linspace(1, 0, tail)
+    return out
+
+
+def tick(f0=2300, f1=1700, dur=0.022, vol=0.5):
+    """Crisp tick: a tiny pitched blip that drops in pitch, plus a soft transient."""
+    n = int(SR * dur)
+    body = sine(np.array([f0, f1]), dur) * env_ad(n, 0.0004, dur / 5)
+    tr = lowpass(noise(dur), 9000) * env_ad(n, 0.0002, 0.0012) * 0.35
+    return fade((body + tr) * vol, 0.0003, 0.004)
+
+
+def tok(f0=1050, f1=780, dur=0.045, vol=0.55):
+    """Wooden 'tok': rounder, lower blip with a woody overtone."""
+    n = int(SR * dur)
+    t = np.arange(n) / SR
+    f = np.interp(np.arange(n), [0, n * 0.3, n], [f0, f1, f1])
+    ph = 2 * np.pi * np.cumsum(f) / SR
+    s = np.sin(ph) + 0.35 * np.sin(2.76 * ph) * np.exp(-t / 0.006)
+    tr = bandpass(noise(dur), 1500, 5000) * env_ad(n, 0.0002, 0.0015) * 0.4
+    return fade((s * env_ad(n, 0.0006, dur / 4) + tr) * vol, 0.0003, 0.006)
+
+
+def bubble(f0=500, f1=1500, dur=0.035, vol=0.45):
+    """Rising 'bloop' (a bubble popping upward)."""
+    n = int(SR * dur)
+    s = sine(np.array([f0, f1]), dur) * np.sin(np.linspace(0, np.pi, n)) ** 1.5
+    return fade(s * vol, 0.0005, 0.004)
+
+
+def chime(freq, dur=0.5, vol=0.2, decay=0.16):
+    """Soft glassy bell: FM bell with a sine underneath."""
+    n = int(SR * dur)
+    t = np.arange(n) / SR
+    s = bell(freq, dur, 1.0, decay) * 0.6 + np.sin(2 * np.pi * freq * t) * env_ad(n, 0.002, decay * 1.4) * 0.5
+    return fade(s * vol, 0.001, dur * 0.35)
+
+
+def airy(dur=0.25, vol=0.1, lo=1200, hi=7000):
+    n = int(SR * dur)
+    return bandpass(noise(dur), lo, hi) * np.sin(np.linspace(0, np.pi, n)) ** 2 * vol
+
+
 def pack_click():
-    cat = np.concatenate
-    def whoosh(dur=0.12, vol=0.12):
-        n = int(SR * dur)
-        w = bandpass(noise(dur), 1500, 6000) * np.sin(np.linspace(0, np.pi, n)) * vol
-        return w
-    sel = mixdown([(0, click(0.45, 2800, 1200)), (int(SR * 0.012), bell(1760, 0.35, 0.22, 0.12)),
-                   (int(SR * 0.012), bell(2637, 0.35, 0.10, 0.09))])
-    launch = mixdown([(0, click(0.4, 2800, 1200))] +
-                     [(int(SR * (0.02 + i * 0.07)), bell(f, 0.5, 0.18, 0.18)) for i, f in enumerate((1318, 1760, 2093, 2637))] +
-                     [(int(SR * 0.05), whoosh(0.35, 0.10))])
-    fav = mixdown([(int(SR * i * 0.05), bell(f, 0.3, 0.16, 0.08)) for i, f in enumerate((2093, 2637, 3136))])
-    return {
-        "scroll": click(0.42, 3200, 1500, 0.025),
-        "systembrowse": mixdown([(0, click(0.45, 2400, 1000, 0.03)), (0, whoosh(0.09, 0.06))]),
-        "quicksysselect": mixdown([(0, click(0.4, 2400, 1000)), (int(SR * 0.05), click(0.4, 3000, 1300))]),
+    sel = mixdown([(0, bubble(520, 1500, 0.035, 0.42)), (int(SR * 0.028), chime(1568, 0.5, 0.2, 0.13)),
+                   (int(SR * 0.028), chime(2349, 0.5, 0.09, 0.10))])
+    back = mixdown([(0, tok(900, 700, 0.04, 0.45)), (int(SR * 0.03), chime(1175, 0.35, 0.14, 0.08)),
+                    (int(SR * 0.10), chime(880, 0.4, 0.13, 0.10))])
+    launch = mixdown([(0, bubble(440, 1320, 0.04, 0.4)), (int(SR * 0.02), airy(0.45, 0.07, 2000, 9000))] +
+                     [(int(SR * (0.05 + i * 0.065)), chime(f, 0.7, 0.16, 0.2))
+                      for i, f in enumerate((1047, 1319, 1568, 2093, 2637))])
+    fav = mixdown([(int(SR * i * 0.055), chime(f, 0.45, 0.14, 0.09)) for i, f in enumerate((2093, 2637, 3136))])
+    short = ("scroll", "systembrowse", "quicksysselect")  # must stay short for fast scrolling
+    return {k: (v if k in short else room(v)) for k, v in {
+        "scroll": tick(2300, 1750, 0.022, 0.42),
+        "systembrowse": mixdown([(0, tok(1050, 780, 0.045, 0.5)), (0, airy(0.08, 0.035, 2500, 8000))]),
+        "quicksysselect": mixdown([(0, tok(980, 760, 0.04, 0.45)), (int(SR * 0.06), tok(1320, 1000, 0.04, 0.45))]),
         "select": sel,
-        "back": mixdown([(0, click(0.4, 2200, 800)), (int(SR * 0.01), bell(1318, 0.25, 0.14, 0.07)),
-                         (int(SR * 0.07), bell(988, 0.3, 0.14, 0.08))]),
+        "back": back,
         "favorite": fav,
         "launch": launch,
-    }
+    }.items()}
 
 
 def pop(f0=900, f1=450, dur=0.06, vol=0.4):

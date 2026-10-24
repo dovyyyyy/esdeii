@@ -190,10 +190,54 @@ def build_all(img_dir, fontpath):
     bg_wiiu(os.path.join(img_dir, "bg-wiiu.png"))
     wiiu_swirl(os.path.join(img_dir, "wiiu-swirl.png"))
     wii_bar(os.path.join(img_dir, "wii-bar.png"), os.path.join(img_dir, "wii-bar-line.png"))
-    round_button(os.path.join(img_dir, "button-home.png"), "home")
-    round_button(os.path.join(img_dir, "button-mail.png"), "mail")
+    bubbles_lottie(os.path.join(img_dir, "bubbles.json"))
     wii_selector(os.path.join(img_dir, "select-wide.png"))
     wiiu_selector(os.path.join(img_dir, "select-start.png"), fontpath)
     square_ring(os.path.join(img_dir, "select-square.png"))
     slot_square(os.path.join(img_dir, "slot-square.png"))
     slot_wide(os.path.join(img_dir, "slot-wide.png"))
+
+
+# ---------------------------------------------------------------- animated background
+def bubbles_lottie(path, W=1920, H=1080, fps=24, seconds=20, count=14, seed=5):
+    """Slowly drifting soft circles and rings as a looping Lottie animation.
+    White shapes at low opacity; the theme tints them with the accent colour."""
+    import json, random
+    rnd = random.Random(seed)
+    op = fps * seconds
+
+    def static(v):
+        return {"a": 0, "k": v}
+
+    layers = []
+    for i in range(count):
+        d = rnd.choice((90, 130, 180, 240, 320, 420))
+        ring = rnd.random() < 0.35
+        x0, y0 = rnd.uniform(0, W), rnd.uniform(0, H)
+        pts = [(x0, y0)]
+        for _ in range(3):
+            pts.append((x0 + rnd.uniform(-160, 160), y0 + rnd.uniform(-110, 110)))
+        pts.append((x0, y0))
+        kf = []
+        for k, (x, y) in enumerate(pts):
+            frame = {"t": int(op * k / (len(pts) - 1)), "s": [round(x, 1), round(y, 1), 0]}
+            if k < len(pts) - 1:
+                frame.update(i={"x": [0.5], "y": [1]}, o={"x": [0.5], "y": [0]})
+            kf.append(frame)
+        paint = ({"ty": "st", "c": static([1, 1, 1, 1]), "o": static(100), "w": static(round(d * 0.06, 1)),
+                  "lc": 2, "lj": 2, "nm": "s"} if ring else
+                 {"ty": "fl", "c": static([1, 1, 1, 1]), "o": static(100), "r": 1, "nm": "f"})
+        layers.append({
+            "ddd": 0, "ind": i + 1, "ty": 4, "nm": f"b{i}", "sr": 1, "ao": 0, "ip": 0, "op": op, "st": 0, "bm": 0,
+            "ks": {"o": static(rnd.choice((10, 14, 18, 24))), "r": static(0), "p": {"a": 1, "k": kf},
+                   "a": static([0, 0, 0]), "s": static([100, 100, 100])},
+            "shapes": [{"ty": "gr", "nm": "g", "it": [
+                {"ty": "el", "d": 1, "s": static([d, d]), "p": static([0, 0]), "nm": "e"},
+                paint,
+                {"ty": "tr", "p": static([0, 0]), "a": static([0, 0]), "s": static([100, 100]), "r": static(0),
+                 "o": static(100), "sk": static(0), "sa": static(0)}]}],
+        })
+    anim = {"v": "5.7.4", "fr": fps, "ip": 0, "op": op, "w": W, "h": H, "nm": "bubbles", "ddd": 0,
+            "assets": [], "layers": layers}
+    with open(path, "w") as fh:
+        json.dump(anim, fh, separators=(",", ":"))

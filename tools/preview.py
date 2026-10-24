@@ -21,7 +21,7 @@ GAMES = ["Stellar Quest", "Turbo Kart Rally", "Puzzle Pop Deluxe", "Dungeon Bell
          "Mecha Duel X", "Pixel Golf", "Haunted Manor", "Frost Byte", "Neon Runner", "Castle Clash", "Bubble Bay",
          "Rocket Rangers", "Farm Friends", "Comet Chasers"]
 COVERS = ["E5484D", "4A90E2", "2FA84F", "F2A33A", "7B61D9", "1FB5A8", "E35D8F", "3D4250"]
-DEFZ = dict(image=30, video=30, badges=35, text=40, datetime=40, gamelistinfo=45, rating=45, carousel=50, grid=50,
+DEFZ = dict(animation=35, image=30, video=30, badges=35, text=40, datetime=40, gamelistinfo=45, rating=45, carousel=50, grid=50,
             textlist=50, clock=900, systemstatus=900, helpsystem=900)
 
 
@@ -178,7 +178,7 @@ def render(key, scheme, view):
                     cw, ch = mh * 0.72, mh
                     x, y, w, h = r.box(p, (cw, ch))
                     r.paste(cover(cw, ch, int(p.get("gameselectorEntry", 0)) + 3, cf), x, y, cw, ch, radius=rad)
-                elif name != "mediaFallback":
+                elif name not in ("mediaFallback", "gameLogo"):
                     x, y, w, h = r.box(p)
                     r.paste(screenshot(w, h), x, y, w, h, radius=rad)
                 continue
@@ -201,6 +201,24 @@ def render(key, scheme, view):
                 r.rrect(x, y, w, h, rad, col, op)
             else:
                 r.paste(Image.open(fn), x, y, w, h, tint=col, radius=rad, op=op)
+        elif et == "animation":
+            anim = json.load(open(r.path(p["path"])))
+            lay_ = r.layer()
+            d = ImageDraw.Draw(lay_)
+            col = hexc(p.get("color", "FFFFFFFF"))
+            sx_, sy_ = r.Wp / anim["w"], H / anim["h"]
+            for L_ in anim["layers"]:
+                x_, y_, _ = L_["ks"]["p"]["k"][1]["s"]
+                o_ = L_["ks"]["o"]["k"] / 100 * op
+                it = L_["shapes"][0]["it"]
+                dd = it[0]["s"]["k"][0] / 2
+                a_ = int(255 * o_)
+                box = [(x_ - dd) * sx_, (y_ - dd) * sy_, (x_ + dd) * sx_, (y_ + dd) * sy_]
+                if it[1]["ty"] == "fl":
+                    d.ellipse(box, fill=col[:3] + (a_,))
+                else:
+                    d.ellipse(box, outline=col[:3] + (a_,), width=max(1, int(it[1]["w"]["k"] * sx_)))
+            r.img.alpha_composite(lay_)
         elif et == "video":
             x, y, w, h = r.box(p)
             r.paste(screenshot(w, h), x, y, w, h, radius=float(p.get("imageCornerRadius", 0)) * r.Wp)

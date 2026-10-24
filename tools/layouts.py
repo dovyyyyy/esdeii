@@ -65,13 +65,17 @@ class Layout:
 
 
 # ================================================================== shared pieces
-def background(L, path, tile_h=0.09, overlay=None):
+def background(L, path, tile_h=0.09, overlay=None, bubbles=True):
     for v in ("system", "gamelist"):
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + path, tile="true",
               tileSize=f"0 {f(tile_h)}", color="${bgColor}", stationary="always", zIndex="0")
         if overlay:
             L.add(v, "image", "backgroundOverlay", pos="0 0", size="1 1", path=IMG + overlay,
                   stationary="always", opacity="${overlayOpacity}", zIndex="1")
+        if bubbles:  # slow drifting bubbles (Lottie vector animation)
+            L.add(v, "animation", "bubbles", pos="0 0", size="1 1", path=IMG + "bubbles.json",
+                  color="${accentColor}", opacity="${bubbleOpacity}", scaleFactor="0.5", stationary="always",
+                  zIndex="2")
 
 
 def clock(L, view, x, y, origin, fs="fsStatus", date=False, color="${subColor}", font=FONT_BLACK, name="clock",
@@ -104,6 +108,9 @@ def media(L, x, y, w, h, r=0.016, z=18, view="gamelist", gameselector=None):
         L.add(view, "video", "gameVideo", pos=L.pair(x, y), zIndex=f(z + 2),
               imageType="screenshot, titlescreen, miximage", scrollFadeIn="true", cropSize=L.pair(w, h),
               imageCornerRadius=L.rad(r), videoCornerRadius=L.rad(r), delay="1.6", fadeInTime="0.6")
+        # scraped game logo (marquee) in the corner of the screen, like a title banner
+        L.add(view, "image", "gameLogo", pos=L.pair(x + 0.022, y + h - 0.02), origin="0 1",
+              maxSize=L.pair(w * 0.42, h * 0.3), imageType="marquee", scrollFadeIn="true", zIndex=f(z + 3))
     else:
         L.add(view, "image", "featuredImage", pos=L.pair(x, y), cropSize=L.pair(w, h),
               imageType="screenshot, titlescreen, miximage", gameselector=gameselector,
@@ -346,15 +353,20 @@ def wii_bottom(L, view, W, m):
     L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}", stationary="always")
     L.img(view, "menuBarLine", 0, by, W, 1 - by, IMG + "wii-bar-line.png", z=60.1, color="${accentColor}",
           stationary="always", opacity="0.85")
-    bs = 0.165
-    for i, (cx, img) in enumerate(((m + bs * 0.55, "button-home.png"), (W - m - bs * 0.55, "button-mail.png"))):
-        L.add(view, "image", f"menuButton{i}", pos=L.pair(cx, 0.88), origin="0.5 0.5", size=L.pair(bs, bs),
-              path=IMG + img, stationary="always", zIndex="61")
     L.add(view, "clock", "clock", pos=L.pair(W / 2, 0.902), origin="0.5 0.5", fontPath=FONT_BLACK,
           fontSize="${fsWiiClock}", color="${subColor}", format="%H:%M", horizontalAlignment="center")
     L.add(view, "clock", "date", pos=L.pair(W / 2, 0.962), origin="0.5 0.5", fontPath=FONT_BOLD,
           fontSize="${fsSmall}", color="${subColor}", format="%Y-%m-%d", horizontalAlignment="center")
-    help_(L, view, W - m, 0.736, origin="1 0.5", fs="fsSmall")
+    side_w = max(0.2, W / 2 - 0.3 - m)
+    if view == "system":
+        L.text(view, "barCount", m + 0.02, 0.905, side_w, 0.04, "fsCount", FONT_BOLD, "${subColor}",
+               origin="0 0.5", systemdata="gamecount", z=62)
+    else:
+        L.add(view, "gamelistinfo", "gamelistInfo", pos=L.pair(m + 0.02, 0.905), origin="0 0.5",
+              size=L.pair(side_w, 0.04), fontPath=FONT_BOLD, fontSize="${fsCount}", color="${subColor}",
+              horizontalAlignment="left", zIndex="62")
+    status(L, view, W - m - 0.02, 0.905)
+    help_(L, view, W - m, 0.055, origin="1 0.5", fs="fsSmall")
 
 
 def build_wii(W, style, layout):
@@ -367,11 +379,9 @@ def build_wii(W, style, layout):
     v = "system"
     system_name(L, m, 0.03, W * 0.6, 0.06, "fsWiiHeader", lines=1)
     system_info(L, v, m, 0.092, W * 0.6)
-    status(L, v, W - m, 0.055)
-    count_pill(L, W - m - 0.012, 0.108, origin="1 0.5")
     aspect = icons.WT_W / icons.WT_H
     sp = 0.026
-    gy0, gy1 = 0.15, 0.715
+    gy0, gy1 = 0.145, 0.728
     ih = (gy1 - gy0 - 2 * sp) / 3
     iw = ih * aspect
     cols = max(2, int((W - 2 * m + sp) // (iw + sp)))
@@ -389,9 +399,7 @@ def build_wii(W, style, layout):
     v = "gamelist"
     L.text(v, "systemLabel", m, 0.03, W * 0.6, 0.06, "fsWiiHeader", FONT_BLACK, "${textColor}",
            text="${system.fullName}", verticalAlignment="top")
-    L.add(v, "gamelistinfo", "gamelistInfo", pos=L.pair(m, 0.108), origin="0 0.5", size=L.pair(W * 0.5, 0.034),
-          fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left", zIndex="45")
-    status(L, v, W - m, 0.055)
+    system_info(L, v, m, 0.092, W * 0.6)
     lw = min(0.86, (W - 2 * m) * 0.52)
     top, bot = 0.15, 0.725
     L.panel(v, "infoCard", m, top, lw, bot - top, r=0.03)
@@ -411,7 +419,22 @@ def build_wii(W, style, layout):
 def wiiu_dock(L, view, W, m):
     L.rect(view, "dockShadow", m, 0.872, W - 2 * m, 0.09, "${shadowColor}", 0.045, z=58)
     L.rect(view, "dock", m, 0.865, W - 2 * m, 0.09, "${panelColor}", 0.045, z=58.1, opacity="0.92")
-    help_(L, view, W / 2, 0.91, origin="0.5 0.5")
+    roomy = W >= 1.6
+    help_(L, view, W / 2, 0.91, origin="0.5 0.5", fs="fsSmall" if roomy else "fsHelp")
+    if not roomy:
+        return
+    sw = min(0.36, W / 2 - 0.5 - m)
+    if view == "system":
+        L.text(view, "dockLabel", m + 0.04, 0.892, sw, 0.026, "fsLabel", FONT_BOLD, "${subColor}",
+               text="Featured", letterCase="uppercase", z=62)
+        L.text(view, "dockFeatured", m + 0.04, 0.918, sw, 0.034, "fsSmall", FONT_BOLD, "${textColor}",
+               metadata="name", gameselector="featured", systemNameSuffix="false", z=62)
+    else:
+        L.add(view, "gamelistinfo", "dockInfo", pos=L.pair(m + 0.04, 0.91), origin="0 0.5", size=L.pair(sw, 0.034),
+              fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left",
+              zIndex="62")
+    L.add(view, "clock", "date", pos=L.pair(W - m - 0.04, 0.91), origin="1 0.5", fontPath=FONT_BOLD,
+          fontSize="${fsSmall}", color="${subColor}", format="%Y-%m-%d", horizontalAlignment="right")
 
 
 def wiiu_top(L, view, W, m):
@@ -466,8 +489,9 @@ def build_wiiu(W, style, layout):
     L.text(v, "systemLabel", tx, 0.045, W - m - 0.3 - tx, 0.06, "fsWiiHeader", FONT_BLACK, "${textColor}",
            text="${system.fullName}", verticalAlignment="top")
     system_info(L, v, tx, 0.115, W * 0.42)
-    L.add(v, "gamelistinfo", "gamelistInfo", pos=L.pair(tx, 0.175), origin="0 0.5", size=L.pair(W * 0.4, 0.034),
-          fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left", zIndex="45")
+    if W < 1.6:
+        L.add(v, "gamelistinfo", "gamelistInfo", pos=L.pair(tx, 0.175), origin="0 0.5", size=L.pair(W * 0.4, 0.034),
+              fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left", zIndex="45")
     wiiu_top(L, v, W, m)
     top, bot = 0.225, 0.52
     mw = min((bot - top) * 16 / 9, (W - 2 * m) * 0.46)
@@ -490,4 +514,8 @@ def build_wiiu(W, style, layout):
     return L
 
 
-BUILDERS = {"3ds": build_3ds, "wii": build_wii, "wiiu": build_wiiu}
+def build_ii(W, style, layout):
+    return build_wii(W, style, layout) if style == "channelwide" else build_wiiu(W, style, layout)
+
+
+BUILDERS = {"3ds": build_3ds, "ii": build_ii}

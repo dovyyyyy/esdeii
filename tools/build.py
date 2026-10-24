@@ -2,7 +2,7 @@
 
     python3 tools/build.py <repo root> <Nunito[wght].ttf> <OFL.txt> [cache dir] [--json out.json]
 
-Creates esde3ds/, esdeii/, esdeiiu/ (each a complete ES-DE theme) and music/.
+Creates esdeii/ and esde3ds/, each a complete ES-DE theme.
 """
 import json, os, shutil, sys, tempfile
 from xml.sax.saxutils import escape
@@ -28,9 +28,11 @@ GAME_LAYOUTS = [("Grid", "icon grid"), ("List", "game list"), ("Shelf", "cover s
 
 def scheme(bg, panel, border, text, sub, accent, screen, tile, deco, divider, dim, shadow="1E28361C",
            accent_text="FFFFFF", overlay="0.9"):
+    dark = overlay not in ("0.9",)
     return dict(bgColor=bg, panelColor=panel, borderColor=border, shadowColor=shadow, textColor=text,
                 subColor=sub, accentColor=accent, accentText=accent_text, screenColor=screen, tileColor=tile,
-                decoColor=deco, dividerColor=divider, dimText=dim, overlayOpacity=overlay)
+                decoColor=deco, dividerColor=divider, dimText=dim, overlayOpacity=overlay,
+                bubbleOpacity="0.45" if dark else "0.6")
 
 
 S = {
@@ -68,15 +70,16 @@ SYSTEM_ACCENT = ["lightSystem", "darkSystem"]
 REST = ["cosmoBlack", "flameRed", "aquaBlue", "mintGreen", "lavender", "sunset", "sakura", "midnight", "retroPocket"]
 
 THEMES = {
-    "esde3ds": dict(builder="3ds", styles=[("glossy", "Glossy"), ("channel", "Channel"), ("plaza", "Plaza")],
+    "esdeii": dict(builder="ii",
+                   styles=[("channelwide", "Channel wall"), ("plaza", "Home screen"),
+                           ("glossy", "Home screen, glossy icons")],
+                   sounds="click",
+                   schemes=["silverMenu", "cloudWhite", "iceWhite"] + REST + SYSTEM_ACCENT,
+                   blurb="console menu style (channel wall and home screen)"),
+    "esde3ds": dict(builder="3ds",
+                    styles=[("glossy", "Glossy icons"), ("channel", "Channel icons"), ("plaza", "Plaza icons")],
                     sounds="chime", schemes=["iceWhite"] + REST + ["silverMenu", "cloudWhite"] + SYSTEM_ACCENT,
                     blurb="dual-screen handheld style"),
-    "esdeii": dict(builder="wii", styles=[("channelwide", None)], sounds="click",
-                   schemes=["silverMenu", "iceWhite"] + REST + ["cloudWhite"] + SYSTEM_ACCENT,
-                   blurb="living-room console menu style"),
-    "esdeiiu": dict(builder="wiiu", styles=[("plaza", "Plaza"), ("glossy", "Glossy")], sounds="pop",
-                    schemes=["cloudWhite", "iceWhite"] + REST + ["silverMenu"] + SYSTEM_ACCENT,
-                    blurb="tablet console home screen style"),
 }
 
 FONT_SIZES = {"medium": 1.0, "small": 0.88, "large": 1.14}
@@ -218,8 +221,8 @@ def write_theme(key, cfg, fontdir, imgdir, dump):
     variants = []
     for style, slabel in cfg["styles"]:
         for lay, desc in GAME_LAYOUTS:
-            name = f"{style}{lay}" if slabel else lay.lower()
-            label = f"{slabel} icons + {desc}" if slabel else desc.capitalize()
+            name = f"{style}{lay}"
+            label = f"{slabel} + {desc}"
             variants.append((name, label, style, lay.lower()))
 
     build = layouts.BUILDERS[cfg["builder"]]
@@ -302,9 +305,9 @@ if __name__ == "__main__":
     dump = {} if JSON_OUT else None
     for key, cfg in THEMES.items():
         write_theme(key, cfg, fontdir, imgdir, dump)
-    mdir = os.path.join(ROOT, "music")
-    if not os.path.exists(mdir) or "--music" in sys.argv:
-        audio.write_music(mdir, CACHE)
+    for old in ("esdeiiu", "music"):  # merged into esdeii / removed
+        if os.path.exists(os.path.join(ROOT, old)):
+            shutil.rmtree(os.path.join(ROOT, old))
     if JSON_OUT:
         with open(JSON_OUT, "w") as fh:
             json.dump({"layouts": dump, "schemes": {k: v[1] for k, v in S.items()}, "fonts": FS_BASE}, fh)

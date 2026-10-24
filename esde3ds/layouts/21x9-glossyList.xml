@@ -11,6 +11,16 @@
             <stationary>always</stationary>
             <zIndex>0</zIndex>
         </image>
+        <animation name="bubbles">
+            <pos>0 0</pos>
+            <size>1 1</size>
+            <path>./../assets/images/bubbles.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <scaleFactor>0.5</scaleFactor>
+            <stationary>always</stationary>
+            <zIndex>2</zIndex>
+        </animation>
         <image name="upperScreenShadow">
             <pos>0.0987 0.038</pos>
             <size>0.8026 0.532</size>
@@ -318,6 +328,16 @@
             <stationary>always</stationary>
             <zIndex>0</zIndex>
         </image>
+        <animation name="bubbles">
+            <pos>0 0</pos>
+            <size>1 1</size>
+            <path>./../assets/images/bubbles.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <scaleFactor>0.5</scaleFactor>
+            <stationary>always</stationary>
+            <zIndex>2</zIndex>
+        </animation>
         <image name="upperScreenShadow">
             <pos>0.0987 0.038</pos>
             <size>0.8026 0.462</size>
@@ -475,6 +495,14 @@
             <delay>1.6</delay>
             <fadeInTime>0.6</fadeInTime>
         </video>
+        <image name="gameLogo">
+            <pos>0.1211 0.443</pos>
+            <origin>0 1</origin>
+            <maxSize>0.1071 0.102</maxSize>
+            <imageType>marquee</imageType>
+            <scrollFadeIn>true</scrollFadeIn>
+            <zIndex>21</zIndex>
+        </image>
         <text name="gameName">
             <pos>0.3816 0.123</pos>
             <size>0.3041 0.1</size>
