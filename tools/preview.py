@@ -181,7 +181,8 @@ def cover(w, h, i):
 
 def render(key, scheme_name, view):
     lay = DATA["layouts"][key]
-    r = R(lay["W"], DATA["schemes"][scheme_name])
+    vars_ = dict(DATA["schemes"][scheme_name]); vars_.update({k: str(v) for k, v in DATA["fonts"].items()})
+    r = R(lay["W"], vars_)
     els = lay["views"][view]
     order = sorted(range(len(els)), key=lambda i: float(els[i][2].get("zIndex", DEFZ.get(els[i][0], 30))))
     for i in order:
@@ -191,11 +192,18 @@ def render(key, scheme_name, view):
             path = p.get("path", "")
             col = hexc(p.get("color", "FFFFFFFF"))
             rad = float(p.get("cornerRadius", 0)) * r.Wp
+            if "imageType" in p and "cover" in p["imageType"]:
+                mw_, mh_ = r.px(p["maxSize"])
+                cw_, ch_ = mh_ * 0.72, mh_
+                x, y, w, h = r.box(p, (cw_, ch_))
+                k_ = int(p.get("gameselectorEntry", 0))
+                r.paste(cover(cw_, ch_, k_ + 3), x, y, cw_, ch_, radius=float(p.get("cornerRadius", 0)) * r.Wp)
+                continue
             if "imageType" in p:
                 x, y, w, h = r.box(p)
                 r.paste(fake_screenshot(w, h).convert("RGBA"), x, y, w, h, radius=rad)
                 continue
-            path = path.replace("${system.theme}", SAMPLE["theme"])
+            path = path.replace("${system.theme}", SAMPLE["theme"]).replace("${", "")
             fn = os.path.join(THEME, path.replace("./../", "").replace("./", ""))
             if p.get("tile") == "true":
                 tile = Image.open(fn).convert("RGBA")
@@ -269,7 +277,16 @@ def render(key, scheme_name, view):
                 ix = cx + k * step - ww / 2
                 if ix + ww < x or ix > x + w:
                     continue
-                im = Image.open(os.path.join(SYSDIR, CAROUSEL[idx] + ".png"))
+                if "imageType" in p:
+                    ch_ = hh
+                    cw_ = ch_ * 0.72
+                    r.paste(cover(cw_, ch_, idx), cx + k * step - cw_ / 2, cy - ch_ / 2, cw_, ch_,
+                            radius=float(p.get("imageCornerRadius", 0)) * r.Wp)
+                    if k != 0:
+                        r.rrect(cx + k * step - cw_ / 2, cy - ch_ / 2, cw_, ch_, 4, (0, 0, 0, 60))
+                    continue
+                style = p["staticImage"].split("systems/")[1].split("/")[0]
+                im = Image.open(os.path.join(SYSDIR, style, CAROUSEL[idx] + ".png"))
                 if k != 0:
                     im = Image.eval(im.convert("RGBA"), lambda v: v)
                 r.paste(im, ix, cy - hh / 2, ww, hh)
@@ -326,10 +343,13 @@ def render(key, scheme_name, view):
         elif et == "clock":
             x, y = r.px(p["pos"])
             f = font(fontp(p["fontPath"]), float(p["fontSize"]) * H * 1.18)
-            ImageDraw.Draw(r.img).text((x, y), "21:47", font=f, fill=hexc(p["color"]), anchor="lm")
+            col = hexc(p["color"])[:3] + (int(255 * float(p.get("opacity", 1))),)
+            lay_ = r.layer()
+            ImageDraw.Draw(lay_).text((x, y), "21:47" if "%H" in p["format"] else "2026-10-24", font=f, fill=col, anchor="lm")
+            r.comp(lay_)
         elif et == "systemstatus":
             x, y = r.px(p["pos"])
-            hh = float(p["height"]) * H
+            hh = float(r.res(p["height"])) * H
             col = hexc(p["color"])
             f = font(fontp(p["fontPath"]), hh * 1.0)
             d = ImageDraw.Draw(r.img)

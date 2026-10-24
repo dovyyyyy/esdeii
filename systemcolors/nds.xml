@@ -1,0 +1,7 @@
+<theme>
+    <colorScheme name="iceSystem, cosmoSystem">
+        <variables>
+            <accentColor>4A90E2</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

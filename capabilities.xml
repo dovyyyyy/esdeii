@@ -13,11 +13,18 @@
     <aspectRatio>20:9</aspectRatio>
     <aspectRatio>21:9</aspectRatio>
 
+    <fontSize>medium</fontSize>
+    <fontSize>small</fontSize>
+    <fontSize>large</fontSize>
+
     <colorScheme name="iceWhite">
         <label>Ice White</label>
     </colorScheme>
     <colorScheme name="cosmoBlack">
         <label>Cosmo Black</label>
+    </colorScheme>
+    <colorScheme name="wiiMenu">
+        <label>Wii Menu</label>
     </colorScheme>
     <colorScheme name="flameRed">
         <label>Flame Red</label>
@@ -25,12 +32,36 @@
     <colorScheme name="aquaBlue">
         <label>Aqua Blue</label>
     </colorScheme>
+    <colorScheme name="mintGreen">
+        <label>Mint Green</label>
+    </colorScheme>
+    <colorScheme name="lavender">
+        <label>Lavender</label>
+    </colorScheme>
+    <colorScheme name="sunset">
+        <label>Sunset Orange</label>
+    </colorScheme>
+    <colorScheme name="sakura">
+        <label>Sakura Pink</label>
+    </colorScheme>
+    <colorScheme name="midnight">
+        <label>Midnight Blue</label>
+    </colorScheme>
+    <colorScheme name="retroDmg">
+        <label>Retro DMG</label>
+    </colorScheme>
+    <colorScheme name="iceSystem">
+        <label>Ice White + system colours</label>
+    </colorScheme>
+    <colorScheme name="cosmoSystem">
+        <label>Cosmo Black + system colours</label>
+    </colorScheme>
 
     <transitions name="esdeiiSlide">
         <label>esdeii slide</label>
         <systemToSystem>instant</systemToSystem>
-        <systemToGamelist>slide</systemToGamelist>
         <gamelistToGamelist>instant</gamelistToGamelist>
+        <systemToGamelist>slide</systemToGamelist>
         <gamelistToSystem>slide</gamelistToSystem>
         <startupToSystem>fade</startupToSystem>
         <startupToGamelist>fade</startupToGamelist>
@@ -38,25 +69,54 @@
     <transitions name="esdeiiFade">
         <label>esdeii fade</label>
         <systemToSystem>instant</systemToSystem>
-        <systemToGamelist>fade</systemToGamelist>
         <gamelistToGamelist>instant</gamelistToGamelist>
+        <systemToGamelist>fade</systemToGamelist>
         <gamelistToSystem>fade</gamelistToSystem>
+        <startupToSystem>fade</startupToSystem>
+        <startupToGamelist>fade</startupToGamelist>
+    </transitions>
+    <transitions name="esdeiiInstant">
+        <label>esdeii instant</label>
+        <systemToSystem>instant</systemToSystem>
+        <gamelistToGamelist>instant</gamelistToGamelist>
+        <systemToGamelist>instant</systemToGamelist>
+        <gamelistToSystem>instant</gamelistToSystem>
     </transitions>
 
-    <variant name="grid">
-        <label>Icon grid (3DS style)</label>
+    <variant name="n3dsGrid">
+        <label>3DS icons + icon grid</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="list">
-        <label>Game list (DS style)</label>
+    <variant name="n3dsList">
+        <label>3DS icons + game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="gridStatic">
-        <label>Icon grid, no videos</label>
+    <variant name="n3dsShelf">
+        <label>3DS icons + cover shelf</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="listStatic">
-        <label>Game list, no videos</label>
+    <variant name="wiiGrid">
+        <label>Wii icons + icon grid</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="wiiList">
+        <label>Wii icons + game list</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="wiiShelf">
+        <label>Wii icons + cover shelf</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="wiiuGrid">
+        <label>Wii U icons + icon grid</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="wiiuList">
+        <label>Wii U icons + game list</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="wiiuShelf">
+        <label>Wii U icons + cover shelf</label>
         <selectable>true</selectable>
     </variant>
 </themeCapabilities>
