@@ -10,16 +10,6 @@
             <color>${bgColor}</color>
             <zIndex>0</zIndex>
         </image>
-        <image name="backdrop">
-            <pos>0 0</pos>
-            <cropSize>1 1</cropSize>
-            <imageType>fanart, screenshot</imageType>
-            <scrollFadeIn>true</scrollFadeIn>
-            <opacity>${artOpacity}</opacity>
-            <saturation>0.85</saturation>
-            <zIndex>1.5</zIndex>
-            <gameselector>featured</gameselector>
-        </image>
         <image name="upperScreenShadow">
             <pos>0.021 0.038</pos>
             <size>0.958 0.532</size>
@@ -72,7 +62,7 @@
             <pos>0.5755 0.054</pos>
             <size>0.379 0.052</size>
             <path>./../assets/images/white.png</path>
-            <color>000000A6</color>
+            <color>${tileColor}</color>
             <zIndex>30</zIndex>
             <cornerRadius>0.0227</cornerRadius>
         </image>
@@ -81,7 +71,7 @@
             <origin>0 0.5</origin>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsPill}</fontSize>
-            <color>FFFFFF</color>
+            <color>${subColor}</color>
             <format>%H:%M   %d/%m</format>
             <scope>view</scope>
         </clock>
@@ -89,7 +79,7 @@
             <pos>0.9352 0.08</pos>
             <origin>1 0.5</origin>
             <height>${fsPill}</height>
-            <color>FFFFFF</color>
+            <color>${subColor}</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
         </systemstatus>
@@ -107,36 +97,6 @@
             <backgroundVerticalPadding>0.01 0.01</backgroundVerticalPadding>
             <backgroundCornerRadius>0.035</backgroundCornerRadius>
         </helpsystem>
-        <gameselector name="featured">
-            <selection>random</selection>
-            <gameCount>1</gameCount>
-        </gameselector>
-        <image name="heroBase">
-            <pos>0.0262 0.035</pos>
-            <size>0.9475 0.52</size>
-            <path>./../assets/images/white.png</path>
-            <color>${screenColor}</color>
-            <zIndex>6</zIndex>
-            <cornerRadius>0.0298</cornerRadius>
-        </image>
-        <image name="heroArt">
-            <pos>0.0262 0.035</pos>
-            <cropSize>0.9475 0.52</cropSize>
-            <imageType>fanart, screenshot, titlescreen</imageType>
-            <cornerRadius>0.0298</cornerRadius>
-            <zIndex>7</zIndex>
-            <gameselector>featured</gameselector>
-        </image>
-        <image name="heroShade">
-            <pos>0.0262 0.035</pos>
-            <size>0.9475 0.52</size>
-            <path>./../assets/images/white.png</path>
-            <color>000000D9</color>
-            <zIndex>8</zIndex>
-            <cornerRadius>0.0298</cornerRadius>
-            <colorEnd>00000026</colorEnd>
-            <gradientType>horizontal</gradientType>
-        </image>
         <image name="systemTile">
             <pos>0.07 0.15</pos>
             <size>0.315 0.36</size>
@@ -149,7 +109,7 @@
             <size>0.5144 0.125</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>${fsName3ds}</fontSize>
-            <color>FFFFFF</color>
+            <color>${textColor}</color>
             <zIndex>40</zIndex>
             <text>${system.fullName}</text>
             <verticalAlignment>top</verticalAlignment>
@@ -160,9 +120,10 @@
             <size>0.5144 0.032</size>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
-            <color>FFFFFFC0</color>
+            <color>${subColor}</color>
             <zIndex>40</zIndex>
             <text>${sysInfo}</text>
+            <horizontalAlignment>left</horizontalAlignment>
         </text>
         <text name="gameCount">
             <pos>0.4349 0.395</pos>
@@ -176,34 +137,6 @@
             <backgroundMargins>0.0123 0.0123</backgroundMargins>
             <backgroundCornerRadius>0.0262</backgroundCornerRadius>
             <lineSpacing>1.6</lineSpacing>
-        </text>
-        <text name="featuredName">
-            <pos>0.9475 0.52</pos>
-            <size>0 0</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsPill}</fontSize>
-            <color>FFFFFF</color>
-            <zIndex>41</zIndex>
-            <origin>1 0.5</origin>
-            <backgroundColor>000000A6</backgroundColor>
-            <backgroundMargins>0.014 0.014</backgroundMargins>
-            <backgroundCornerRadius>0.035</backgroundCornerRadius>
-            <lineSpacing>1.7</lineSpacing>
-            <metadata>name</metadata>
-            <gameselector>featured</gameselector>
-            <systemNameSuffix>false</systemNameSuffix>
-        </text>
-        <text name="featuredLabel">
-            <pos>0.9475 0.483</pos>
-            <size>0.35 0.03</size>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsLabel}</fontSize>
-            <color>FFFFFFB0</color>
-            <zIndex>40</zIndex>
-            <origin>1 0.5</origin>
-            <text>Featured</text>
-            <letterCase>uppercase</letterCase>
-            <horizontalAlignment>right</horizontalAlignment>
         </text>
         <carousel name="systemcarousel">
             <pos>0.035 0.6</pos>
@@ -702,25 +635,5 @@
             <selectorCornerRadius>0.0262</selectorCornerRadius>
             <selectorLayer>bottom</selectorLayer>
         </grid>
-        <animation name="bubble0">
-            <pos>0.035 0.58</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.1313 0.15</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble1">
-            <pos>0.9625 0.56</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.105 0.12</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
-            <zIndex>2</zIndex>
-        </animation>
     </view>
 </theme>

@@ -69,18 +69,20 @@ game swells into a bright chord.
 ## Features
 
 - Softly drifting bubbles in the background, tinted with your colour scheme.
-  They only float in free space, never behind the clock, text or games.
+  They only float in completely free space, never near the clock, date,
+  battery or button prompts and never behind any panel, text or games (so on
+  layouts that fill the screen there are fewer of them, or none).
   ES-DE restarts them every time you pick another system or open a game
   list; they are simply there straight away, no fade-in.
 - Faint artwork of the selected game (fan art, else the screenshot) behind
-  the game list, fading in as you move; the Home and Dual looks show the
-  featured game's artwork behind the systems.
+  the game list, fading in as you move. The system list never shows game
+  artwork.
 - Rounded console-style lettering (M PLUS Rounded 1c).
 - **Artwork top screen** (Dual looks, inspired by iiSU and Cocoon): the top
   screen is filled edge to edge with the game's fan art or screenshot, and
   its video plays there after a moment. The details sit on a dark glass card,
-  with the box art and title in the corner. In the system list it shows the
-  featured game's artwork behind the system.
+  with the box art and title in the corner. The system list stays clean, with
+  no game artwork.
 - **Status pills**: clock, date and battery on rounded pills (Dual and Home
   looks), and the button prompts on a pill in the Dual looks.
 - **Empty slots** fill the rest of every grid, like the blank channels on

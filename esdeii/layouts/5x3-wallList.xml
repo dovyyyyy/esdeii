@@ -226,7 +226,7 @@
             <entrySpacing>0.012</entrySpacing>
         </helpsystem>
         <animation name="bubble0">
-            <pos>0.96 0.82</pos>
+            <pos>0.96 0.6</pos>
             <origin>0.5 0.5</origin>
             <size>0.12 0.2</size>
             <path>./../assets/images/anim-bubble-a.json</path>
@@ -256,7 +256,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble3">
-            <pos>0.024 0.84</pos>
+            <pos>0.024 0.66</pos>
             <origin>0.5 0.5</origin>
             <size>0.078 0.13</size>
             <path>./../assets/images/anim-bubble-d.json</path>
@@ -276,7 +276,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble5">
-            <pos>0.084 0.56</pos>
+            <pos>0.972 0.32</pos>
             <origin>0.5 0.5</origin>
             <size>0.066 0.11</size>
             <path>./../assets/images/anim-bubble-a.json</path>
@@ -286,7 +286,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble6">
-            <pos>0.984 0.44</pos>
+            <pos>0.096 0.46</pos>
             <origin>0.5 0.5</origin>
             <size>0.06 0.1</size>
             <path>./../assets/images/anim-bubble-b.json</path>
@@ -645,9 +645,9 @@
             <entrySpacing>0.012</entrySpacing>
         </helpsystem>
         <animation name="bubble0">
-            <pos>0.036 0.84</pos>
+            <pos>0.972 0.06</pos>
             <origin>0.5 0.5</origin>
-            <size>0.12 0.2</size>
+            <size>0.072 0.12</size>
             <path>./../assets/images/anim-bubble-a.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
@@ -655,9 +655,9 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble1">
-            <pos>0.972 0.84</pos>
+            <pos>0.672 0.06</pos>
             <origin>0.5 0.5</origin>
-            <size>0.102 0.17</size>
+            <size>0.066 0.11</size>
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
@@ -665,47 +665,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
-            <pos>0.024 0.22</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.09 0.15</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble3">
-            <pos>0.024 0.52</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.078 0.13</size>
-            <path>./../assets/images/anim-bubble-d.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble4">
-            <pos>0.684 0.06</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.072 0.12</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble5">
-            <pos>0.972 0.06</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.066 0.11</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble6">
-            <pos>0.828 0.08</pos>
+            <pos>0.816 0.08</pos>
             <origin>0.5 0.5</origin>
             <size>0.06 0.1</size>
             <path>./../assets/images/anim-bubble-b.json</path>

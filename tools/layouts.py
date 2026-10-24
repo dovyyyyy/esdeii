@@ -130,13 +130,19 @@ def _hits(a, b, m=0.0):
 def bubbles(L, z="2"):
     """Call last, once everything else in the layout has been added."""
     for v, els in L.views.items():
+        # Bubbles go only where nothing else is: not even partly behind a panel,
+        # and with extra room around the clock, date, battery and button prompts.
         blocks = []
         for etype, name, p in els:
-            if name.startswith(("background", "bubble", "backdrop")) or name in L.opaque_names[v]:
+            if name.startswith(("background", "bubble", "backdrop")):
                 continue
             r = _rect(L, etype, p)
-            if r and not any(_inside(r, o) for o in L.opaque[v]):
-                blocks.append(r)
+            if not r:
+                continue
+            if etype in ("clock", "datetime", "systemstatus", "helpsystem") or name.startswith(("clock", "date")):
+                m = 0.05
+                r = (r[0] - m, r[1] - m, r[2] + m, r[3] + m)
+            blocks.append(r)
         placed = []
         step = 0.02
         cands = [(i * step, j * step) for i in range(1, int(L.W / step)) for j in range(1, int(1 / step))]
@@ -148,8 +154,6 @@ def bubbles(L, z="2"):
                     continue
                 if any(_hits(box, b, BUBBLE_MARGIN) for b in blocks):
                     continue
-                if sum(_overlap(box, o) for o in L.opaque[v]) > 0.4 * size * size:
-                    continue  # would be mostly hidden behind a panel
                 d = min([((cx - px) ** 2 + (cy - py) ** 2) ** 0.5 - (size + ps) / 2 for px, py, ps in placed],
                         default=1.0)
                 if d < 0.04:
@@ -209,13 +213,14 @@ def help_(L, view, x, y, origin="0 0.5", fs="fsHelp", pill=False):
 GLASS = "000000A6"  # dark see-through pill / card on top of artwork
 
 
-def status_bar(L, view, xr, y, w=0.5, h=0.052, z=30):
-    """Clock, date and battery on one dark glass pill (right edge at xr)."""
-    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, GLASS, h / 2, z=z)
-    clock(L, view, xr - w + 0.024, y, "0 0.5", fs="fsPill", color="FFFFFF", font=FONT_BOLD,
-          fmt="%H:%M   %d/%m")
+def status_bar(L, view, xr, y, w=0.5, h=0.052, z=30, glass=True):
+    """Clock, date and battery on one pill (right edge at xr): dark glass on
+    top of artwork, or the plain tile colour on a normal screen."""
+    bg, fg = (GLASS, "FFFFFF") if glass else ("${tileColor}", "${subColor}")
+    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, bg, h / 2, z=z)
+    clock(L, view, xr - w + 0.024, y, "0 0.5", fs="fsPill", color=fg, font=FONT_BOLD, fmt="%H:%M   %d/%m")
     L.add(view, "systemstatus", "systemStatus", pos=L.pair(xr - 0.022, y), origin="1 0.5", height="${fsPill}",
-          color="FFFFFF", fontPath=FONT_BOLD, scope="view")
+          color=fg, fontPath=FONT_BOLD, scope="view")
 
 
 def glass_text(L, view, name, x, y, fs, origin="0 0.5", z=41, **extra):
@@ -420,7 +425,6 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     for v in ("system", "gamelist"):  # HOME-menu background pattern chosen by the colour scheme
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + "${bgPattern}", tile="true",
               tileSize="0 ${bgTile}", color="${bgColor}", zIndex="0")
-    backdrop(L, "system", "featured")
     backdrop(L, "gamelist")
 
     sys_geo = dict(up=(0.035, 0.555), lo=(0.595, 0.915)) if mode == "row" else \
@@ -431,18 +435,14 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
         ly0, ly1 = g["lo"]
         L.panel(view, "upperScreen", px, uy0, pw, uy1 - uy0)
         L.panel(view, "lowerScreen", px, ly0, pw, ly1 - ly0)
-        status_bar(L, view, px + pw - 0.022, uy0 + 0.045, w=min(0.5, pw * 0.4))
+        status_bar(L, view, px + pw - 0.022, uy0 + 0.045, w=min(0.5, pw * 0.4), glass=view == "gamelist")
         help_(L, view, px + 0.022, 0.958, fs="fsHelp", pill=True)
 
-    # system view: top screen = the featured game's artwork with the system on top
+    # system view: top screen = the system itself on a clean screen (no game art here)
     uy0, uy1 = geo["system"]["up"]
     ly0, ly1 = geo["system"]["lo"]
     v = "system"
     k = 1.0 if mode == "row" else 0.84
-    uh = uy1 - uy0
-    L.add(v, "gameselector", "featured", selection="random", gameCount="1")
-    hero(L, v, px, uy0, pw, uh, gameselector="featured")
-    L.rect(v, "heroShade", px, uy0, pw, uh, "000000D9", 0.034, z=8, colorEnd="00000026", gradientType="horizontal")
     tile = 0.36 * k
     cy = (uy0 + 0.07 + uy1) / 2
     tx, ty = px + 0.05, cy - tile / 2
@@ -450,13 +450,9 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     nx = tx + tile + 0.045
     name_w = px + pw - 0.04 - nx
     ny = cy - 0.115 * k - 0.012
-    system_name(L, nx, ny, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3ds", color="FFFFFF")
-    L.text(v, "systemInfo", nx, ny + 0.132 * k, name_w, 0.032, "fsSmall", FONT_BOLD, "FFFFFFC0", text="${sysInfo}")
+    system_name(L, nx, ny, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3ds")
+    system_info(L, v, nx, ny + 0.132 * k, name_w)
     count_pill(L, nx + 0.012, ny + 0.18 * k + 0.012)
-    glass_text(L, v, "featuredName", px + pw - 0.03, uy1 - 0.035, "fsPill", origin="1 0.5", metadata="name",
-               gameselector="featured", systemNameSuffix="false")
-    L.text(v, "featuredLabel", px + pw - 0.03, uy1 - 0.072, 0.4, 0.03, "fsLabel", FONT_BOLD, "FFFFFFB0",
-           origin="1 0.5", text="Featured", letterCase="uppercase", horizontalAlignment="right")
 
     # system view: bottom screen
     if mode == "row":
@@ -643,7 +639,6 @@ def build_wiiu(W, style, layout, box="cover, 3dbox"):
     sysimg = SYS + style + "/"
     m = 0.05 if W >= 1.4 else 0.035
     background(L, "bg-wiiu.png", 0.11, overlay="wiiu-swirl.png")
-    backdrop(L, "system", "featured")
     backdrop(L, "gamelist")
     us = 0.17  # "user" square size
 
