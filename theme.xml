@@ -1,0 +1,202 @@
+<!-- esdeii: a dual-screen handheld inspired theme for ES-DE -->
+<theme>
+    <include>./navigationsounds.xml</include>
+
+    <colorScheme name="iceWhite">
+        <variables>
+            <bgColor>EEF1F5</bgColor>
+            <panelColor>FFFFFF</panelColor>
+            <borderColor>D3D9E1</borderColor>
+            <shadowColor>1E28361C</shadowColor>
+            <textColor>2F3640</textColor>
+            <subColor>7D8693</subColor>
+            <accentColor>1FA5EA</accentColor>
+            <accentText>FFFFFF</accentText>
+            <screenColor>2B313B</screenColor>
+            <tileColor>EEF2F7</tileColor>
+            <decoColor>CDD3DC</decoColor>
+            <dividerColor>E5E9EF</dividerColor>
+            <dimText>5A626E</dimText>
+        </variables>
+    </colorScheme>
+    <colorScheme name="cosmoBlack">
+        <variables>
+            <bgColor>1A1D22</bgColor>
+            <panelColor>2A2F37</panelColor>
+            <borderColor>0E1013</borderColor>
+            <shadowColor>00000070</shadowColor>
+            <textColor>EEF1F5</textColor>
+            <subColor>98A2AF</subColor>
+            <accentColor>3CB8FF</accentColor>
+            <accentText>FFFFFF</accentText>
+            <screenColor>14171B</screenColor>
+            <tileColor>363C46</tileColor>
+            <decoColor>30353D</decoColor>
+            <dividerColor>3A404A</dividerColor>
+            <dimText>C3CAD4</dimText>
+        </variables>
+    </colorScheme>
+    <colorScheme name="flameRed">
+        <variables>
+            <bgColor>F7E8E7</bgColor>
+            <panelColor>FFFFFF</panelColor>
+            <borderColor>E8C8C6</borderColor>
+            <shadowColor>5A1E1A1C</shadowColor>
+            <textColor>3A2E2E</textColor>
+            <subColor>8C7676</subColor>
+            <accentColor>E5404A</accentColor>
+            <accentText>FFFFFF</accentText>
+            <screenColor>2E2A2E</screenColor>
+            <tileColor>F8EEED</tileColor>
+            <decoColor>E6C2BF</decoColor>
+            <dividerColor>F1E1E0</dividerColor>
+            <dimText>604E4E</dimText>
+        </variables>
+    </colorScheme>
+    <colorScheme name="aquaBlue">
+        <variables>
+            <bgColor>E2F0FA</bgColor>
+            <panelColor>FFFFFF</panelColor>
+            <borderColor>C0DAEC</borderColor>
+            <shadowColor>0F3C5A1C</shadowColor>
+            <textColor>24384A</textColor>
+            <subColor>6E8597</subColor>
+            <accentColor>1683D9</accentColor>
+            <accentText>FFFFFF</accentText>
+            <screenColor>22303C</screenColor>
+            <tileColor>ECF5FB</tileColor>
+            <decoColor>B7D3E6</decoColor>
+            <dividerColor>DDEBF5</dividerColor>
+            <dimText>4A6072</dimText>
+        </variables>
+    </colorScheme>
+
+    <variant name="grid">
+        <aspectRatio name="16:9">
+            <include>./layouts/16x9-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="16:10">
+            <include>./layouts/16x10-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="3:2">
+            <include>./layouts/3x2-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="4:3">
+            <include>./layouts/4x3-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:3">
+            <include>./layouts/5x3-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:4">
+            <include>./layouts/5x4-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="8:7">
+            <include>./layouts/8x7-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="19.5:9">
+            <include>./layouts/19_5x9-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="20:9">
+            <include>./layouts/20x9-grid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="21:9">
+            <include>./layouts/21x9-grid.xml</include>
+        </aspectRatio>
+    </variant>
+    <variant name="list">
+        <aspectRatio name="16:9">
+            <include>./layouts/16x9-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="16:10">
+            <include>./layouts/16x10-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="3:2">
+            <include>./layouts/3x2-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="4:3">
+            <include>./layouts/4x3-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:3">
+            <include>./layouts/5x3-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:4">
+            <include>./layouts/5x4-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="8:7">
+            <include>./layouts/8x7-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="19.5:9">
+            <include>./layouts/19_5x9-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="20:9">
+            <include>./layouts/20x9-list.xml</include>
+        </aspectRatio>
+        <aspectRatio name="21:9">
+            <include>./layouts/21x9-list.xml</include>
+        </aspectRatio>
+    </variant>
+    <variant name="gridStatic">
+        <aspectRatio name="16:9">
+            <include>./layouts/16x9-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="16:10">
+            <include>./layouts/16x10-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="3:2">
+            <include>./layouts/3x2-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="4:3">
+            <include>./layouts/4x3-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:3">
+            <include>./layouts/5x3-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:4">
+            <include>./layouts/5x4-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="8:7">
+            <include>./layouts/8x7-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="19.5:9">
+            <include>./layouts/19_5x9-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="20:9">
+            <include>./layouts/20x9-gridStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="21:9">
+            <include>./layouts/21x9-gridStatic.xml</include>
+        </aspectRatio>
+    </variant>
+    <variant name="listStatic">
+        <aspectRatio name="16:9">
+            <include>./layouts/16x9-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="16:10">
+            <include>./layouts/16x10-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="3:2">
+            <include>./layouts/3x2-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="4:3">
+            <include>./layouts/4x3-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:3">
+            <include>./layouts/5x3-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:4">
+            <include>./layouts/5x4-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="8:7">
+            <include>./layouts/8x7-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="19.5:9">
+            <include>./layouts/19_5x9-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="20:9">
+            <include>./layouts/20x9-listStatic.xml</include>
+        </aspectRatio>
+        <aspectRatio name="21:9">
+            <include>./layouts/21x9-listStatic.xml</include>
+        </aspectRatio>
+    </variant>
+</theme>
