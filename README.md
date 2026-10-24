@@ -5,7 +5,7 @@ Two themes in one download:
 | Theme | Look | Sounds |
 |---|---|---|
 | **ESDEII** | console menu style, with two looks: a **Channel wall** of wide tiles above a curved clock bar, or a **Home screen** of framed tiles with a Start cursor and a dock | crisp clicks, wooden tocks and glassy dings |
-| **ESDE3DS** | dual-screen handheld: two screens, hinge, row of glossy icons | soft chimes |
+| **ESDE3DS** | dual-screen handheld: two screens, hinge, HOME-menu icon grid or icon row | soft chimes |
 
 ### ESDEII — Channel wall
 ![Channel wall](previews/esdeii-channel-wall.png)
@@ -36,12 +36,15 @@ To update, download again and replace the folders.
 - **Theme variant** — the look and how games are shown:
   - ESDEII: *Channel wall*, *Home screen* or *Home screen, glossy icons*,
     each with an icon grid, game list or cover shelf.
-  - ESDE3DS: Glossy, Channel or Plaza icons, each with an icon grid, game
-    list or cover shelf.
+  - ESDE3DS: Glossy or Plaza icons, shown as a **HOME grid** (two rows of
+    icons on the bottom screen) or an **icon row**, each with an icon grid,
+    game list or cover shelf for games.
 - **Theme color scheme** — Silver Menu, Cloud White, Ice White, Cosmo Black,
   Flame Red, Aqua Blue, Mint Green, Lavender, Sunset Orange, Sakura Pink,
   Midnight Blue, Retro Pocket, plus **Light / Dark + system colours**
-  where the accent matches each console.
+  where the accent matches each console. In ESDE3DS each scheme also has
+  its own background pattern (grid, stars, stripes, waves, dots, plaid,
+  pixels).
 - **Theme font size** — small, medium, large.
 - **Theme transitions** — slide, fade or instant.
 - **Theme aspect ratio** — leave on Automatic (16:9, 16:10, 3:2, 4:3, 5:3,
@@ -49,6 +52,10 @@ To update, download again and replace the folders.
 - Navigation sounds can be turned off in ES-DE's **Sound settings**.
 
 ## Features
+
+- Icons for all 197 systems ES-DE supports, each drawn after its real
+  controller or console (PS1–PS4, Vita, Dreamcast, Saturn, Jaguar, Neo Geo,
+  keypad consoles, classic Mac, PC, Amiga, fantasy consoles and more).
 
 - Slowly drifting bubbles in the background, tinted with your colour scheme.
 - System info line: maker, release year and type for every console.

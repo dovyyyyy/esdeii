@@ -67,17 +67,28 @@ S = {
                                                    overlay="0.08")),
 }
 SYSTEM_ACCENT = ["lightSystem", "darkSystem"]
+PATTERN = {"iceWhite": ("bg-grid.png", "0.09"), "cosmoBlack": ("bg-stars.png", "0.22"),
+           "flameRed": ("bg-stripes.png", "0.08"), "aquaBlue": ("bg-waves.png", "0.1"),
+           "mintGreen": ("bg-dots.png", "0.08"), "lavender": ("bg-plaid.png", "0.1"),
+           "sunset": ("bg-stripes.png", "0.08"), "sakura": ("bg-dots.png", "0.08"),
+           "midnight": ("bg-stars.png", "0.22"), "retroPocket": ("bg-pixels.png", "0.045"),
+           "silverMenu": ("bg-grid.png", "0.09"), "cloudWhite": ("bg-dots.png", "0.08"),
+           "lightSystem": ("bg-grid.png", "0.09"), "darkSystem": ("bg-grid.png", "0.09")}
+for _k, (_p, _t) in PATTERN.items():
+    S[_k][1].update(bgPattern=_p, bgTile=_t)
 REST = ["cosmoBlack", "flameRed", "aquaBlue", "mintGreen", "lavender", "sunset", "sakura", "midnight", "retroPocket"]
 
 THEMES = {
+    # styles: (icon set, system-view mode, label)
     "esdeii": dict(builder="ii",
-                   styles=[("channelwide", "Channel wall"), ("plaza", "Home screen"),
-                           ("glossy", "Home screen, glossy icons")],
+                   styles=[("channelwide", None, "Channel wall"), ("plaza", None, "Home screen"),
+                           ("glossy", None, "Home screen, glossy icons")],
                    sounds="click",
                    schemes=["silverMenu", "cloudWhite", "iceWhite"] + REST + SYSTEM_ACCENT,
                    blurb="console menu style (channel wall and home screen)"),
     "esde3ds": dict(builder="3ds",
-                    styles=[("glossy", "Glossy icons"), ("channel", "Channel icons"), ("plaza", "Plaza icons")],
+                    styles=[("glossy", "grid", "Glossy icons, HOME grid"), ("glossy", "row", "Glossy icons, icon row"),
+                            ("plaza", "grid", "Plaza icons, HOME grid"), ("plaza", "row", "Plaza icons, icon row")],
                     sounds="chime", schemes=["iceWhite"] + REST + ["silverMenu", "cloudWhite"] + SYSTEM_ACCENT,
                     blurb="dual-screen handheld style"),
 }
@@ -215,15 +226,15 @@ def write_theme(key, cfg, fontdir, imgdir, dump):
     shutil.copytree(fontdir, os.path.join(out, "assets", "fonts"))
     shutil.copytree(imgdir, os.path.join(out, "assets", "images"), ignore=shutil.ignore_patterns("done"))
     shutil.copytree(sounds(cfg["sounds"]), os.path.join(out, "assets", "sounds"))
-    for style, _ in cfg["styles"]:
-        shutil.copytree(icon_set(style, fontdir), os.path.join(out, "systems", style))
+    for iconset in dict.fromkeys(st[0] for st in cfg["styles"]):
+        shutil.copytree(icon_set(iconset, fontdir), os.path.join(out, "systems", iconset))
 
     variants = []
-    for style, slabel in cfg["styles"]:
+    for iconset, mode, slabel in cfg["styles"]:
         for lay, desc in GAME_LAYOUTS:
-            name = f"{style}{lay}"
+            name = f"{iconset}{(mode or '').capitalize()}{lay}"
             label = f"{slabel} + {desc}"
-            variants.append((name, label, style, lay.lower()))
+            variants.append((name, label, iconset + ("|" + mode if mode else ""), lay.lower()))
 
     build = layouts.BUILDERS[cfg["builder"]]
     files = {}

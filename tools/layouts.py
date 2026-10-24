@@ -237,16 +237,23 @@ def count_pill(L, x, y, origin=None, z=41):
 
 # ================================================================== ESDE3DS (dual screen)
 def build_3ds(W, style, layout):
+    """style is '<iconset>|<mode>' where mode is 'row' (DSi-style row) or 'grid' (HOME-menu grid)."""
+    iconset, mode = (style.split("|") + ["row"])[:2]
     L = Layout(W)
-    sysimg = SYS + style + "/"
+    sysimg = SYS + iconset + "/"
     decor = W >= 1.6
     side = min(0.24, (W - 1.30) / 2) if decor else 0.03
     px, pw = side, W - 2 * side
     wide = pw >= 1.6
-    background(L, "bg-grid.png")
+    for v in ("system", "gamelist"):  # HOME-menu background pattern chosen by the colour scheme
+        L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + "${bgPattern}", tile="true",
+              tileSize="0 ${bgTile}", color="${bgColor}", stationary="always", zIndex="0")
+        L.add(v, "animation", "bubbles", pos="0 0", size="1 1", path=IMG + "bubbles.json",
+              color="${accentColor}", opacity="${bubbleOpacity}", scaleFactor="0.5", stationary="always", zIndex="2")
 
-    geo = {"system": dict(up=(0.035, 0.555), lo=(0.595, 0.915)),
-           "gamelist": dict(up=(0.035, 0.485), lo=(0.525, 0.915))}
+    sys_geo = dict(up=(0.035, 0.555), lo=(0.595, 0.915)) if mode == "row" else \
+        dict(up=(0.035, 0.47), lo=(0.51, 0.915))
+    geo = {"system": sys_geo, "gamelist": dict(up=(0.035, 0.485), lo=(0.525, 0.915))}
     for view, g in geo.items():
         uy0, uy1 = g["up"]
         ly0, ly1 = g["lo"]
@@ -270,31 +277,35 @@ def build_3ds(W, style, layout):
         status(L, view, px + pw - 0.03, sy)
         help_(L, view, px + 0.01, 0.958)
 
-    # system view
+    # system view: top screen
     uy0, uy1 = geo["system"]["up"]
     ly0, ly1 = geo["system"]["lo"]
     v = "system"
+    k = 1.0 if mode == "row" else 0.84
     L.add(v, "gameselector", "featured", selection="random", gameCount="1")
     L.add(v, "gameselector", "recent", selection="lastplayed", gameCount="3")
-    tile = 0.34
-    tx, ty = px + 0.045, uy0 + 0.095
+    tile = 0.34 * k
+    tx, ty = px + 0.045, uy0 + 0.088 + (0.007 if mode == "row" else 0.0)
     L.img(v, "systemTile", tx, ty, tile, tile, sysimg + "${system.theme}.png", z=20, default=sysimg + "_default.png")
     nx = tx + tile + 0.04
     if wide:
-        prev_w, prev_h = 0.56, 0.315
+        prev_h = (uy1 - uy0 - 0.12)
+        prev_w = min(0.56, prev_h * 16 / 9)
         prev_x = px + pw - 0.04 - prev_w
         name_w = prev_x - 0.04 - nx
     else:
         name_w = px + pw - 0.04 - nx
-    system_name(L, nx, uy0 + 0.095, name_w, 0.125, "fsName3ds")
-    system_info(L, v, nx, uy0 + 0.222, name_w)
-    count_pill(L, nx + 0.012, uy0 + 0.272)
-    L.text(v, "recentLabel", nx, uy0 + 0.335, name_w, 0.03, "fsSmall", FONT_BOLD, "${subColor}",
+    system_name(L, nx, uy0 + 0.09, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3ds")
+    system_info(L, v, nx, uy0 + 0.09 + 0.132 * k, name_w)
+    count_pill(L, nx + 0.012, uy0 + 0.09 + 0.18 * k)
+    rl = uy0 + 0.09 + 0.245 * k
+    L.text(v, "recentLabel", nx, rl, name_w, 0.03, "fsSmall", FONT_BOLD, "${subColor}",
            text="Jump back in", letterCase="uppercase")
-    cov_h, cov_w = 0.13, 0.1
+    cov_h = min(0.13, uy1 - 0.02 - (rl + 0.04))
+    cov_w = cov_h * 0.77
     for i in range(3):
         cx = nx + cov_w / 2 + i * (cov_w + 0.025)
-        L.add(v, "image", f"recentCover{i}", pos=L.pair(cx, uy0 + 0.375 + cov_h), origin="0.5 1",
+        L.add(v, "image", f"recentCover{i}", pos=L.pair(cx, rl + 0.04 + cov_h), origin="0.5 1",
               maxSize=L.pair(cov_w, cov_h), imageType="cover, miximage", default=IMG + "nocover.png",
               gameselector="recent", gameselectorEntry=str(i), cornerRadius=L.rad(0.006), zIndex="20")
     if wide:
@@ -307,19 +318,33 @@ def build_3ds(W, style, layout):
         L.text(v, "featuredLabel", prev_x + 0.008, py - 0.006, prev_w, 0.026, "fsSmall", FONT_BOLD,
                "${subColor}", origin="0 1", text="Featured", letterCase="uppercase")
 
-    item, scale, step = 0.165, 1.32, 0.255
-    car_y0, car_h = ly0 + 0.005, ly1 - ly0 - 0.01
-    L.add(v, "carousel", "systemcarousel", pos=L.pair(px + 0.01, car_y0), size=L.pair(pw - 0.02, car_h),
-          type="horizontal", staticImage=sysimg + "${system.theme}.png", itemSize=L.pair(item, item),
-          itemScale=f(scale), maxItemCount=f((pw - 0.02) / step), unfocusedItemOpacity="1",
-          unfocusedItemDimming="0.94", imageFit="contain", color="00000000", text="${system.fullName}",
-          fontPath=FONT_BLACK, fontSize="0.026", textColor="FFFFFF", textBackgroundColor="${accentColor}",
-          textBackgroundCornerRadius=L.rad(0.04), textRelativeScale="0.85", lineSpacing="1.15",
-          itemVerticalAlignment="center", fastScrolling="true", zIndex="50")
-    ring = item * scale * icons.BODY_FRAC + 0.034
-    cy = car_y0 + car_h / 2 + item * scale * icons.BODY_OFFSET_FRAC
-    L.add(v, "image", "cursor", pos=L.pair(px + pw / 2, cy), origin="0.5 0.5", size=L.pair(ring, ring),
-          path=IMG + "cursor.png", color="${accentColor}", zIndex="55")
+    # system view: bottom screen
+    if mode == "row":
+        item, scale, step = 0.165, 1.32, 0.255
+        car_y0, car_h = ly0 + 0.005, ly1 - ly0 - 0.01
+        L.add(v, "carousel", "systemcarousel", pos=L.pair(px + 0.01, car_y0), size=L.pair(pw - 0.02, car_h),
+              type="horizontal", staticImage=sysimg + "${system.theme}.png", itemSize=L.pair(item, item),
+              itemScale=f(scale), maxItemCount=f((pw - 0.02) / step), unfocusedItemOpacity="1",
+              unfocusedItemDimming="0.94", imageFit="contain", color="00000000", text="${system.fullName}",
+              fontPath=FONT_BLACK, fontSize="0.026", textColor="FFFFFF", textBackgroundColor="${accentColor}",
+              textBackgroundCornerRadius=L.rad(0.04), textRelativeScale="0.85", lineSpacing="1.15",
+              itemVerticalAlignment="center", fastScrolling="true", zIndex="50")
+        ring = item * scale * icons.BODY_FRAC + 0.034
+        cy = car_y0 + car_h / 2 + item * scale * icons.BODY_OFFSET_FRAC
+        L.add(v, "image", "cursor", pos=L.pair(px + pw / 2, cy), origin="0.5 0.5", size=L.pair(ring, ring),
+              path=IMG + "cursor.png", color="${accentColor}", zIndex="55")
+    else:  # HOME-menu style grid of icons with a glowing cursor
+        it, sp, rows = 0.168, 0.026, 2
+        gh = rows * it + (rows - 1) * sp + 0.004
+        cols = max(3, int((pw - 0.06 + sp) // (it + sp)))
+        gw = cols * (it + sp) - sp + 0.004
+        L.add(v, "grid", "systemgrid", pos=L.pair(px + (pw - gw) / 2, ly0 + (ly1 - ly0 - gh) / 2),
+              size=L.pair(gw, gh), staticImage=sysimg + "${system.theme}.png", itemSize=L.pair(it, it),
+              itemScale="1.1", itemSpacing=f"{f(L.x(sp))} {f(sp)}", scaleInwards="true", fractionalRows="false",
+              imageFit="contain", selectorImage=IMG + "select-square.png", selectorColor="${accentColor}",
+              selectorLayer="top", text="${system.fullName}", fontPath=FONT_BLACK, fontSize="0.022",
+              textColor="FFFFFF", textBackgroundColor="${accentColor}", textBackgroundCornerRadius=L.rad(0.03),
+              textRelativeScale="0.8", lineSpacing="1.15", unfocusedItemOpacity="1", zIndex="50")
 
     # gamelist view
     uy0, uy1 = geo["gamelist"]["up"]

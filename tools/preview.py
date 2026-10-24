@@ -182,12 +182,12 @@ def render(key, scheme, view):
                     x, y, w, h = r.box(p)
                     r.paste(screenshot(w, h), x, y, w, h, radius=rad)
                 continue
-            fn = r.path(p["path"])
+            fn = r.path(r.res(p["path"]))
             if not os.path.exists(fn):
                 fn = r.path(p.get("default", p["path"]))
             if p.get("tile") == "true":
                 tile = Image.open(fn).convert("RGBA")
-                th = float(p["tileSize"].split()[1]) * H
+                th = float(r.res(p["tileSize"]).split()[1]) * H
                 tw = th * tile.size[0] / tile.size[1]
                 t = tile.resize((max(1, int(tw)), max(1, int(th))))
                 big = Image.new("RGBA", r.img.size)

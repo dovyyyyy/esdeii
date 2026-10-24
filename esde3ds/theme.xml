@@ -23,6 +23,8 @@
             <dimText>5A626E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-grid.png</bgPattern>
+            <bgTile>0.09</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="cosmoBlack">
@@ -42,6 +44,8 @@
             <dimText>C3CAD4</dimText>
             <overlayOpacity>0.08</overlayOpacity>
             <bubbleOpacity>0.45</bubbleOpacity>
+            <bgPattern>bg-stars.png</bgPattern>
+            <bgTile>0.22</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="flameRed">
@@ -61,6 +65,8 @@
             <dimText>604E4E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-stripes.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="aquaBlue">
@@ -80,6 +86,8 @@
             <dimText>4A6072</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-waves.png</bgPattern>
+            <bgTile>0.1</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="mintGreen">
@@ -99,6 +107,8 @@
             <dimText>48604F</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-dots.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="lavender">
@@ -118,6 +128,8 @@
             <dimText>585170</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-plaid.png</bgPattern>
+            <bgTile>0.1</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="sunset">
@@ -137,6 +149,8 @@
             <dimText>64503F</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-stripes.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="sakura">
@@ -156,6 +170,8 @@
             <dimText>684B5C</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-dots.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="midnight">
@@ -175,6 +191,8 @@
             <dimText>BCC8D8</dimText>
             <overlayOpacity>0.06</overlayOpacity>
             <bubbleOpacity>0.45</bubbleOpacity>
+            <bgPattern>bg-stars.png</bgPattern>
+            <bgTile>0.22</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="retroPocket">
@@ -194,6 +212,8 @@
             <dimText>1E4A1E</dimText>
             <overlayOpacity>0.25</overlayOpacity>
             <bubbleOpacity>0.45</bubbleOpacity>
+            <bgPattern>bg-pixels.png</bgPattern>
+            <bgTile>0.045</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="silverMenu">
@@ -213,6 +233,8 @@
             <dimText>5F656D</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-grid.png</bgPattern>
+            <bgTile>0.09</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="cloudWhite">
@@ -232,6 +254,8 @@
             <dimText>5A616A</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-dots.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="lightSystem">
@@ -251,6 +275,8 @@
             <dimText>5A626E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-grid.png</bgPattern>
+            <bgTile>0.09</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="darkSystem">
@@ -270,6 +296,8 @@
             <dimText>C3CAD4</dimText>
             <overlayOpacity>0.08</overlayOpacity>
             <bubbleOpacity>0.45</bubbleOpacity>
+            <bgPattern>bg-grid.png</bgPattern>
+            <bgTile>0.09</bgTile>
         </variables>
     </colorScheme>
 
@@ -331,292 +359,388 @@
         </variables>
     </fontSize>
 
-    <variant name="glossyGrid">
+    <variant name="glossyGridGrid">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-glossyGrid.xml</include>
+            <include>./layouts/16x9-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-glossyGrid.xml</include>
+            <include>./layouts/16x10-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-glossyGrid.xml</include>
+            <include>./layouts/3x2-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-glossyGrid.xml</include>
+            <include>./layouts/4x3-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-glossyGrid.xml</include>
+            <include>./layouts/5x3-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-glossyGrid.xml</include>
+            <include>./layouts/5x4-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-glossyGrid.xml</include>
+            <include>./layouts/8x7-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-glossyGrid.xml</include>
+            <include>./layouts/19_5x9-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-glossyGrid.xml</include>
+            <include>./layouts/20x9-glossyGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-glossyGrid.xml</include>
+            <include>./layouts/21x9-glossyGridGrid.xml</include>
         </aspectRatio>
     </variant>
-    <variant name="glossyList">
+    <variant name="glossyGridList">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-glossyList.xml</include>
+            <include>./layouts/16x9-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-glossyList.xml</include>
+            <include>./layouts/16x10-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-glossyList.xml</include>
+            <include>./layouts/3x2-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-glossyList.xml</include>
+            <include>./layouts/4x3-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-glossyList.xml</include>
+            <include>./layouts/5x3-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-glossyList.xml</include>
+            <include>./layouts/5x4-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-glossyList.xml</include>
+            <include>./layouts/8x7-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-glossyList.xml</include>
+            <include>./layouts/19_5x9-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-glossyList.xml</include>
+            <include>./layouts/20x9-glossyGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-glossyList.xml</include>
+            <include>./layouts/21x9-glossyGridList.xml</include>
         </aspectRatio>
     </variant>
-    <variant name="glossyShelf">
+    <variant name="glossyGridShelf">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-glossyShelf.xml</include>
+            <include>./layouts/16x9-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-glossyShelf.xml</include>
+            <include>./layouts/16x10-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-glossyShelf.xml</include>
+            <include>./layouts/3x2-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-glossyShelf.xml</include>
+            <include>./layouts/4x3-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-glossyShelf.xml</include>
+            <include>./layouts/5x3-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-glossyShelf.xml</include>
+            <include>./layouts/5x4-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-glossyShelf.xml</include>
+            <include>./layouts/8x7-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-glossyShelf.xml</include>
+            <include>./layouts/19_5x9-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-glossyShelf.xml</include>
+            <include>./layouts/20x9-glossyGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-glossyShelf.xml</include>
+            <include>./layouts/21x9-glossyGridShelf.xml</include>
         </aspectRatio>
     </variant>
-    <variant name="channelGrid">
+    <variant name="glossyRowGrid">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-channelGrid.xml</include>
+            <include>./layouts/16x9-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-channelGrid.xml</include>
+            <include>./layouts/16x10-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-channelGrid.xml</include>
+            <include>./layouts/3x2-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-channelGrid.xml</include>
+            <include>./layouts/4x3-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-channelGrid.xml</include>
+            <include>./layouts/5x3-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-channelGrid.xml</include>
+            <include>./layouts/5x4-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-channelGrid.xml</include>
+            <include>./layouts/8x7-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-channelGrid.xml</include>
+            <include>./layouts/19_5x9-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-channelGrid.xml</include>
+            <include>./layouts/20x9-glossyRowGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-channelGrid.xml</include>
+            <include>./layouts/21x9-glossyRowGrid.xml</include>
         </aspectRatio>
     </variant>
-    <variant name="channelList">
+    <variant name="glossyRowList">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-channelList.xml</include>
+            <include>./layouts/16x9-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-channelList.xml</include>
+            <include>./layouts/16x10-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-channelList.xml</include>
+            <include>./layouts/3x2-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-channelList.xml</include>
+            <include>./layouts/4x3-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-channelList.xml</include>
+            <include>./layouts/5x3-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-channelList.xml</include>
+            <include>./layouts/5x4-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-channelList.xml</include>
+            <include>./layouts/8x7-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-channelList.xml</include>
+            <include>./layouts/19_5x9-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-channelList.xml</include>
+            <include>./layouts/20x9-glossyRowList.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-channelList.xml</include>
+            <include>./layouts/21x9-glossyRowList.xml</include>
         </aspectRatio>
     </variant>
-    <variant name="channelShelf">
+    <variant name="glossyRowShelf">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-channelShelf.xml</include>
+            <include>./layouts/16x9-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-channelShelf.xml</include>
+            <include>./layouts/16x10-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-channelShelf.xml</include>
+            <include>./layouts/3x2-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-channelShelf.xml</include>
+            <include>./layouts/4x3-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-channelShelf.xml</include>
+            <include>./layouts/5x3-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-channelShelf.xml</include>
+            <include>./layouts/5x4-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-channelShelf.xml</include>
+            <include>./layouts/8x7-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-channelShelf.xml</include>
+            <include>./layouts/19_5x9-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-channelShelf.xml</include>
+            <include>./layouts/20x9-glossyRowShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-channelShelf.xml</include>
+            <include>./layouts/21x9-glossyRowShelf.xml</include>
         </aspectRatio>
     </variant>
-    <variant name="plazaGrid">
+    <variant name="plazaGridGrid">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-plazaGrid.xml</include>
+            <include>./layouts/16x9-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-plazaGrid.xml</include>
+            <include>./layouts/16x10-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-plazaGrid.xml</include>
+            <include>./layouts/3x2-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-plazaGrid.xml</include>
+            <include>./layouts/4x3-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-plazaGrid.xml</include>
+            <include>./layouts/5x3-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-plazaGrid.xml</include>
+            <include>./layouts/5x4-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-plazaGrid.xml</include>
+            <include>./layouts/8x7-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-plazaGrid.xml</include>
+            <include>./layouts/19_5x9-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-plazaGrid.xml</include>
+            <include>./layouts/20x9-plazaGridGrid.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-plazaGrid.xml</include>
+            <include>./layouts/21x9-plazaGridGrid.xml</include>
         </aspectRatio>
     </variant>
-    <variant name="plazaList">
+    <variant name="plazaGridList">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-plazaList.xml</include>
+            <include>./layouts/16x9-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-plazaList.xml</include>
+            <include>./layouts/16x10-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-plazaList.xml</include>
+            <include>./layouts/3x2-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-plazaList.xml</include>
+            <include>./layouts/4x3-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-plazaList.xml</include>
+            <include>./layouts/5x3-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-plazaList.xml</include>
+            <include>./layouts/5x4-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-plazaList.xml</include>
+            <include>./layouts/8x7-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-plazaList.xml</include>
+            <include>./layouts/19_5x9-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-plazaList.xml</include>
+            <include>./layouts/20x9-plazaGridList.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-plazaList.xml</include>
+            <include>./layouts/21x9-plazaGridList.xml</include>
         </aspectRatio>
     </variant>
-    <variant name="plazaShelf">
+    <variant name="plazaGridShelf">
         <aspectRatio name="16:9">
-            <include>./layouts/16x9-plazaShelf.xml</include>
+            <include>./layouts/16x9-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="16:10">
-            <include>./layouts/16x10-plazaShelf.xml</include>
+            <include>./layouts/16x10-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="3:2">
-            <include>./layouts/3x2-plazaShelf.xml</include>
+            <include>./layouts/3x2-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="4:3">
-            <include>./layouts/4x3-plazaShelf.xml</include>
+            <include>./layouts/4x3-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="5:3">
-            <include>./layouts/5x3-plazaShelf.xml</include>
+            <include>./layouts/5x3-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="5:4">
-            <include>./layouts/5x4-plazaShelf.xml</include>
+            <include>./layouts/5x4-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="8:7">
-            <include>./layouts/8x7-plazaShelf.xml</include>
+            <include>./layouts/8x7-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="19.5:9">
-            <include>./layouts/19_5x9-plazaShelf.xml</include>
+            <include>./layouts/19_5x9-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="20:9">
-            <include>./layouts/20x9-plazaShelf.xml</include>
+            <include>./layouts/20x9-plazaGridShelf.xml</include>
         </aspectRatio>
         <aspectRatio name="21:9">
-            <include>./layouts/21x9-plazaShelf.xml</include>
+            <include>./layouts/21x9-plazaGridShelf.xml</include>
+        </aspectRatio>
+    </variant>
+    <variant name="plazaRowGrid">
+        <aspectRatio name="16:9">
+            <include>./layouts/16x9-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="16:10">
+            <include>./layouts/16x10-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="3:2">
+            <include>./layouts/3x2-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="4:3">
+            <include>./layouts/4x3-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:3">
+            <include>./layouts/5x3-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:4">
+            <include>./layouts/5x4-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="8:7">
+            <include>./layouts/8x7-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="19.5:9">
+            <include>./layouts/19_5x9-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="20:9">
+            <include>./layouts/20x9-plazaRowGrid.xml</include>
+        </aspectRatio>
+        <aspectRatio name="21:9">
+            <include>./layouts/21x9-plazaRowGrid.xml</include>
+        </aspectRatio>
+    </variant>
+    <variant name="plazaRowList">
+        <aspectRatio name="16:9">
+            <include>./layouts/16x9-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="16:10">
+            <include>./layouts/16x10-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="3:2">
+            <include>./layouts/3x2-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="4:3">
+            <include>./layouts/4x3-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:3">
+            <include>./layouts/5x3-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:4">
+            <include>./layouts/5x4-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="8:7">
+            <include>./layouts/8x7-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="19.5:9">
+            <include>./layouts/19_5x9-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="20:9">
+            <include>./layouts/20x9-plazaRowList.xml</include>
+        </aspectRatio>
+        <aspectRatio name="21:9">
+            <include>./layouts/21x9-plazaRowList.xml</include>
+        </aspectRatio>
+    </variant>
+    <variant name="plazaRowShelf">
+        <aspectRatio name="16:9">
+            <include>./layouts/16x9-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="16:10">
+            <include>./layouts/16x10-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="3:2">
+            <include>./layouts/3x2-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="4:3">
+            <include>./layouts/4x3-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:3">
+            <include>./layouts/5x3-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="5:4">
+            <include>./layouts/5x4-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="8:7">
+            <include>./layouts/8x7-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="19.5:9">
+            <include>./layouts/19_5x9-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="20:9">
+            <include>./layouts/20x9-plazaRowShelf.xml</include>
+        </aspectRatio>
+        <aspectRatio name="21:9">
+            <include>./layouts/21x9-plazaRowShelf.xml</include>
         </aspectRatio>
     </variant>
 </theme>

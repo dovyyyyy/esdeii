@@ -86,40 +86,52 @@
         <gamelistToSystem>instant</gamelistToSystem>
     </transitions>
 
-    <variant name="glossyGrid">
-        <label>Glossy icons + icon grid</label>
+    <variant name="glossyGridGrid">
+        <label>Glossy icons, HOME grid + icon grid</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="glossyList">
-        <label>Glossy icons + game list</label>
+    <variant name="glossyGridList">
+        <label>Glossy icons, HOME grid + game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="glossyShelf">
-        <label>Glossy icons + cover shelf</label>
+    <variant name="glossyGridShelf">
+        <label>Glossy icons, HOME grid + cover shelf</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="channelGrid">
-        <label>Channel icons + icon grid</label>
+    <variant name="glossyRowGrid">
+        <label>Glossy icons, icon row + icon grid</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="channelList">
-        <label>Channel icons + game list</label>
+    <variant name="glossyRowList">
+        <label>Glossy icons, icon row + game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="channelShelf">
-        <label>Channel icons + cover shelf</label>
+    <variant name="glossyRowShelf">
+        <label>Glossy icons, icon row + cover shelf</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="plazaGrid">
-        <label>Plaza icons + icon grid</label>
+    <variant name="plazaGridGrid">
+        <label>Plaza icons, HOME grid + icon grid</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="plazaList">
-        <label>Plaza icons + game list</label>
+    <variant name="plazaGridList">
+        <label>Plaza icons, HOME grid + game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="plazaShelf">
-        <label>Plaza icons + cover shelf</label>
+    <variant name="plazaGridShelf">
+        <label>Plaza icons, HOME grid + cover shelf</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="plazaRowGrid">
+        <label>Plaza icons, icon row + icon grid</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="plazaRowList">
+        <label>Plaza icons, icon row + game list</label>
+        <selectable>true</selectable>
+    </variant>
+    <variant name="plazaRowShelf">
+        <label>Plaza icons, icon row + cover shelf</label>
         <selectable>true</selectable>
     </variant>
 </themeCapabilities>

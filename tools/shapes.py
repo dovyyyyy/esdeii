@@ -435,3 +435,144 @@ def glyph(kind, size):
 G["mail"] = [("add", RR(8, 22, 92, 78, 8)),
              ("cut", P("M 14 28 L 50 55 L 86 28 L 86 33 L 50 60 L 14 33 Z"))]
 G["home"] = [("add", P("M 50 8 L 94 46 L 84 46 L 84 90 L 60 90 L 60 64 L 40 64 L 40 90 L 16 90 L 16 46 L 6 46 Z"))]
+
+
+# ================================================================== more consoles
+_PS_BODY = ("M 30 25 C 40 23.5 60 23.5 70 25 C 82 26.5 90 31 93 41 C 96 52 97.5 67 95.5 79 "
+            "C 94 88 86 92.5 79.5 88.5 C 74.5 85 72 75.5 66.5 68 C 62.5 63 56.5 61.5 50 61.5 "
+            "C 43.5 61.5 37.5 63 33.5 68 C 28 75.5 25.5 85 20.5 88.5 C 14 92.5 6 88 4.5 79 "
+            "C 2.5 67 4 52 7 41 C 10 31 18 26.5 30 25 Z")
+
+# original PlayStation pad: no sticks
+G["pad_ps1"] = [("add", P(_PS_BODY)), *plus(21.5, 44, 9, 6), *diamond(78.5, 44, 8.6, 4.1),
+                ("cut", RR(39.5, 44, 45.5, 47, 1.5)), ("cut", RR(54.5, 44, 60.5, 47, 1.5))]
+
+# PS4-style pad: touchpad in the middle
+G["pad_ps4"] = [("add", P(_PS_BODY)),
+                ("cut", RR(36, 27.5, 64, 46, 3.5)), ("add", RR(38.5, 30, 61.5, 43.5, 2.5)),
+                *plus(20.5, 43, 8, 5.4), *diamond(79.5, 43, 7.6, 3.7),
+                *ring(36, 58, 8, 5.2), *ring(64, 58, 8, 5.2)]
+
+# Vita-style handheld: long body with two small sticks
+G["psvita"] = [("add", RR(2, 30, 98, 70, 18)), ("cut", RR(21, 34, 79, 66, 1.5)),
+               *plus(11, 45, 4.6, 3), *diamond(89, 45, 4.1, 2),
+               *ring(12, 59, 3.8, 2.3), *ring(88, 59, 3.8, 2.3)]
+
+# Dreamcast-style pad with memory-card window
+G["pad_dc"] = [
+    ("add", P("M 22 21 C 36 15 64 15 78 21 C 90 26 95.5 40 94.5 55 C 93.5 71 86.5 85 74 86.5 "
+              "C 66 87.5 62 79 58 72 L 42 72 C 38 79 34 87.5 26 86.5 C 13.5 85 6.5 71 5.5 55 "
+              "C 4.5 40 10 26 22 21 Z")),
+    ("cut", RR(37, 24, 63, 47, 3.5)), ("add", RR(40, 27, 60, 44, 2.2)), ("cut", RR(43.5, 30, 56.5, 38, 1)),
+    *ring(24, 40, 7.6, 4.8), *plus(27, 61, 6.6, 4.2), *diamond(76, 50, 7, 3.6),
+]
+
+# Saturn-style pad: rounded wings, round d-pad, six buttons
+G["pad_saturn"] = [
+    ("add", P("M 9 41 C 9 28 21 21 34 23 L 66 23 C 79 21 91 28 91 41 C 91 56 86 68 75 71 "
+              "C 69 72.5 63.5 68 58 66 L 42 66 C 36.5 68 31 72.5 25 71 C 14 68 9 56 9 41 Z")),
+    ("cut", CI(26, 45, 11)), ("add", CI(26, 45, 9.2)), *plus(26, 45, 7.4, 3.8),
+    ("cut", CI(60, 39, 3.3)), ("cut", CI(70, 35.5, 3.3)), ("cut", CI(80, 32, 3.3)),
+    ("cut", CI(62, 51, 4.1)), ("cut", CI(72, 47.5, 4.1)), ("cut", CI(82, 44, 4.1)),
+    ("cut", RR(46, 44, 54, 48, 1.8)),
+]
+
+# Jaguar-style pad: round top with a number keypad below
+_jag = [("add", P("M 12 31 C 12 18 30 12 50 12 C 70 12 88 18 88 31 L 88 50 C 88 60 81 66 70 66 "
+                  "L 30 66 C 19 66 12 60 12 50 Z")),
+        ("add", RR(30, 56, 70, 95, 6)),
+        *plus(27, 36, 8, 5), ("cut", CI(62, 42, 4)), ("cut", CI(71, 37, 4)), ("cut", CI(80, 32, 4))]
+for r_ in range(4):
+    for c_ in range(3):
+        _jag.append(("cut", RR(35 + c_ * 11, 61 + r_ * 8.3, 43 + c_ * 11, 67 + r_ * 8.3, 1.2)))
+G["pad_jaguar"] = _jag
+
+# Keypad controller (Intellivision / ColecoVision style)
+_kp = [("add", RR(27, 3, 73, 97, 8)), ("cut", CI(50, 22, 12.5)), ("add", CI(50, 22, 9.5)), ("cut", CI(50, 22, 3))]
+for r_ in range(4):
+    for c_ in range(3):
+        _kp.append(("cut", RR(33.5 + c_ * 11.5, 43 + r_ * 12.5, 43 + c_ * 11.5, 51.5 + r_ * 12.5, 1.5)))
+G["keypad"] = _kp
+
+# PC Engine-style pad: small rounded pad, turbo switches
+G["pad_pce"] = [("add", RR(5, 30, 95, 70, 11)), *plus(22, 50, 9, 5.6),
+                ("cut", CI(72, 55, 5.6)), ("cut", CI(86, 55, 5.6)),
+                ("cut", RR(68, 37, 75, 43, 1.2)), ("cut", RR(82, 37, 89, 43, 1.2)),
+                ("cut", RR(40, 54, 46, 58, 1.5)), ("cut", RR(52, 54, 58, 58, 1.5))]
+
+# Arcade stick box (Neo Geo / fighting games)
+G["stick_box"] = [("add", P("M 10 44 L 90 44 C 94 44 96 46 96 50 L 96 82 C 96 86 94 88 90 88 L 10 88 "
+                            "C 6 88 4 86 4 82 L 4 50 C 4 46 6 44 10 44 Z")),
+                  ("add", CAP(27, 24, 27, 54, 7)), ("add", CI(27, 19, 10)),
+                  ("cut", CI(27, 57, 6)), ("add", CI(27, 57, 4)),
+                  ("cut", CI(55, 66, 5)), ("cut", CI(66.5, 61, 5)), ("cut", CI(78, 58, 5)), ("cut", CI(89, 56.5, 4.2)),
+                  ("cut", RR(46, 78, 54, 82, 1.5))]
+
+# 32X-style mushroom add-on
+G["addon"] = [("add", P("M 12 46 C 12 27 29 14 50 14 C 71 14 88 27 88 46 C 88 52 83 55 76 55 L 24 55 "
+                        "C 17 55 12 52 12 46 Z")),
+              ("add", RR(36, 53, 64, 90, 4)),
+              ("cut", CAP(30, 37, 70, 37, 4)), ("cut", CAP(36, 28, 64, 28, 3.4)),
+              ("cut", RR(42, 64, 58, 68, 1.5)), ("cut", RR(42, 73, 58, 77, 1.5))]
+
+# Vector display console (tall, built-in screen)
+G["vectrex"] = [("add", RR(21, 3, 79, 97, 6)), ("cut", RR(27.5, 9, 72.5, 63, 3)),
+                *[("cut", RR(31, 70 + i * 6, 69, 73 + i * 6, 1)) for i in range(4)]]
+
+# Point-and-click (mouse pointer)
+G["pointer"] = [("add", P("M 28 6 L 28 80 L 45 65 L 56 92 L 68 87 L 57 61 L 80 61 Z"))]
+
+# First-person shooter crosshair
+G["crosshair"] = [("add", CI(50, 50, 40)), ("cut", CI(50, 50, 32)),
+                  ("add", RR(47, 4, 53, 30, 2)), ("add", RR(47, 70, 53, 96, 2)),
+                  ("add", RR(4, 47, 30, 53, 2)), ("add", RR(70, 47, 96, 53, 2)), ("add", CI(50, 50, 6))]
+
+# Fantasy-console pixel creature
+_px = ["..X....X..", "...X..X...", "..XXXXXX..", ".XX.XX.XX.", "XXXXXXXXXX", "X.XXXXXX.X", "X.X....X.X",
+       "...XX.XX..."]
+_pix = []
+for r_, rowp in enumerate(_px):
+    for c_, ch in enumerate(rowp[:10]):
+        if ch == "X":
+            _pix.append(("add", RR(5 + c_ * 9, 14 + r_ * 9, 5 + c_ * 9 + 9.2, 14 + r_ * 9 + 9.2, 0)))
+G["pixel"] = _pix
+
+# RPG sword
+G["sword"] = [("add", P("M 50 3 L 57 14 L 57 62 L 43 62 L 43 14 Z")), ("cut", RR(48.6, 14, 51.4, 58, 1)),
+              ("add", RR(28, 61, 72, 69, 3)), ("add", RR(45, 68, 55, 88, 2)), ("add", CI(50, 92, 6))]
+
+# Compact all-in-one computer (classic Mac style)
+G["classic_mac"] = [("add", RR(22, 3, 78, 88, 6)), ("cut", RR(29.5, 10, 70.5, 47, 3)),
+                    ("cut", RR(46, 62, 70, 65.5, 1.5)), ("cut", RR(29, 77, 37, 79, 1)),
+                    ("add", RR(18, 86, 82, 96, 3))]
+
+# Tower PC with monitor
+G["pc_tower"] = [("add", RR(3, 14, 68, 64, 5)), ("cut", RR(8.5, 19.5, 62.5, 58.5, 2.5)),
+                 ("add", P("M 28 63 L 43 63 L 46 74 L 25 74 Z")), ("add", RR(16, 73, 55, 80, 3)),
+                 ("add", RR(73, 10, 97, 86, 4)),
+                 ("cut", RR(77, 16, 93, 21, 1)), ("cut", RR(77, 25, 93, 30, 1)), ("cut", CI(85, 74, 3.5))]
+
+# Desktop window
+G["window"] = [("add", RR(6, 13, 94, 87, 7)), ("cut", RR(11.5, 30, 88.5, 81.5, 3)),
+               ("cut", CI(76, 21.5, 3)), ("cut", CI(84.5, 21.5, 3)), ("cut", RR(15, 19.5, 45, 23.5, 2))]
+
+# Computer with separate monitor + keyboard
+_mk = [("add", RR(16, 4, 84, 52, 5)), ("cut", RR(22, 10, 78, 46, 2.5)),
+       ("add", P("M 8 90 L 14 62 C 15 59 17 58 20 58 L 80 58 C 83 58 85 59 86 62 L 92 90 "
+                 "C 93 93 91 95 88 95 L 12 95 C 9 95 7 93 8 90 Z"))]
+for r_, (y_, x0_) in enumerate(((64, 18), (72, 16), (80, 14))):
+    st_ = (100 - 2 * x0_) / 9
+    for i_ in range(9):
+        _mk.append(("cut", RR(x0_ + i_ * st_ + 0.6, y_, x0_ + (i_ + 1) * st_ - 0.6, y_ + 5.4, 1)))
+G["monitor_keyboard"] = _mk
+
+# Keyboard computer with a mouse (Amiga / ST style)
+_km = [("add", P("M 4 74 L 10 42 C 11 38 13 36 17 36 L 63 36 C 67 36 69 38 70 42 L 76 74 "
+                 "C 77 78 75 80 71 80 L 9 80 C 5 80 3 78 4 74 Z"))]
+for r_, (y_, x0_) in enumerate(((43, 14), (51, 12), (59, 10))):
+    st_ = (80 - 2 * x0_) / 7
+    for i_ in range(7):
+        _km.append(("cut", RR(x0_ + i_ * st_ + 0.6, y_, x0_ + (i_ + 1) * st_ - 0.6, y_ + 5.6, 1)))
+_km += [("cut", RR(24, 68, 56, 73.5, 1.5)), ("add", RR(80, 50, 97, 80, 8.5)),
+        ("cut", RR(88, 50, 89.2, 62, 0)), ("cut", RR(80, 61.5, 97, 62.7, 0))]
+G["keyboard_mouse"] = _km

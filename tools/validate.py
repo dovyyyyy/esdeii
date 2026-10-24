@@ -20,6 +20,7 @@ for fn in glob.glob(sys.argv[2] + "/layouts/*.xml") + [sys.argv[2] + "/navigatio
                 t = (p.text or "").strip()
                 if p.tag in ("pos","size","origin","itemSize","itemSpacing","cropSize","maxSize","tileSize","backgroundMargins","selectedBackgroundMargins","itemMargin"):
                     vals = t.split()
+                    if "${" in t: continue
                     if len(vals)!=2: print("bad pair",fn,el.get('name'),p.tag,t); errs+=1; continue
                     v=[float(x) for x in vals]
                     if p.tag=="itemSpacing" and max(v)>0.1: print("itemSpacing>0.1",fn,v); errs+=1

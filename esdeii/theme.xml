@@ -23,6 +23,8 @@
             <dimText>5F656D</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-grid.png</bgPattern>
+            <bgTile>0.09</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="cloudWhite">
@@ -42,6 +44,8 @@
             <dimText>5A616A</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-dots.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="iceWhite">
@@ -61,6 +65,8 @@
             <dimText>5A626E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-grid.png</bgPattern>
+            <bgTile>0.09</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="cosmoBlack">
@@ -80,6 +86,8 @@
             <dimText>C3CAD4</dimText>
             <overlayOpacity>0.08</overlayOpacity>
             <bubbleOpacity>0.45</bubbleOpacity>
+            <bgPattern>bg-stars.png</bgPattern>
+            <bgTile>0.22</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="flameRed">
@@ -99,6 +107,8 @@
             <dimText>604E4E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-stripes.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="aquaBlue">
@@ -118,6 +128,8 @@
             <dimText>4A6072</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-waves.png</bgPattern>
+            <bgTile>0.1</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="mintGreen">
@@ -137,6 +149,8 @@
             <dimText>48604F</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-dots.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="lavender">
@@ -156,6 +170,8 @@
             <dimText>585170</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-plaid.png</bgPattern>
+            <bgTile>0.1</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="sunset">
@@ -175,6 +191,8 @@
             <dimText>64503F</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-stripes.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="sakura">
@@ -194,6 +212,8 @@
             <dimText>684B5C</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-dots.png</bgPattern>
+            <bgTile>0.08</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="midnight">
@@ -213,6 +233,8 @@
             <dimText>BCC8D8</dimText>
             <overlayOpacity>0.06</overlayOpacity>
             <bubbleOpacity>0.45</bubbleOpacity>
+            <bgPattern>bg-stars.png</bgPattern>
+            <bgTile>0.22</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="retroPocket">
@@ -232,6 +254,8 @@
             <dimText>1E4A1E</dimText>
             <overlayOpacity>0.25</overlayOpacity>
             <bubbleOpacity>0.45</bubbleOpacity>
+            <bgPattern>bg-pixels.png</bgPattern>
+            <bgTile>0.045</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="lightSystem">
@@ -251,6 +275,8 @@
             <dimText>5A626E</dimText>
             <overlayOpacity>0.9</overlayOpacity>
             <bubbleOpacity>0.6</bubbleOpacity>
+            <bgPattern>bg-grid.png</bgPattern>
+            <bgTile>0.09</bgTile>
         </variables>
     </colorScheme>
     <colorScheme name="darkSystem">
@@ -270,6 +296,8 @@
             <dimText>C3CAD4</dimText>
             <overlayOpacity>0.08</overlayOpacity>
             <bubbleOpacity>0.45</bubbleOpacity>
+            <bgPattern>bg-grid.png</bgPattern>
+            <bgTile>0.09</bgTile>
         </variables>
     </colorScheme>
 

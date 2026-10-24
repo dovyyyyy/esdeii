@@ -191,6 +191,7 @@ def build_all(img_dir, fontpath):
     wiiu_swirl(os.path.join(img_dir, "wiiu-swirl.png"))
     wii_bar(os.path.join(img_dir, "wii-bar.png"), os.path.join(img_dir, "wii-bar-line.png"))
     bubbles_lottie(os.path.join(img_dir, "bubbles.json"))
+    patterns(img_dir)
     wii_selector(os.path.join(img_dir, "select-wide.png"))
     wiiu_selector(os.path.join(img_dir, "select-start.png"), fontpath)
     square_ring(os.path.join(img_dir, "select-square.png"))
@@ -241,3 +242,66 @@ def bubbles_lottie(path, W=1920, H=1080, fps=24, seconds=20, count=14, seed=5):
             "assets": [], "layers": layers}
     with open(path, "w") as fh:
         json.dump(anim, fh, separators=(",", ":"))
+
+
+# ---------------------------------------------------------------- HOME-menu background patterns
+# All white-based with light grey detail; the theme multiplies them by the scheme's background colour.
+def patterns(img_dir):
+    L1, L2 = (232, 235, 240), (244, 246, 249)
+
+    def save(name, im):
+        im.save(os.path.join(img_dir, name), optimize=True)
+
+    T = 96
+    im = Image.new("RGB", (T, T), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    for k in range(-T, 2 * T, 24):
+        d.line([(k, T), (k + T, 0)], fill=L1, width=9)
+    save("bg-stripes.png", im)
+
+    im = Image.new("RGB", (T * 4, T * 4), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    for y in range(0, T * 4, 48):
+        for x in range(0, T * 4, 48):
+            o = 24 if (y // 48) % 2 else 0
+            d.ellipse([x + o + 12, y + 12, x + o + 36, y + 36], fill=L1)
+    im = im.resize((T, T), Image.LANCZOS)
+    save("bg-dots.png", im)
+
+    im = Image.new("RGB", (T, T), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    for c in (16, 64):
+        d.rectangle([c, 0, c + 14, T], fill=L2)
+        d.rectangle([0, c, T, c + 14], fill=L2)
+    for c in (16, 64):
+        d.rectangle([c + 5, 0, c + 8, T], fill=L1)
+        d.rectangle([0, c + 5, T, c + 8], fill=L1)
+    save("bg-plaid.png", im)
+
+    S = T * 4
+    im = Image.new("RGB", (S, S), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    import random
+    rnd = random.Random(3)
+    for _ in range(14):
+        cx, cy, r = rnd.uniform(0, S), rnd.uniform(0, S), rnd.uniform(14, 34)
+        pts = [(cx + (r if i % 2 == 0 else r * 0.42) * math.cos(-math.pi / 2 + i * math.pi / 5),
+                cy + (r if i % 2 == 0 else r * 0.42) * math.sin(-math.pi / 2 + i * math.pi / 5)) for i in range(10)]
+        d.polygon(pts, fill=L1)
+    save("bg-stars.png", im.resize((T * 2, T * 2), Image.LANCZOS))
+
+    im = Image.new("RGB", (32, 32), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    for y in range(0, 32, 8):
+        for x in range(0, 32, 8):
+            if (x // 8 + y // 8) % 2 == 0:
+                d.rectangle([x, y, x + 7, y + 7], fill=L2)
+    save("bg-pixels.png", im)
+
+    W2, H2 = T * 4, T * 2
+    im = Image.new("RGB", (W2, H2), (255, 255, 255))
+    d = ImageDraw.Draw(im)
+    for row in range(0, H2, 48):
+        pts = [(x, row + 24 + 10 * math.sin(x / W2 * 4 * math.pi)) for x in range(0, W2 + 1, 4)]
+        d.line(pts, fill=L1, width=8)
+    save("bg-waves.png", im.resize((T * 2, T), Image.LANCZOS))
