@@ -167,15 +167,6 @@
             <fastScrolling>true</fastScrolling>
             <zIndex>50</zIndex>
         </carousel>
-        <animation name="bubbleBehind0">
-            <pos>0.8925 0.46</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.14 0.16</size>
-            <path>./../assets/images/anim-bubble-d.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>6</zIndex>
-        </animation>
     </view>
     <view name="gamelist">
         <image name="background">

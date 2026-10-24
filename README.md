@@ -66,11 +66,14 @@ To update, download again and replace the folder.
 
 ## Sounds
 
-One matching set of soft, glassy clicks and airy swooshes, all in the same
-key and the same small room and levelled to the same loudness: moving the
-cursor always makes the same short click, opening something gives a rising
-swoosh and a two-note ding, going back plays it in reverse, and starting a
-game swells into a bright chord.
+One soft, rounded family of sounds, in the spirit of a tablet console's home
+menu with a touch of phone-UI polish. Everything is built from the same three
+pieces - a felt-soft tap, a warm "bloop" that settles onto its note and a
+gentle air swell - in one key, through the same small warm room, with no
+harsh clicks or hiss, and levelled to the same loudness. Moving the cursor
+always makes the same quiet tap; opening something plays two warm notes going
+up, going back plays them going down, favouriting sparkles up four notes, and
+starting a game rises into a soft open chord.
 
 ## Features
 
@@ -82,8 +85,8 @@ game swells into a bright chord.
   side, back through the middle to the other side and back again, in an
   endless loop (when ES-DE restarts it, it only moves back a little).
 - A few bubbles also float **behind the systems** you choose from (Channels and
-  Home), in the gaps between the icons; in the Dual looks they float on the
-  clean top screen instead, never near the console icons. The game lists
+  Home), in the gaps between the icons; in Dual Grid they float on the clean
+  top screen instead, never near the console icons (Dual Row has none there). The game lists
   have no bubbles, so nothing moves behind the game details.
 - Headers over the game artwork (system name and info) have a thin
   outline so they stay readable on any custom art.

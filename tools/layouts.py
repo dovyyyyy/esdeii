@@ -173,7 +173,7 @@ def bubbles(L, z="2", views=("system",)):
             L.add(v, "animation", f"bubble{i}", pos=L.pair(cx, cy), origin="0.5 0.5", size=L.pair(size, size),
                   path=IMG + f"anim-bubble-{kind}.json", color="${accentColor}", opacity="${bubbleOpacity}",
                   zIndex=z)
-        if v == "system":
+        if v == "system" and not getattr(L, "no_picker_bubbles", False):
             picker_bubbles(L, blocks, placed)
 
 
@@ -603,7 +603,10 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     # system list: no bubbles among the systems on the lower screen (the icons
     # are see-through at the edges); they float on the clean top screen instead
     sy = geo["system"]["up"]
-    L.bubble_area = (px + 0.02, sy[0] + 0.02, px + pw - 0.02, sy[1] - 0.02)
+    if mode == "row":  # Dual Row: no bubbles over the system name / featured game
+        L.no_picker_bubbles = True
+    else:
+        L.bubble_area = (px + 0.02, sy[0] + 0.02, px + pw - 0.02, sy[1] - 0.02)
     L.rect(v, "heroShade", px, uy0 + uh * 0.3, pw, uh * 0.7, "00000000", 0.034, z=9, colorEnd="000000C8",
            gradientType="vertical")
     # one big video screen on the left and the details card beside it, together
@@ -738,8 +741,18 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
     rx = m + lw + 0.04
     rw = W - m - rx
     slot = "slot-square.png"
-    picker(L, layout, rx, top - 0.005, rw, bot - top + 0.01,
-           dict(item=0.15, rows=3, spacing=0.016, scale="1.05", slot=slot, selector="select-square.png"))
+    gy, gh = top - 0.005, bot - top + 0.01
+    if layout == "grid":
+        # at most 5 games per row, each as big as the space allows
+        sp, rows = 0.016, 3
+        cols = max(1, min(5, int((rw + sp) // (0.15 + sp))))
+        item = min((gh - (rows - 1) * sp) / rows - 0.004, (rw - (cols - 1) * sp) / cols - 0.002)
+        gw = cols * (item + sp) - sp + 0.004
+        picker(L, layout, rx + (rw - gw) / 2, gy, gw, gh,
+               dict(item=item, rows=rows, spacing=sp, scale="1.05", slot=slot, selector="select-square.png"))
+    else:
+        picker(L, layout, rx, gy, rw, gh,
+               dict(item=0.15, rows=3, spacing=0.016, scale="1.05", slot=slot, selector="select-square.png"))
     wii_bottom(L, v, W, m)
     bubbles(L)
     return L

@@ -786,136 +786,115 @@
             <containerResetDelay>10</containerResetDelay>
         </text>
         <image name="emptySlot0">
-            <pos>0.5014 0.1945</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.5046 0.149</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot1">
-            <pos>0.5761 0.1945</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.5929 0.149</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot2">
-            <pos>0.6507 0.1945</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.6813 0.149</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot3">
-            <pos>0.7255 0.1945</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.7696 0.149</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot4">
-            <pos>0.8002 0.1945</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.858 0.149</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot5">
-            <pos>0.8749 0.1945</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.5046 0.3453</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot6">
-            <pos>0.5014 0.3605</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.5929 0.3453</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot7">
-            <pos>0.5761 0.3605</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.6813 0.3453</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot8">
-            <pos>0.6507 0.3605</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.7696 0.3453</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot9">
-            <pos>0.7255 0.3605</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.858 0.3453</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot10">
-            <pos>0.8002 0.3605</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.5046 0.5417</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot11">
-            <pos>0.8749 0.3605</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.5929 0.5417</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot12">
-            <pos>0.5014 0.5265</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.6813 0.5417</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot13">
-            <pos>0.5761 0.5265</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.7696 0.5417</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <image name="emptySlot14">
-            <pos>0.6507 0.5265</pos>
-            <size>0.0675 0.15</size>
-            <path>./../assets/images/slot-empty-square.png</path>
-            <zIndex>49</zIndex>
-            <color>${tileColor}</color>
-        </image>
-        <image name="emptySlot15">
-            <pos>0.7255 0.5265</pos>
-            <size>0.0675 0.15</size>
-            <path>./../assets/images/slot-empty-square.png</path>
-            <zIndex>49</zIndex>
-            <color>${tileColor}</color>
-        </image>
-        <image name="emptySlot16">
-            <pos>0.8002 0.5265</pos>
-            <size>0.0675 0.15</size>
-            <path>./../assets/images/slot-empty-square.png</path>
-            <zIndex>49</zIndex>
-            <color>${tileColor}</color>
-        </image>
-        <image name="emptySlot17">
-            <pos>0.8749 0.5265</pos>
-            <size>0.0675 0.15</size>
+            <pos>0.858 0.5417</pos>
+            <size>0.0811 0.1803</size>
             <path>./../assets/images/slot-empty-square.png</path>
             <zIndex>49</zIndex>
             <color>${tileColor}</color>
         </image>
         <grid name="gamelistgrid">
-            <pos>0.5014 0.1945</pos>
-            <size>0.4428 0.486</size>
+            <pos>0.5046 0.149</pos>
+            <size>0.4363 0.577</size>
             <imageType>cover, 3dbox</imageType>
-            <itemSize>0.0675 0.15</itemSize>
+            <itemSize>0.0811 0.1803</itemSize>
             <itemScale>1.05</itemScale>
             <itemSpacing>0.0072 0.016</itemSpacing>
             <scaleInwards>true</scaleInwards>
