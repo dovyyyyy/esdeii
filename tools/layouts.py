@@ -67,6 +67,21 @@ class Layout:
 
 
 # ================================================================== shared pieces
+# Drifting bubbles: (x as fraction of width, y, size, file, speed). Small separate
+# animations instead of one full-screen one, so ES-DE can cache their frames.
+BUBBLE_SPOTS = [(0.06, 0.18, 0.22, "a", 0.8), (0.27, 0.62, 0.16, "c", 1.0), (0.45, 0.12, 0.12, "b", 0.9),
+                (0.62, 0.48, 0.25, "a", 0.7), (0.83, 0.16, 0.17, "c", 1.1), (0.92, 0.7, 0.2, "b", 0.8),
+                (0.12, 0.86, 0.14, "b", 1.2)]
+
+
+def bubbles(L, views=("system", "gamelist"), z="2"):
+    for v in views:
+        for i, (fx, y, size, kind, speed) in enumerate(BUBBLE_SPOTS):
+            L.add(v, "animation", f"bubble{i}", pos=L.pair(fx * L.W, y), origin="0.5 0.5", size=L.pair(size, size),
+                  path=IMG + f"anim-bubble-{kind}.json", color="${accentColor}", opacity="${bubbleOpacity}",
+                  speed=f(speed), direction="alternate", stationary="always", zIndex=z)
+
+
 def background(L, path, tile_h=0.09, overlay=None):
     for v in ("system", "gamelist"):
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + path, tile="true",
@@ -74,6 +89,7 @@ def background(L, path, tile_h=0.09, overlay=None):
         if overlay:
             L.add(v, "image", "backgroundOverlay", pos="0 0", size="1 1", path=IMG + overlay,
                   stationary="always", opacity="${overlayOpacity}", zIndex="1")
+    bubbles(L)
 
 
 def clock(L, view, x, y, origin, fs="fsStatus", date=False, color="${subColor}", font=FONT_BLACK, name="clock",
@@ -269,6 +285,7 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     for v in ("system", "gamelist"):  # HOME-menu background pattern chosen by the colour scheme
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + "${bgPattern}", tile="true",
               tileSize="0 ${bgTile}", color="${bgColor}", stationary="always", zIndex="0")
+    bubbles(L)
 
     sys_geo = dict(up=(0.035, 0.555), lo=(0.595, 0.915)) if mode == "row" else \
         dict(up=(0.035, 0.47), lo=(0.51, 0.915))

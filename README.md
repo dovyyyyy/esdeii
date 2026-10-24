@@ -57,6 +57,7 @@ To update, download again and replace the folder.
 
 ## Features
 
+- Softly drifting bubbles in the background, tinted with your colour scheme.
 - **Empty slots** fill the rest of every grid, like the blank channels on
   a console menu.
 - Small animations: blinking clock colon, a nudging
@@ -77,9 +78,10 @@ To update, download again and replace the folder.
 
 ## Performance
 
-- No full-screen animations: the old drifting bubbles were a full-screen
-  Lottie animation redrawn on the CPU every frame, which made scrolling feel
-  heavy on phones. They are gone.
+- The drifting bubbles are back, rebuilt to be light: instead of one
+  full-screen animation that the phone redrew every frame, each bubble is a
+  small, short animation. ES-DE draws their frames once, keeps them in memory
+  and just replays them, so they barely cost anything after the first loop.
 - The *Snappy* transition profile switches views instantly.
 - Every layout is checked against ES-DE's theme reference
   (`tools/validate.py`), so ES-DE doesn't spend time logging bad properties.

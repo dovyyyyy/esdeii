@@ -337,6 +337,34 @@ def lottie_cursor(path, frame_png, S=400):
     im.save(frame_png)
 
 
+def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=15, seconds=4):
+    """One soft bubble drifting inside a small canvas. The theme places several of
+    these around the screen (played back and forth with direction=alternate).
+    Each one is small and only `fps * seconds` frames long, so ES-DE renders the
+    frames once, keeps them in its Lottie frame cache and just replays them -
+    unlike the old full-screen animation, which was re-rendered every frame."""
+    C, d = 200, 120
+    paint = ({"ty": "st", "c": _st([1, 1, 1, 1]), "o": _st(100), "w": _st(8), "lc": 2, "lj": 2, "nm": "s"}
+             if ring else FILL)
+    op = fps * seconds
+    dx, dy = drift
+    shape = [{"ty": "el", "d": 1, "s": _st([d, d]), "p": _st([0, 0]), "nm": "e"}, paint]
+    _write_lottie(path, C, C, fps, op, [
+        _layer(1, shape, op, opacity=_st(20),
+               position=_anim([(0, [C / 2 - dx, C / 2 - dy, 0]), (op, [C / 2 + dx, C / 2 + dy, 0])]))])
+    im = Image.new("RGBA", (C, C), (0, 0, 0, 0))
+    box = [C / 2 - d / 2, C / 2 - d / 2, C / 2 + d / 2, C / 2 + d / 2]
+    if ring:
+        ImageDraw.Draw(im).ellipse(box, outline=(255, 255, 255, 51), width=8)
+    else:
+        ImageDraw.Draw(im).ellipse(box, fill=(255, 255, 255, 51))
+    im.save(frame_png)
+
+
+BUBBLES = {"anim-bubble-a": dict(drift=(30, -24)), "anim-bubble-b": dict(ring=True, drift=(-26, -30)),
+           "anim-bubble-c": dict(drift=(8, 36))}
+
+
 def build_all(img_dir, fontpath, frames_dir=None):
     frames_dir = frames_dir or img_dir
     os.makedirs(frames_dir, exist_ok=True)
@@ -350,6 +378,8 @@ def build_all(img_dir, fontpath, frames_dir=None):
     for fn, name in ((lottie_colon, "anim-colon"), (lottie_arrow, "anim-arrow"),
                      (lottie_cursor, "anim-cursor")):
         fn(os.path.join(img_dir, name + ".json"), os.path.join(frames_dir, name + ".png"))
+    for name, kw in BUBBLES.items():
+        lottie_bubble(os.path.join(img_dir, name + ".json"), os.path.join(frames_dir, name + ".png"), **kw)
     wii_selector(os.path.join(img_dir, "select-wide.png"))
     wiiu_selector(os.path.join(img_dir, "select-start.png"), fontpath)
     square_ring(os.path.join(img_dir, "select-square.png"))
