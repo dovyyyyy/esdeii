@@ -15,8 +15,8 @@ ITEMS = [99]
 ROOT = sys.argv[2]
 OUTDIR = sys.argv[3]
 H = 1080
-SAMPLE = dict(theme="snes", full="Nintendo SNES (Super Nintendo)", count="142 games, 12 favorites",
-              info="Nintendo  ·  1991  ·  Home console", game="Stellar Quest: The Lost Kingdom",
+SAMPLE = dict(theme="snes", full="Super NES", count="142 games, 12 favorites",
+              info="1991  ·  Home console  ·  16-bit", game="Stellar Quest: The Lost Kingdom",
               dev="Moonbeam Works", genre="Platform", players="1-2", date="1995-11-21", playtime="12 hours",
               desc=("A bright side-scrolling adventure across floating islands. Collect star shards, rescue the "
                     "sky villagers and outsmart the clockwork king in over sixty stages packed with secrets, "
