@@ -82,7 +82,7 @@ supersampled((240, 30), pill).save(os.path.join(IMG, "pill.png"))
 
 # selection cursor ring for the system carousel (white, tinted with accent)
 RING = 400
-for fname, rad_px in (("cursor.png", 100), ("cursor-square.png", 66)):
+for fname, rad_px in (("cursor.png", 96),):
     def ring(d, s, img, rad_px=rad_px):
         W, _ = img.size
         t = 16 * s
@@ -113,7 +113,7 @@ for style, fn in icons.STYLES.items():
 
 
 def glyph_mask(kind, G):
-    return icons.glyph(kind, G)
+    return icons.shapes.glyph(kind, G)
 
 
 # placeholder for games without media: a dark "screen" with a small cartridge

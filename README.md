@@ -1,8 +1,8 @@
 # esdeii — a dual-screen theme for ES-DE
 
-A DS / 3DS-inspired theme: two rounded "screens" joined by a hinge, a
-graph-paper background and speaker grilles beside the top screen, with
-system icons in your choice of 3DS, Wii or Wii U style.
+A dual-screen handheld inspired theme: two rounded "screens" joined by a hinge, a
+graph-paper background and speaker grilles beside the top screen, and
+glossy console-menu style system icons in a glassy white frame.
 
 ![Preview](preview.png)
 
@@ -25,19 +25,19 @@ To update, replace the folder with a fresh download (or `git pull`).
 
 | Icon style | Look |
 |---|---|
-| 3DS | glossy colour tiles with white art |
-| Wii | white "channel" tiles with coloured art |
-| Wii U | bold flat tiles with a white name band |
+| Glossy | colourful gradient tile, white 3D console art |
+| Channel | white tile, coloured 3D console art, colour swoosh |
+| Plaza | bold colour tile, white 3D console art, dark name band |
 
 | Game layout | Look |
 |---|---|
-| Icon grid | 2-row grid of box covers (3DS HOME menu) |
-| Game list | text list with a highlight pill (DS menu) |
-| Cover shelf | big scrolling row of box covers (Wii U) |
+| Icon grid | 2-row grid of box covers |
+| Game list | text list with a highlight pill |
+| Cover shelf | big scrolling row of box covers |
 
-**Theme color scheme** — Ice White, Cosmo Black, Wii Menu, Flame Red,
+**Theme color scheme** — Ice White, Cosmo Black, Silver Menu, Flame Red,
 Aqua Blue, Mint Green, Lavender, Sunset Orange, Sakura Pink, Midnight Blue,
-Retro DMG, plus **Ice White / Cosmo Black + system colours**, where the
+Retro Pocket, plus **Ice White / Cosmo Black + system colours**, where the
 accent colour changes to match each console's icon.
 
 **Theme font size** — small, medium, large.
@@ -59,7 +59,7 @@ status bar.
 - Game details: release date, players, developer, genre, last played,
   play time, rating, badges and a scrolling description.
 - Game videos play on the top screen after a short delay.
-- Clock and date, battery and Wi-Fi in a 3DS-style status bar.
+- Clock and date, battery and Wi-Fi in the status bar.
 - Custom chime navigation sounds.
 
 ## Media used
@@ -71,7 +71,7 @@ status bar.
 
 ## Changing things
 
-- System icons live in `systems/3ds`, `systems/wii` and `systems/wiiu`,
+- System icons live in `systems/glossy`, `systems/channel` and `systems/plaza`,
   named after the ES-DE system (`snes.png`, `n3ds.png` ...). Replace any with
   your own 360x360 PNG. Systems without a file get a coloured tile with
   their name.

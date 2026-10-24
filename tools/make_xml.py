@@ -23,7 +23,7 @@ ASPECTS = [
     ("5:4", 1.25), ("8:7", 8 / 7), ("19.5:9", 19.5 / 9), ("20:9", 20 / 9), ("21:9", 2560 / 1080),
 ]
 
-ICON_STYLES = [("3ds", "n3ds", "3DS"), ("wii", "wii", "Wii"), ("wiiu", "wiiu", "Wii U")]
+ICON_STYLES = [("glossy", "glossy", "Glossy"), ("channel", "channel", "Channel"), ("plaza", "plaza", "Plaza")]
 GAME_LAYOUTS = [("Grid", "icon grid"), ("List", "game list"), ("Shelf", "cover shelf")]
 VARIANTS = [(f"{key}{lay}", f"{label} icons + {desc}", style, lay.lower())
             for style, key, label in ICON_STYLES for lay, desc in GAME_LAYOUTS]
@@ -42,7 +42,7 @@ SCHEMES = {
                                      "2B313B", "EEF2F7", "CDD3DC", "E5E9EF", "5A626E")),
     "cosmoBlack": ("Cosmo Black", scheme("1A1D22", "2A2F37", "0E1013", "EEF1F5", "98A2AF", "3CB8FF",
                                          "14171B", "363C46", "30353D", "3A404A", "C3CAD4", "00000070")),
-    "wiiMenu": ("Wii Menu", scheme("E9EBEE", "FFFFFF", "C8CDD3", "3B4047", "8A9099", "34BEED",
+    "silverMenu": ("Silver Menu", scheme("E9EBEE", "FFFFFF", "C8CDD3", "3B4047", "8A9099", "34BEED",
                                    "2E3238", "F2F4F6", "C6CBD1", "E3E6EA", "5F656D")),
     "flameRed": ("Flame Red", scheme("F7E8E7", "FFFFFF", "E8C8C6", "3A2E2E", "8C7676", "E5404A",
                                      "2E2A2E", "F8EEED", "E6C2BF", "F1E1E0", "604E4E", "5A1E1A1C")),
@@ -58,7 +58,7 @@ SCHEMES = {
                                      "302830", "FCF1F5", "EEC4D4", "F6E2EA", "684B5C", "5A1E3A1C")),
     "midnight": ("Midnight Blue", scheme("111827", "1C2638", "0A0F18", "E6EDF7", "8EA0B8", "5AA9FF",
                                          "0D131E", "263247", "1E293B", "2C3A52", "BCC8D8", "00000070")),
-    "retroDmg": ("Retro DMG", scheme("B9C48A", "D4DCA6", "8E9A5E", "0F380F", "306230", "306230",
+    "retroPocket": ("Retro Pocket", scheme("B9C48A", "D4DCA6", "8E9A5E", "0F380F", "306230", "306230",
                                      "0F380F", "C6CF98", "9AA66A", "BCC690", "1E4A1E", "0F380F33",
                                      "D4DCA6")),
     "iceSystem": ("Ice White + system colours", scheme("EEF1F5", "FFFFFF", "D3D9E1", "2F3640", "7D8693",
@@ -246,7 +246,7 @@ def build(W, variant):
     ring = content + 0.034
     cy = car_y0 + car_h / 2 - item * scale * icons.BODY_OFFSET_FRAC
     L.add(v, "image", "cursor", pos=L.pair(px + pw / 2, cy), origin="0.5 0.5", size=L.pair(ring, ring),
-          path=IMG + ("cursor-square.png" if style == "wiiu" else "cursor.png"),
+          path=IMG + "cursor.png",
           color="${accentColor}", zIndex="55")
 
     # ================================================================== GAMELIST VIEW

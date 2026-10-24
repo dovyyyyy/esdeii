@@ -1,261 +1,22 @@
-"""System icon artwork for esdeii: glyph drawings + three tile styles.
+"""System icon artwork for esdeii.
 
-Glyphs are simple original silhouettes (controllers, handhelds, computers...)
-drawn as white-on-transparent masks. Tile styles:
-  3ds  - glossy colour tile with white art (3DS HOME menu feel)
-  wii  - white "channel" tile with coloured art (Wii menu feel)
-  wiiu - bold flat colour tile with a white name band (Wii U menu feel)
+Every tile uses the same glassy white frame with the artwork inset (the
+console menu look from the reference screenshots). Three art styles:
+  glossy  - colourful gradient art, 3D white object, white name
+  channel - white art panel, 3D coloured object, grey name, colour swoosh
+  plaza   - bold colour art panel, 3D white object, dark name band
+Glyph silhouettes live in shapes.py.
 """
-import math
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
+import shapes
 
 TILE = 360
-PAD = 20          # transparent margin around the body (holds the shadow)
-LIFT = 4          # body sits this many px above centre (shadow below)
-RAD = 78          # body corner radius
-BODY = (PAD, PAD - LIFT, TILE - PAD, TILE - PAD - LIFT)
-
-# ---------------------------------------------------------------- glyphs
-def glyph(kind, G):
-    """White glyph mask (L mode, G x G)."""
-    ss = 4
-    S = G * ss
-    m = Image.new("L", (S, S), 0)
-    d = ImageDraw.Draw(m)
-    ON, OFF = 255, 0
-
-    def R(x0, y0, x1, y1, r=0.0, f=ON):
-        d.rounded_rectangle([x0 * S, y0 * S, x1 * S, y1 * S], radius=r * S, fill=f)
-
-    def C(cx, cy, r, f=ON):
-        d.ellipse([(cx - r) * S, (cy - r) * S, (cx + r) * S, (cy + r) * S], fill=f)
-
-    def E(x0, y0, x1, y1, f=ON):
-        d.ellipse([x0 * S, y0 * S, x1 * S, y1 * S], fill=f)
-
-    def P(pts, f=ON):
-        d.polygon([(x * S, y * S) for x, y in pts], fill=f)
-
-    def plus(cx, cy, a, w, f=OFF):
-        R(cx - w, cy - a, cx + w, cy + a, w * 0.35, f)
-        R(cx - a, cy - w, cx + a, cy + w, w * 0.35, f)
-
-    def diamond(cx, cy, off, r, f=OFF):
-        for dx, dy in ((0, -off), (off, 0), (0, off), (-off, 0)):
-            C(cx + dx, cy + dy, r, f)
-
-    def L_(pts, w, f=ON):
-        d.line([(x * S, y * S) for x, y in pts], fill=f, width=int(w * S), joint="curve")
-
-    k = kind
-    if k == "pad_nes":
-        R(0.03, 0.30, 0.97, 0.70, 0.05)
-        plus(0.20, 0.50, 0.10, 0.034)
-        R(0.38, 0.52, 0.46, 0.56, 0.02, OFF)
-        R(0.50, 0.52, 0.58, 0.56, 0.02, OFF)
-        C(0.70, 0.54, 0.055, OFF)
-        C(0.85, 0.54, 0.055, OFF)
-    elif k == "pad_snes":
-        R(0.18, 0.31, 0.82, 0.69, 0.0)
-        C(0.25, 0.50, 0.22)
-        C(0.75, 0.50, 0.22)
-        plus(0.25, 0.50, 0.095, 0.032)
-        diamond(0.75, 0.50, 0.085, 0.042)
-        R(0.42, 0.52, 0.48, 0.555, 0.02, OFF)
-        R(0.52, 0.52, 0.58, 0.555, 0.02, OFF)
-    elif k == "pad_n64":
-        R(0.14, 0.18, 0.86, 0.46, 0.13)
-        R(0.10, 0.30, 0.30, 0.88, 0.10)
-        R(0.40, 0.34, 0.60, 0.82, 0.10)
-        R(0.70, 0.30, 0.90, 0.88, 0.10)
-        plus(0.25, 0.34, 0.06, 0.022)
-        C(0.50, 0.50, 0.055, OFF)
-        C(0.73, 0.30, 0.035, OFF)
-        C(0.81, 0.37, 0.035, OFF)
-    elif k == "pad_gc":
-        R(0.10, 0.24, 0.90, 0.62, 0.19)
-        C(0.25, 0.64, 0.17)
-        C(0.75, 0.64, 0.17)
-        C(0.26, 0.41, 0.085, OFF)
-        C(0.26, 0.41, 0.045)
-        C(0.72, 0.44, 0.075, OFF)
-        C(0.86, 0.38, 0.035, OFF)
-        C(0.62, 0.55, 0.035, OFF)
-        plus(0.37, 0.57, 0.045, 0.016)
-    elif k == "pad_ps":
-        R(0.10, 0.27, 0.90, 0.55, 0.14)
-        for sx in (1, -1):
-            a, b = (0.5 + sx * 0.25, 0.46), (0.5 + sx * 0.32, 0.80)
-            L_([a, b], 0.17)
-            C(*a, 0.085)
-            C(*b, 0.085)
-        plus(0.22, 0.42, 0.075, 0.026)
-        diamond(0.78, 0.42, 0.065, 0.032)
-        C(0.38, 0.58, 0.055, OFF)
-        C(0.62, 0.58, 0.055, OFF)
-    elif k == "pad_xbox":
-        R(0.08, 0.26, 0.92, 0.62, 0.22)
-        C(0.24, 0.66, 0.18)
-        C(0.76, 0.66, 0.18)
-        C(0.25, 0.42, 0.065, OFF)
-        plus(0.38, 0.57, 0.05, 0.018)
-        diamond(0.74, 0.42, 0.06, 0.03)
-        C(0.62, 0.57, 0.055, OFF)
-    elif k == "pad_genesis":
-        E(0.04, 0.24, 0.96, 0.82)
-        E(0.30, 0.66, 0.70, 1.10, OFF)
-        plus(0.24, 0.47, 0.09, 0.03)
-        for i in range(3):
-            C(0.60 + i * 0.105, 0.52 - i * 0.04, 0.045, OFF)
-    elif k == "remote":
-        R(0.37, 0.03, 0.63, 0.97, 0.12)
-        plus(0.50, 0.17, 0.06, 0.022)
-        C(0.50, 0.34, 0.055, OFF)
-        C(0.50, 0.53, 0.022, OFF)
-        C(0.50, 0.61, 0.022, OFF)
-        C(0.50, 0.79, 0.035, OFF)
-        C(0.50, 0.88, 0.035, OFF)
-    elif k == "tablet_pad":
-        R(0.02, 0.22, 0.98, 0.78, 0.13)
-        R(0.21, 0.30, 0.79, 0.70, 0.03, OFF)
-        C(0.115, 0.37, 0.045, OFF)
-        plus(0.115, 0.58, 0.045, 0.016)
-        diamond(0.885, 0.40, 0.045, 0.022)
-        C(0.885, 0.62, 0.045, OFF)
-    elif k == "switch":
-        R(0.03, 0.24, 0.185, 0.76, 0.08)
-        R(0.205, 0.24, 0.795, 0.76, 0.02)
-        R(0.815, 0.24, 0.97, 0.76, 0.08)
-        R(0.25, 0.30, 0.75, 0.70, 0.02, OFF)
-        C(0.11, 0.37, 0.04, OFF)
-        C(0.89, 0.55, 0.04, OFF)
-        diamond(0.89, 0.37, 0.04, 0.019)
-        plus(0.11, 0.56, 0.04, 0.014)
-    elif k == "handheld":  # vertical (Game Boy-like)
-        R(0.22, 0.03, 0.78, 0.97, 0.10)
-        R(0.29, 0.10, 0.71, 0.46, 0.03, OFF)
-        plus(0.36, 0.68, 0.075, 0.027)
-        C(0.62, 0.66, 0.045, OFF)
-        C(0.71, 0.74, 0.045, OFF)
-        R(0.43, 0.86, 0.48, 0.88, 0.01, OFF)
-        R(0.52, 0.86, 0.57, 0.88, 0.01, OFF)
-    elif k == "wide_handheld":  # horizontal (GBA-like)
-        R(0.03, 0.25, 0.97, 0.75, 0.17)
-        R(0.29, 0.32, 0.71, 0.68, 0.03, OFF)
-        plus(0.16, 0.50, 0.07, 0.025)
-        C(0.82, 0.47, 0.042, OFF)
-        C(0.89, 0.56, 0.042, OFF)
-    elif k == "psp":
-        R(0.02, 0.31, 0.98, 0.69, 0.19)
-        R(0.21, 0.36, 0.79, 0.64, 0.02, OFF)
-        plus(0.11, 0.50, 0.05, 0.018)
-        diamond(0.89, 0.50, 0.045, 0.022)
-    elif k == "dual":
-        R(0.12, 0.03, 0.88, 0.47, 0.08)
-        R(0.22, 0.09, 0.78, 0.41, 0.025, OFF)
-        R(0.10, 0.53, 0.90, 0.97, 0.08)
-        R(0.30, 0.59, 0.70, 0.91, 0.025, OFF)
-        C(0.20, 0.66, 0.035, OFF)
-        plus(0.20, 0.82, 0.045, 0.016)
-        diamond(0.80, 0.72, 0.042, 0.019)
-    elif k == "goggles":
-        R(0.06, 0.26, 0.94, 0.62, 0.15)
-        C(0.32, 0.44, 0.10, OFF)
-        C(0.68, 0.44, 0.10, OFF)
-        R(0.44, 0.60, 0.56, 0.86)
-        R(0.30, 0.84, 0.70, 0.92, 0.04)
-    elif k == "joystick":
-        R(0.18, 0.56, 0.82, 0.90, 0.07)
-        R(0.455, 0.16, 0.545, 0.62, 0.03)
-        C(0.50, 0.15, 0.065)
-        C(0.30, 0.64, 0.055, OFF)
-    elif k == "arcade":
-        P([(0.10, 0.92), (0.16, 0.60), (0.84, 0.60), (0.90, 0.92)])
-        R(0.455, 0.24, 0.545, 0.66, 0.03)
-        C(0.50, 0.22, 0.15)
-        C(0.68, 0.76, 0.045, OFF)
-        C(0.80, 0.72, 0.045, OFF)
-        C(0.32, 0.78, 0.035, OFF)
-    elif k == "computer":
-        R(0.06, 0.06, 0.94, 0.66, 0.07)
-        R(0.14, 0.14, 0.86, 0.58, 0.03, OFF)
-        R(0.43, 0.64, 0.57, 0.80)
-        R(0.24, 0.79, 0.76, 0.89, 0.05)
-    elif k == "keyboard":
-        P([(0.04, 0.74), (0.12, 0.34), (0.88, 0.34), (0.96, 0.74)])
-        R(0.04, 0.70, 0.96, 0.78, 0.03)
-        for row, (y, x0, n) in enumerate(((0.42, 0.18, 8), (0.51, 0.16, 8), (0.60, 0.14, 8))):
-            for i in range(n):
-                x = x0 + i * 0.085
-                R(x, y, x + 0.06, y + 0.06, 0.012, OFF)
-    elif k == "disc":
-        C(0.5, 0.5, 0.46)
-        C(0.5, 0.5, 0.15, OFF)
-        C(0.5, 0.5, 0.075)
-        d.arc([0.17 * S, 0.17 * S, 0.83 * S, 0.83 * S], 200, 250, fill=OFF, width=int(0.045 * S))
-        d.arc([0.25 * S, 0.25 * S, 0.75 * S, 0.75 * S], 20, 60, fill=OFF, width=int(0.035 * S))
-    elif k == "cart":
-        P([(0.18, 0.12), (0.82, 0.12), (0.82, 0.88), (0.30, 0.88), (0.18, 0.76)])
-        R(0.28, 0.24, 0.72, 0.56, 0.03, OFF)
-        for i in range(5):
-            R(0.30 + i * 0.09, 0.74, 0.36 + i * 0.09, 0.88, 0.0, OFF)
-    elif k == "phone":
-        R(0.27, 0.03, 0.73, 0.97, 0.09)
-        R(0.32, 0.12, 0.68, 0.82, 0.03, OFF)
-        C(0.5, 0.895, 0.035, OFF)
-    elif k == "gear":
-        for i in range(8):
-            a = i * math.pi / 4
-            pts = [((0.5 + rr * math.cos(a + da)), (0.5 + rr * math.sin(a + da)))
-                   for da, rr in ((-0.18, 0.30), (-0.12, 0.47), (0.12, 0.47), (0.18, 0.30))]
-            P(pts)
-        C(0.5, 0.5, 0.34)
-        C(0.5, 0.5, 0.13, OFF)
-    elif k == "tv":
-        R(0.06, 0.24, 0.94, 0.84, 0.08)
-        R(0.14, 0.32, 0.86, 0.76, 0.04, OFF)
-        L_([(0.34, 0.06), (0.5, 0.24), (0.66, 0.06)], 0.05)
-        R(0.28, 0.86, 0.40, 0.94, 0.02)
-        R(0.60, 0.86, 0.72, 0.94, 0.02)
-    elif k == "pinball":
-        R(0.22, 0.04, 0.78, 0.96, 0.10)
-        R(0.28, 0.10, 0.72, 0.90, 0.06, OFF)
-        C(0.50, 0.36, 0.07)
-        C(0.36, 0.22, 0.045)
-        C(0.64, 0.22, 0.045)
-        L_([(0.34, 0.74), (0.46, 0.80)], 0.045)
-        L_([(0.66, 0.74), (0.54, 0.80)], 0.045)
-    elif k == "star":
-        pts = []
-        for i in range(10):
-            a = -math.pi / 2 + i * math.pi / 5
-            r = 0.48 if i % 2 == 0 else 0.21
-            pts.append((0.5 + r * math.cos(a), 0.53 + r * math.sin(a)))
-        P(pts)
-    elif k == "clock":
-        C(0.5, 0.5, 0.46)
-        C(0.5, 0.5, 0.36, OFF)
-        L_([(0.5, 0.5), (0.5, 0.24)], 0.07)
-        L_([(0.5, 0.5), (0.68, 0.6)], 0.07)
-        C(0.5, 0.5, 0.06)
-    elif k == "stack":
-        for i, (x, y) in enumerate(((0.30, 0.06), (0.18, 0.18), (0.06, 0.30))):
-            R(x, y, x + 0.64, y + 0.64, 0.08)
-            if i < 2:
-                R(x + 0.05, y + 0.05, x + 0.59, y + 0.59, 0.05, OFF)
-    elif k == "folder":
-        R(0.06, 0.16, 0.48, 0.34, 0.05)
-        R(0.06, 0.24, 0.94, 0.86, 0.08)
-    else:  # generic console pad
-        R(0.06, 0.26, 0.94, 0.66, 0.20)
-        C(0.25, 0.62, 0.17)
-        C(0.75, 0.62, 0.17)
-        plus(0.28, 0.47, 0.10, 0.036)
-        C(0.68, 0.42, 0.05, OFF)
-        C(0.79, 0.52, 0.05, OFF)
-    return m.resize((G, G), Image.LANCZOS)
-
+BODY = (20, 14, 340, 334)      # glass frame (visible tile)
+RAD = 70                       # frame corner radius
+INSET = 24                     # frame thickness
+IRAD = 44                      # artwork corner radius
+ART = (BODY[0] + INSET, BODY[1] + INSET, BODY[2] - INSET, BODY[3] - INSET)
 
 # Which drawing each system gets (anything missing uses its category glyph).
 GLYPHS = {
@@ -271,7 +32,7 @@ GLYPHS = {
     "gba": "wide_handheld", "atarilynx": "wide_handheld", "gamegear": "wide_handheld",
     "ngp": "wide_handheld", "ngpc": "wide_handheld", "wonderswan": "wide_handheld",
     "wonderswancolor": "wide_handheld",
-    "psp": "psp", "psvita": "psp", "nds": "dual", "n3ds": "dual", "gameandwatch": "dual",
+    "psp": "psp", "psvita": "psp", "nds": "dual", "n3ds": "dual3d", "gameandwatch": "dual",
     "virtualboy": "goggles",
     "psx": "pad_ps", "ps2": "pad_ps", "ps3": "pad_ps", "ps4": "pad_ps",
     "xbox": "pad_xbox", "xbox360": "pad_xbox", "xboxone": "pad_xbox",
@@ -315,36 +76,48 @@ def lum(c):
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
-def rr_mask(box, rad, size=TILE, ss=4, inset=0):
+def rr_mask(box, rad, size=TILE, ss=4):
     m = Image.new("L", (size * ss, size * ss), 0)
     x0, y0, x1, y1 = box
-    ImageDraw.Draw(m).rounded_rectangle(
-        [(x0 + inset) * ss, (y0 + inset) * ss, (x1 - inset) * ss, (y1 - inset) * ss],
-        radius=max(1, (rad - inset)) * ss, fill=255)
+    ImageDraw.Draw(m).rounded_rectangle([x0 * ss, y0 * ss, x1 * ss, y1 * ss], radius=rad * ss, fill=255)
     return m.resize((size, size), Image.LANCZOS)
 
 
-def mul(a, b):
-    return Image.fromarray((np.array(a, np.float32) * np.array(b, np.float32) / 255).astype(np.uint8))
+def inset(box, d):
+    return (box[0] + d, box[1] + d, box[2] - d, box[3] - d)
 
 
-def vgrad(c0, c1, y0, y1):
-    g = Image.new("RGBA", (TILE, TILE))
+def mul(*ms):
+    a = np.array(ms[0], np.float32)
+    for m in ms[1:]:
+        a = a * np.array(m, np.float32) / 255
+    return Image.fromarray(a.astype(np.uint8))
+
+
+def sub(a, b):
+    return Image.fromarray(np.clip(np.array(a, np.int16) - np.array(b, np.int16), 0, 255).astype(np.uint8))
+
+
+def scale(m, k):
+    return m.point(lambda v: int(v * k))
+
+
+def vgrad(c0, c1, y0, y1, size=TILE):
+    g = Image.new("RGBA", (size, size))
     d = ImageDraw.Draw(g)
-    for y in range(TILE):
-        t = min(max((y - y0) / (y1 - y0), 0), 1)
-        d.line([(0, y), (TILE, y)], fill=mix(c0, c1, t) + (255,))
+    for y in range(size):
+        t = min(max((y - y0) / max(1, (y1 - y0)), 0), 1)
+        d.line([(0, y), (size, y)], fill=tuple(mix(c0, c1, t)) + (255,))
     return g
 
 
-def shadow(img, box, rad, strength=95, blur=8, dy=9):
-    sh = Image.new("L", (TILE, TILE), 0)
-    x0, y0, x1, y1 = box
-    ImageDraw.Draw(sh).rounded_rectangle([x0 + 3, y0 + dy, x1 - 3, y1 + dy], radius=rad, fill=strength)
-    img.paste((10, 14, 20, 255), (0, 0), sh.filter(ImageFilter.GaussianBlur(blur)))
+def shift(m, dx, dy, size=TILE):
+    out = Image.new("L", (size, size), 0)
+    out.paste(m, (dx, dy))
+    return out
 
 
-def fit_font(path, text, maxw, start, minsize=18):
+def fit_font(path, text, maxw, start, minsize=16):
     size = start
     while size > minsize:
         f = ImageFont.truetype(path, size)
@@ -366,139 +139,161 @@ def draw_label(img, text, font, cx, cy, fill, shade=None):
     ImageDraw.Draw(img).text((tx, ty), text, font=font, fill=fill)
 
 
-def place_glyph(img, gm, x, y, fill, shade=None, shade_dy=5, blur=4):
-    if shade:
-        s = gm.filter(ImageFilter.GaussianBlur(blur)).point(lambda v: int(v * shade[3] / 255))
-        img.paste(shade[:3] + (255,), (x, y + shade_dy), s)
-    img.paste(fill + (255,) if len(fill) == 3 else fill, (x, y), gm)
+def object3d(img, kind, size, x, y, top, bottom, edge, clip=None, gloss=0.55, drop=(0, 0, 0, 70)):
+    """Paint a glossy 3D object (extruded glyph) onto img."""
+    g = shapes.glyph(kind, size)
+    m = Image.new("L", (TILE, TILE), 0)
+    m.paste(g, (x, y))
+    depth = max(3, int(size * 0.035))
+    # soft drop shadow
+    sh = shift(m, 0, depth + 3).filter(ImageFilter.GaussianBlur(size * 0.03))
+    if clip is not None:
+        sh = mul(sh, clip)
+    img.paste(drop[:3] + (255,), (0, 0), scale(sh, drop[3] / 255))
+    # extrusion (side walls)
+    ext = Image.new("L", (TILE, TILE), 0)
+    for k in range(1, depth + 1):
+        ext = Image.fromarray(np.maximum(np.array(ext), np.array(shift(m, 0, k))))
+    if clip is not None:
+        ext = mul(ext, clip)
+    img.paste(tuple(edge) + (255,), (0, 0), ext)
+    # face with vertical gradient
+    bb = g.getbbox() or (0, 0, size, size)
+    fy0, fy1 = y + bb[1], y + bb[3]
+    face = vgrad(top, bottom, fy0, fy1)
+    img.paste(face, (0, 0), m)
+    # crisp top-edge highlight
+    rim = sub(m, shift(m, 0, 2))
+    img.paste((255, 255, 255, 255), (0, 0), scale(rim, 0.8))
+    # gloss over the upper part
+    gl = Image.new("L", (TILE * 2, TILE * 2), 0)
+    gx0, gx1 = (x + bb[0]) * 2, (x + bb[2]) * 2
+    h = fy1 - fy0
+    ImageDraw.Draw(gl).ellipse([gx0 - h * 0.6, (fy0 - h * 0.9) * 2, gx1 + h * 0.6, (fy0 + h * 0.48) * 2], fill=255)
+    gl = gl.resize((TILE, TILE), Image.LANCZOS)
+    img.paste((255, 255, 255, 255), (0, 0), scale(mul(gl, m), gloss * 0.6))
+
+
+def frame(img):
+    """Glassy white frame + returns the artwork mask."""
+    sh = Image.new("L", (TILE, TILE), 0)
+    x0, y0, x1, y1 = BODY
+    ImageDraw.Draw(sh).rounded_rectangle([x0 + 4, y0 + 10, x1 - 4, y1 + 10], radius=RAD, fill=80)
+    img.paste((20, 30, 45, 255), (0, 0), sh.filter(ImageFilter.GaussianBlur(9)))
+    outer = rr_mask(BODY, RAD)
+    img.paste((178, 188, 199, 255), (0, 0), outer)                       # outer edge
+    body = rr_mask(inset(BODY, 3), RAD - 3)
+    img.paste(vgrad((255, 255, 255), (226, 232, 238), y0, y1), (0, 0), body)
+    # glassy highlight across the top of the frame
+    hl = Image.new("L", (TILE * 2, TILE * 2), 0)
+    ImageDraw.Draw(hl).ellipse([(x0 - 40) * 2, (y0 - 200) * 2, (x1 + 40) * 2, (y0 + 120) * 2], fill=255)
+    img.paste((255, 255, 255, 255), (0, 0), scale(mul(hl.resize((TILE, TILE), Image.LANCZOS), body), 0.7))
+    # recessed lip around the artwork
+    lip = rr_mask(inset(ART, -3), IRAD + 3)
+    img.paste((160, 170, 182, 255), (0, 0), lip)
+    lip2 = rr_mask(inset(ART, -1), IRAD + 1)
+    img.paste((205, 212, 220, 255), (0, 0), lip2)
+    return rr_mask(ART, IRAD)
+
+
+def art_gloss(img, art, strength=0.35):
+    x0, y0, x1, y1 = ART
+    gl = Image.new("L", (TILE * 2, TILE * 2), 0)
+    ImageDraw.Draw(gl).ellipse([(x0 - 70) * 2, (y0 - 230) * 2, (x1 + 70) * 2, (y0 + (y1 - y0) * 0.42) * 2], fill=255)
+    img.paste((255, 255, 255, 255), (0, 0), scale(mul(gl.resize((TILE, TILE), Image.LANCZOS), art), strength))
 
 
 # ---------------------------------------------------------------- styles
-def tile_3ds(label, kind, colour, fontpath):
+AW = ART[2] - ART[0]
+
+
+def tile_glossy(label, kind, colour, fontpath):
     c = hexrgb(colour)
     img = Image.new("RGBA", (TILE, TILE), (0, 0, 0, 0))
-    x0, y0, x1, y1 = BODY
-    cw = x1 - x0
-    shadow(img, BODY, RAD)
-    mask = rr_mask(BODY, RAD)
-
-    top, bot = mix(c, (255, 255, 255), 0.30), mix(c, (0, 0, 0), 0.16)
-    body = vgrad(top, bot, y0, y1)
-    # soft radial glow behind the art
+    art = frame(img)
+    x0, y0, x1, y1 = ART
+    bg = vgrad(mix(c, (255, 255, 255), 0.30), mix(c, (0, 0, 0), 0.18), y0, y1)
     glow = Image.new("L", (TILE, TILE), 0)
-    ImageDraw.Draw(glow).ellipse([x0 + cw * 0.12, y0 + cw * 0.02, x1 - cw * 0.12, y0 + cw * 0.78], fill=70)
-    body.paste((255, 255, 255, 255), (0, 0), glow.filter(ImageFilter.GaussianBlur(28)))
-    # diagonal pinstripes
+    ImageDraw.Draw(glow).ellipse([x0 + AW * 0.1, y0 + AW * 0.0, x1 - AW * 0.1, y0 + AW * 0.75], fill=90)
+    bg.paste((255, 255, 255, 255), (0, 0), glow.filter(ImageFilter.GaussianBlur(26)))
     st = Image.new("L", (TILE, TILE), 0)
     sd = ImageDraw.Draw(st)
-    for k in range(-TILE, TILE * 2, 30):
-        sd.line([(k, 0), (k + TILE, TILE)], fill=14, width=10)
-    body.paste((255, 255, 255, 255), (0, 0), st)
-    img.paste(body, (0, 0), mask)
-
-    # glossy top half
-    gl = Image.new("L", (TILE * 4, TILE * 4), 0)
-    ImageDraw.Draw(gl).ellipse([(x0 - 80) * 4, (y0 - 210) * 4, (x1 + 80) * 4, (y0 + cw * 0.47) * 4], fill=74)
-    img.paste((255, 255, 255, 255), (0, 0), mul(gl.resize((TILE, TILE), Image.LANCZOS), mask))
-    # bevel: light inner rim, darker bottom edge
-    rim = Image.fromarray(np.clip(np.array(mask, np.int16) - np.array(rr_mask(BODY, RAD, inset=5), np.int16), 0, 255).astype(np.uint8))
-    img.paste((255, 255, 255, 255), (0, 0), rim.point(lambda v: v * 0.55))
-    lower = Image.new("L", (TILE, TILE), 0)
-    ImageDraw.Draw(lower).rectangle([0, y0 + cw * 0.62, TILE, TILE], fill=255)
-    img.paste(mix(c, (0, 0, 0), 0.45) + (255,), (0, 0), mul(rim, lower).point(lambda v: v * 0.5))
-
-    G = int(cw * 0.58)
-    gm = glyph(kind, G)
-    place_glyph(img, gm, x0 + (cw - G) // 2, y0 + int(cw * 0.07), (255, 255, 255),
-                shade=mix(c, (0, 0, 0), 0.5) + (120,))
-    f = fit_font(fontpath, label, cw * 0.82, 60)
-    draw_label(img, label, f, x0 + cw / 2, y0 + cw * 0.82, (255, 255, 255, 255),
-               shade=mix(c, (0, 0, 0), 0.55) + (150,))
+    for k in range(-TILE, TILE * 2, 26):
+        sd.line([(k, 0), (k + TILE, TILE)], fill=12, width=9)
+    bg.paste((255, 255, 255, 255), (0, 0), st)
+    img.paste(bg, (0, 0), art)
+    S = int(AW * 0.66)
+    object3d(img, kind, S, x0 + (AW - S) // 2, y0 + int(AW * 0.03), (255, 255, 255), (226, 232, 240),
+             mix(c, (0, 0, 0), 0.38), clip=art, drop=mix(c, (0, 0, 0), 0.6) + (110,))
+    f = fit_font(fontpath, label, AW * 0.84, 46)
+    draw_label(img, label, f, x0 + AW / 2, y0 + AW * 0.83, (255, 255, 255, 255),
+               shade=mix(c, (0, 0, 0), 0.55) + (170,))
+    art_gloss(img, art, 0.28)
     return img
 
 
-def tile_wii(label, kind, colour, fontpath):
+def tile_channel(label, kind, colour, fontpath):
     c = hexrgb(colour)
-    ink = mix(c, (0, 0, 0), 0.35) if lum(c) > 0.55 else c
+    ink = mix(c, (0, 0, 0), 0.30) if lum(c) > 0.55 else c
     img = Image.new("RGBA", (TILE, TILE), (0, 0, 0, 0))
-    x0, y0, x1, y1 = BODY
-    cw = x1 - x0
-    shadow(img, BODY, RAD, strength=70)
-    outer = rr_mask(BODY, RAD)
-    # silver frame
-    img.paste(vgrad((214, 220, 228), (176, 184, 194), y0, y1), (0, 0), outer)
-    inner = rr_mask(BODY, RAD, inset=7)
-    face = vgrad((255, 255, 255), (232, 237, 243), y0, y1)
-    # faint channel scanlines
-    sl = Image.new("L", (TILE, TILE), 0)
-    sd = ImageDraw.Draw(sl)
-    for y in range(0, TILE, 6):
-        sd.line([(0, y), (TILE, y)], fill=10, width=2)
-    face.paste((120, 140, 160, 255), (0, 0), sl)
-    # coloured glow pool behind the art
-    pool = Image.new("L", (TILE, TILE), 0)
-    ImageDraw.Draw(pool).ellipse([x0 + cw * 0.14, y0 + cw * 0.06, x1 - cw * 0.14, y0 + cw * 0.74], fill=58)
-    face.paste(mix(c, (255, 255, 255), 0.25) + (255,), (0, 0), pool.filter(ImageFilter.GaussianBlur(30)))
-    img.paste(face, (0, 0), inner)
-    # glass highlight on top
-    gl = Image.new("L", (TILE * 4, TILE * 4), 0)
-    ImageDraw.Draw(gl).ellipse([(x0 - 60) * 4, (y0 - 230) * 4, (x1 + 60) * 4, (y0 + cw * 0.36) * 4], fill=150)
-    img.paste((255, 255, 255, 255), (0, 0), mul(gl.resize((TILE, TILE), Image.LANCZOS), inner))
-    # thin inner edge line
-    edge = Image.fromarray(np.clip(np.array(inner, np.int16) - np.array(rr_mask(BODY, RAD, inset=10), np.int16), 0, 255).astype(np.uint8))
-    img.paste((255, 255, 255, 255), (0, 0), edge)
-
-    G = int(cw * 0.56)
-    gm = glyph(kind, G)
-    place_glyph(img, gm, x0 + (cw - G) // 2, y0 + int(cw * 0.08), ink,
-                shade=mix(c, (0, 0, 0), 0.2) + (90,), shade_dy=6, blur=6)
-    # glossy sheen on the art
-    sheen = Image.new("L", (G, G), 0)
-    ImageDraw.Draw(sheen).rectangle([0, 0, G, G * 0.42], fill=70)
-    img.paste((255, 255, 255, 255), (x0 + (cw - G) // 2, y0 + int(cw * 0.08)), mul(sheen, gm))
-    f = fit_font(fontpath, label, cw * 0.80, 56)
-    draw_label(img, label, f, x0 + cw / 2, y0 + cw * 0.82, ink + (255,))
+    art = frame(img)
+    x0, y0, x1, y1 = ART
+    bg = vgrad((255, 255, 255), (234, 238, 243), y0, y1)
+    # colour swoosh along the bottom (channel style)
+    sw = Image.new("L", (TILE * 2, TILE * 2), 0)
+    sd = ImageDraw.Draw(sw)
+    sd.ellipse([(x0 - AW * 0.6) * 2, (y1 - AW * 0.13) * 2, (x1 + AW * 0.9) * 2, (y1 + AW * 0.62) * 2], fill=255)
+    sd.ellipse([(x0 - AW * 0.7) * 2, (y1 - AW * 0.095) * 2, (x1 + AW * 0.8) * 2, (y1 + AW * 0.66) * 2], fill=0)
+    sw = sw.resize((TILE, TILE), Image.LANCZOS)
+    fill = Image.new("L", (TILE * 2, TILE * 2), 0)
+    ImageDraw.Draw(fill).ellipse([(x0 - AW * 0.7) * 2, (y1 - AW * 0.065) * 2, (x1 + AW * 0.8) * 2,
+                                  (y1 + AW * 0.66) * 2], fill=255)
+    fill = fill.resize((TILE, TILE), Image.LANCZOS)
+    bg.paste(mix(c, (255, 255, 255), 0.15) + (255,), (0, 0), sw)
+    bg.paste(mix(c, (255, 255, 255), 0.62) + (255,), (0, 0), fill)
+    img.paste(bg, (0, 0), art)
+    S = int(AW * 0.58)
+    object3d(img, kind, S, x0 + (AW - S) // 2, y0 + int(AW * 0.04), mix(c, (255, 255, 255), 0.25),
+             mix(c, (0, 0, 0), 0.08), mix(c, (0, 0, 0), 0.40), clip=art, drop=(40, 50, 70, 60))
+    f = fit_font(fontpath, label, AW * 0.80, 44)
+    draw_label(img, label, f, x0 + AW / 2, y0 + AW * 0.735, (126, 133, 142, 255))
+    art_gloss(img, art, 0.22)
     return img
 
 
-def tile_wiiu(label, kind, colour, fontpath):
+def tile_plaza(label, kind, colour, fontpath):
     c = hexrgb(colour)
     img = Image.new("RGBA", (TILE, TILE), (0, 0, 0, 0))
-    x0, y0, x1, y1 = BODY
-    cw = x1 - x0
-    shadow(img, BODY, RAD * 0.62, strength=85)
-    rad = int(RAD * 0.62)
-    mask = rr_mask(BODY, rad)
-    body = vgrad(mix(c, (255, 255, 255), 0.12), mix(c, (0, 0, 0), 0.10), y0, y1)
-    # big faint watermark of the glyph, tilted
-    W = int(cw * 1.25)
-    wm = glyph(kind, W).rotate(-14, resample=Image.BICUBIC, expand=False)
+    art = frame(img)
+    x0, y0, x1, y1 = ART
+    bg = vgrad(mix(c, (255, 255, 255), 0.18), mix(c, (0, 0, 0), 0.20), y0, y1)
+    # radial spotlight + large faint watermark
+    glow = Image.new("L", (TILE, TILE), 0)
+    ImageDraw.Draw(glow).ellipse([x0 - AW * 0.1, y0 - AW * 0.2, x1 + AW * 0.1, y0 + AW * 0.7], fill=80)
+    bg.paste((255, 255, 255, 255), (0, 0), glow.filter(ImageFilter.GaussianBlur(30)))
+    W = int(AW * 1.3)
+    wm = shapes.glyph(kind, W).rotate(-16, resample=Image.BICUBIC)
     wl = Image.new("L", (TILE, TILE), 0)
-    wl.paste(wm, (x0 + int(cw * 0.25), y0 - int(cw * 0.28)))
-    body.paste((255, 255, 255, 255), (0, 0), wl.point(lambda v: int(v * 0.14)))
-    img.paste(body, (0, 0), mask)
-    # white name band
-    band_top = y0 + int(cw * 0.70)
+    wl.paste(wm, (x0 + int(AW * 0.25), y0 - int(AW * 0.30)))
+    bg.paste((255, 255, 255, 255), (0, 0), scale(wl, 0.10))
+    img.paste(bg, (0, 0), art)
+    S = int(AW * 0.62)
+    object3d(img, kind, S, x0 + (AW - S) // 2, y0 + int(AW * 0.02), (255, 255, 255), (222, 228, 236),
+             mix(c, (0, 0, 0), 0.42), clip=art, drop=(0, 0, 0, 100))
+    # dark name band (like a store / virtual console strip)
+    band_top = y0 + int(AW * 0.74)
     bm = Image.new("L", (TILE, TILE), 0)
     ImageDraw.Draw(bm).rectangle([0, band_top, TILE, TILE], fill=255)
-    img.paste((255, 255, 255, 255), (0, 0), mul(bm, mask))
-    ImageDraw.Draw(img).line([(x0, band_top), (x1, band_top)], fill=mix(c, (0, 0, 0), 0.25) + (90,), width=2)
-    # outline
-    rim = Image.fromarray(np.clip(np.array(mask, np.int16) - np.array(rr_mask(BODY, rad, inset=3), np.int16), 0, 255).astype(np.uint8))
-    img.paste(mix(c, (0, 0, 0), 0.35) + (255,), (0, 0), rim.point(lambda v: v * 0.6))
-
-    G = int(cw * 0.52)
-    gm = glyph(kind, G)
-    place_glyph(img, gm, x0 + (cw - G) // 2, y0 + int(cw * 0.09), (255, 255, 255),
-                shade=mix(c, (0, 0, 0), 0.5) + (110,), shade_dy=4, blur=3)
-    ink = mix(c, (0, 0, 0), 0.35) if lum(c) > 0.55 else c
-    f = fit_font(fontpath, label, cw * 0.80, 48)
-    draw_label(img, label, f, x0 + cw / 2, band_top + (y1 - band_top) / 2 + 1, ink + (255,))
+    img.paste((38, 42, 48, 255), (0, 0), scale(mul(bm, art), 0.9))
+    ImageDraw.Draw(img).line([(x0, band_top), (x1, band_top)], fill=(255, 255, 255, 60), width=2)
+    f = fit_font(fontpath, label, AW * 0.82, 40)
+    draw_label(img, label, f, x0 + AW / 2, band_top + (y1 - band_top) / 2, (255, 255, 255, 255))
+    art_gloss(img, art, 0.25)
     return img
 
 
-STYLES = {"3ds": tile_3ds, "wii": tile_wii, "wiiu": tile_wiiu}
+STYLES = {"glossy": tile_glossy, "channel": tile_channel, "plaza": tile_plaza}
 
 # visible body of the tile relative to the png size (used to place the cursor ring)
 BODY_FRAC = (BODY[2] - BODY[0]) / TILE
-BODY_OFFSET_FRAC = LIFT / TILE
+BODY_OFFSET_FRAC = ((BODY[1] + BODY[3]) / 2 - TILE / 2) / TILE

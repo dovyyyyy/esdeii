@@ -23,8 +23,8 @@
     <colorScheme name="cosmoBlack">
         <label>Cosmo Black</label>
     </colorScheme>
-    <colorScheme name="wiiMenu">
-        <label>Wii Menu</label>
+    <colorScheme name="silverMenu">
+        <label>Silver Menu</label>
     </colorScheme>
     <colorScheme name="flameRed">
         <label>Flame Red</label>
@@ -47,8 +47,8 @@
     <colorScheme name="midnight">
         <label>Midnight Blue</label>
     </colorScheme>
-    <colorScheme name="retroDmg">
-        <label>Retro DMG</label>
+    <colorScheme name="retroPocket">
+        <label>Retro Pocket</label>
     </colorScheme>
     <colorScheme name="iceSystem">
         <label>Ice White + system colours</label>
@@ -83,40 +83,40 @@
         <gamelistToSystem>instant</gamelistToSystem>
     </transitions>
 
-    <variant name="n3dsGrid">
-        <label>3DS icons + icon grid</label>
+    <variant name="glossyGrid">
+        <label>Glossy icons + icon grid</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="n3dsList">
-        <label>3DS icons + game list</label>
+    <variant name="glossyList">
+        <label>Glossy icons + game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="n3dsShelf">
-        <label>3DS icons + cover shelf</label>
+    <variant name="glossyShelf">
+        <label>Glossy icons + cover shelf</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="wiiGrid">
-        <label>Wii icons + icon grid</label>
+    <variant name="channelGrid">
+        <label>Channel icons + icon grid</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="wiiList">
-        <label>Wii icons + game list</label>
+    <variant name="channelList">
+        <label>Channel icons + game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="wiiShelf">
-        <label>Wii icons + cover shelf</label>
+    <variant name="channelShelf">
+        <label>Channel icons + cover shelf</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="wiiuGrid">
-        <label>Wii U icons + icon grid</label>
+    <variant name="plazaGrid">
+        <label>Plaza icons + icon grid</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="wiiuList">
-        <label>Wii U icons + game list</label>
+    <variant name="plazaList">
+        <label>Plaza icons + game list</label>
         <selectable>true</selectable>
     </variant>
-    <variant name="wiiuShelf">
-        <label>Wii U icons + cover shelf</label>
+    <variant name="plazaShelf">
+        <label>Plaza icons + cover shelf</label>
         <selectable>true</selectable>
     </variant>
 </themeCapabilities>
