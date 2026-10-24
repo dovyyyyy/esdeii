@@ -738,50 +738,5 @@
             <systemNameSuffix>false</systemNameSuffix>
             <zIndex>50</zIndex>
         </carousel>
-        <animation name="bubble0">
-            <pos>0.975 0.78</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0937 0.15</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble1">
-            <pos>0.025 0.08</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0813 0.13</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble2">
-            <pos>0.025 0.94</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.075 0.12</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble3">
-            <pos>0.975 0.06</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0687 0.11</size>
-            <path>./../assets/images/anim-bubble-d.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble4">
-            <pos>0.05 0.52</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0625 0.1</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
     </view>
 </theme>

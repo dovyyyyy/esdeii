@@ -770,6 +770,8 @@
             <metadata>description</metadata>
             <lineSpacing>1.35</lineSpacing>
             <containerStartDelay>5</containerStartDelay>
+            <containerScrollSpeed>0.5</containerScrollSpeed>
+            <containerResetDelay>10</containerResetDelay>
         </text>
         <gamelistinfo name="gamelistInfo">
             <pos>0.8791 0.958</pos>
@@ -969,68 +971,5 @@
             <selectorCornerRadius>0.0138</selectorCornerRadius>
             <selectorLayer>bottom</selectorLayer>
         </grid>
-        <animation name="bubble0">
-            <pos>0.9692 0.9</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0923 0.2</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble1">
-            <pos>0.0277 0.1</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0785 0.17</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble2">
-            <pos>0.0554 0.92</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0692 0.15</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble3">
-            <pos>0.9415 0.08</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.06 0.13</size>
-            <path>./../assets/images/anim-bubble-d.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble4">
-            <pos>0.0185 0.52</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0554 0.12</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble5">
-            <pos>0.9231 0.48</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0508 0.11</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble6">
-            <pos>0.9877 0.3</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0462 0.1</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <zIndex>2</zIndex>
-        </animation>
     </view>
 </theme>

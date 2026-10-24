@@ -676,6 +676,8 @@
             <metadata>description</metadata>
             <lineSpacing>1.35</lineSpacing>
             <containerStartDelay>5</containerStartDelay>
+            <containerScrollSpeed>0.5</containerScrollSpeed>
+            <containerResetDelay>10</containerResetDelay>
         </text>
         <gamelistinfo name="gamelistInfo">
             <pos>0.8821 0.958</pos>

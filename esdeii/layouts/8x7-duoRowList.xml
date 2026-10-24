@@ -554,6 +554,8 @@
             <selectorColor>00000000</selectorColor>
             <horizontalMargin>0.014</horizontalMargin>
             <indicators>symbols</indicators>
+            <textHorizontalScrollSpeed>0.5</textHorizontalScrollSpeed>
+            <textHorizontalScrollDelay>2</textHorizontalScrollDelay>
             <zIndex>50</zIndex>
         </textlist>
     </view>

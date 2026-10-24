@@ -56,8 +56,8 @@ To update, download again and replace the folder.
   ES-DE always draws the clock, battery and button prompts on top of
   everything and never moves them, so the theme keeps the surfaces under
   them still instead of sliding them away. On Channels the game count sits
-  on the left of the clock bar and stays still with it (it just shows the
-  new numbers); in the Dual looks the clock sits in a strip above the two
+  on the left of the clock bar and slides in and out with its page (from one
+  game list to the next it just changes in place); in the Dual looks the clock sits in a strip above the two
   screens, so the screens slide away underneath it. Everything else slides
   with the page in both directions.
 - **Theme aspect ratio** — leave on Automatic (16:9, 16:10, 3:2, 4:3, 5:3,
@@ -83,8 +83,8 @@ game swells into a bright chord.
   endless loop (when ES-DE restarts it, it only moves back a little).
 - A few bubbles also float **behind the systems** you choose from (Channels and
   Home), in the gaps between the icons; in the Dual looks they float on the
-  clean top screen instead, never near the console icons. Dual Row keeps
-  its bubbles to the system list only.
+  clean top screen instead, never near the console icons. The game lists
+  have no bubbles, so nothing moves behind the game details.
 - Headers over the game artwork (system name and info) have a thin
   outline so they stay readable on any custom art.
 - Faint artwork of the selected game (fan art, else the screenshot) behind
@@ -103,7 +103,11 @@ game swells into a bright chord.
   pill in the Dual looks.
 - **Empty slots** fill the rest of every grid, like the blank channels on
   a console menu (plain, without any logo).
-- Small animations: a nudging page arrow on the channel wall.
+- On the channel wall the background lines glide up and ease to a stop each
+  time you move to another system, like the console menu settling after a
+  page turn. The animation plays once, so it costs nothing while you look.
+- Descriptions and long names scroll at half speed with a pause at the
+  start, so they are easy to read.
   They are tiny, so they cost almost nothing to draw.
 - The clock, date and battery hide while the ES-DE menu is open.
 - Icons for all 197 systems ES-DE supports, each drawn after its real

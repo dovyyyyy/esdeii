@@ -343,6 +343,33 @@ def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=12, seconds=7.0
     im.save(frame_png)
 
 
+def lottie_lines(path, frame_png, W=1280, H=720, tile=0.02, line=3 / 14, shift=3, fps=30):
+    """The channel wall's background lines, played once each time another
+    system is picked: they glide up a few lines and ease to a stop, then stay
+    still (a whole number of lines, so they end exactly where they started).
+    Only plain rectangles, rendered off the main thread for under a second."""
+    period = tile * H
+    th = max(1.0, line * period)
+    c = [238 / 255, 240 / 255, 243 / 255, 1]  # same grey as bg-wii.png, tinted by the theme
+    rects = [{"ty": "rc", "d": 1, "s": _st([W + 4, th]), "p": _st([W / 2, k * period + th / 2]), "r": _st(0),
+              "nm": f"r{k}"} for k in range(-shift - 1, int(H / period) + 2)]
+    fill = {"ty": "fl", "c": _st(c), "o": _st(100), "r": 1, "nm": "f"}
+    op = int(fps * 0.9)
+    end = int(fps * 0.75)
+    # ease-out (fast start, long soft stop), like the console menu's page slide
+    pos = {"a": 1, "k": [{"t": 0, "s": [0, shift * period, 0], "o": {"x": [0.22], "y": [1]},
+                          "i": {"x": [0.36], "y": [1]}},
+                         {"t": end, "s": [0, 0, 0]}]}
+    _write_lottie(path, W, H, fps, op, [_layer(1, rects + [fill], op, position=pos)])
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    k = 0
+    while k * period < H:
+        d.rectangle([0, k * period, W, k * period + th], fill=tuple(int(v * 255) for v in c))
+        k += 1
+    im.save(frame_png)
+
+
 # Mostly sideways, a little up or down; different lengths so they never move in step.
 BUBBLES = {"anim-bubble-a": dict(drift=(30, -6), seconds=9.0),
            "anim-bubble-b": dict(ring=True, drift=(-28, 8), seconds=11.0),
@@ -361,7 +388,7 @@ def build_all(img_dir, fontpath, frames_dir=None):
     slot_empty_wide(os.path.join(img_dir, "slot-empty-wide.png"), fontpath)
     slot_empty_square(os.path.join(img_dir, "slot-empty-square.png"), fontpath)
     for fn, name in ((lottie_colon, "anim-colon"), (lottie_arrow, "anim-arrow"),
-                     (lottie_cursor, "anim-cursor")):
+                     (lottie_cursor, "anim-cursor"), (lottie_lines, "anim-lines")):
         fn(os.path.join(img_dir, name + ".json"), os.path.join(frames_dir, name + ".png"))
     for name, kw in BUBBLES.items():
         lottie_bubble(os.path.join(img_dir, name + ".json"), os.path.join(frames_dir, name + ".png"), **kw)
