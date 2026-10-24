@@ -335,6 +335,7 @@
             <fsSmall>0.022</fsSmall>
             <fsFeat>0.026</fsFeat>
             <fsColon>0.07</fsColon>
+            <fsPill>0.026</fsPill>
         </variables>
     </fontSize>
     <fontSize name="large">
@@ -354,6 +355,7 @@
             <fsSmall>0.0251</fsSmall>
             <fsFeat>0.0296</fsFeat>
             <fsColon>0.0798</fsColon>
+            <fsPill>0.0296</fsPill>
         </variables>
     </fontSize>
     <fontSize name="small">
@@ -373,6 +375,7 @@
             <fsSmall>0.0194</fsSmall>
             <fsFeat>0.0229</fsFeat>
             <fsColon>0.0616</fsColon>
+            <fsPill>0.0229</fsPill>
         </variables>
     </fontSize>
     <fontSize name="x-large">
@@ -392,6 +395,7 @@
             <fsSmall>0.0282</fsSmall>
             <fsFeat>0.0333</fsFeat>
             <fsColon>0.0896</fsColon>
+            <fsPill>0.0333</fsPill>
         </variables>
     </fontSize>
     <fontSize name="x-small">
@@ -411,6 +415,7 @@
             <fsSmall>0.0172</fsSmall>
             <fsFeat>0.0203</fsFeat>
             <fsColon>0.0546</fsColon>
+            <fsPill>0.0203</fsPill>
         </variables>
     </fontSize>
 

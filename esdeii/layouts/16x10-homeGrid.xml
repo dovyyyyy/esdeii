@@ -130,21 +130,29 @@
             <cornerRadius>0.0069</cornerRadius>
         </image>
         <clock name="clock">
-            <pos>0.9688 0.05</pos>
+            <pos>0.9575 0.05</pos>
             <origin>1 0.5</origin>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
-            <fontSize>${fsStatus}</fontSize>
-            <color>${subColor}</color>
-            <format>%H:%M</format>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsPill}</fontSize>
+            <color>${textColor}</color>
+            <format>%H:%M   %d/%m</format>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0112 0.0112</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.025</backgroundCornerRadius>
         </clock>
         <systemstatus name="systemStatus">
-            <pos>0.9688 0.1</pos>
+            <pos>0.9575 0.112</pos>
             <origin>1 0.5</origin>
-            <height>${fsStatus}</height>
+            <height>${fsPill}</height>
             <color>${subColor}</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0112 0.0112</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.025</backgroundCornerRadius>
         </systemstatus>
         <image name="emptySlot0">
             <pos>0.1113 0.235</pos>
@@ -343,16 +351,6 @@
             <gameselector>featured</gameselector>
             <systemNameSuffix>false</systemNameSuffix>
         </text>
-        <clock name="date">
-            <pos>0.9437 0.91</pos>
-            <origin>1 0.5</origin>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsSmall}</fontSize>
-            <color>${subColor}</color>
-            <format>%Y-%m-%d</format>
-            <horizontalAlignment>right</horizontalAlignment>
-            <scope>view</scope>
-        </clock>
         <animation name="bubble0">
             <pos>0.9625 0.9</pos>
             <origin>0.5 0.5</origin>
@@ -374,7 +372,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
-            <pos>0.975 0.22</pos>
+            <pos>0.975 0.24</pos>
             <origin>0.5 0.5</origin>
             <size>0.0937 0.15</size>
             <path>./../assets/images/anim-bubble-b.json</path>
@@ -394,7 +392,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble4">
-            <pos>0.9375 0.54</pos>
+            <pos>0.9375 0.56</pos>
             <origin>0.5 0.5</origin>
             <size>0.075 0.12</size>
             <path>./../assets/images/anim-bubble-c.json</path>
@@ -414,7 +412,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble6">
-            <pos>0.975 0.7</pos>
+            <pos>0.025 0.76</pos>
             <origin>0.5 0.5</origin>
             <size>0.0625 0.1</size>
             <path>./../assets/images/anim-bubble-b.json</path>
@@ -479,21 +477,29 @@
             <horizontalAlignment>left</horizontalAlignment>
         </text>
         <clock name="clock">
-            <pos>0.9688 0.05</pos>
+            <pos>0.9575 0.05</pos>
             <origin>1 0.5</origin>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
-            <fontSize>${fsStatus}</fontSize>
-            <color>${subColor}</color>
-            <format>%H:%M</format>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsPill}</fontSize>
+            <color>${textColor}</color>
+            <format>%H:%M   %d/%m</format>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0112 0.0112</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.025</backgroundCornerRadius>
         </clock>
         <systemstatus name="systemStatus">
-            <pos>0.9688 0.1</pos>
+            <pos>0.9575 0.112</pos>
             <origin>1 0.5</origin>
-            <height>${fsStatus}</height>
+            <height>${fsPill}</height>
             <color>${subColor}</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0112 0.0112</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.025</backgroundCornerRadius>
         </systemstatus>
         <image name="mediaFrameShadow">
             <pos>0.0275 0.228</pos>
@@ -918,16 +924,6 @@
             <horizontalAlignment>left</horizontalAlignment>
             <zIndex>62</zIndex>
         </gamelistinfo>
-        <clock name="date">
-            <pos>0.9437 0.91</pos>
-            <origin>1 0.5</origin>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
-            <fontSize>${fsSmall}</fontSize>
-            <color>${subColor}</color>
-            <format>%Y-%m-%d</format>
-            <horizontalAlignment>right</horizontalAlignment>
-            <scope>view</scope>
-        </clock>
         <animation name="bubble0">
             <pos>0.9625 0.28</pos>
             <origin>0.5 0.5</origin>

@@ -82,21 +82,29 @@
             <lineSpacing>1.6</lineSpacing>
         </text>
         <clock name="clock">
-            <pos>0.972 0.05</pos>
+            <pos>0.9576 0.05</pos>
             <origin>1 0.5</origin>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
-            <fontSize>${fsStatus}</fontSize>
-            <color>${subColor}</color>
-            <format>%H:%M</format>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsPill}</fontSize>
+            <color>${textColor}</color>
+            <format>%H:%M   %d/%m</format>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0144 0.0144</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.032</backgroundCornerRadius>
         </clock>
         <systemstatus name="systemStatus">
-            <pos>0.972 0.1</pos>
+            <pos>0.9576 0.112</pos>
             <origin>1 0.5</origin>
-            <height>${fsStatus}</height>
+            <height>${fsPill}</height>
             <color>${subColor}</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0144 0.0144</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.032</backgroundCornerRadius>
         </systemstatus>
         <image name="emptySlot0">
             <pos>0.0864 0.235</pos>
@@ -274,7 +282,7 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
-            <pos>0.976 0.2</pos>
+            <pos>0.976 0.22</pos>
             <origin>0.5 0.5</origin>
             <size>0.08 0.1</size>
             <path>./../assets/images/anim-bubble-b.json</path>
@@ -349,21 +357,29 @@
             <zIndex>45</zIndex>
         </gamelistinfo>
         <clock name="clock">
-            <pos>0.972 0.05</pos>
+            <pos>0.9576 0.05</pos>
             <origin>1 0.5</origin>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
-            <fontSize>${fsStatus}</fontSize>
-            <color>${subColor}</color>
-            <format>%H:%M</format>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsPill}</fontSize>
+            <color>${textColor}</color>
+            <format>%H:%M   %d/%m</format>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0144 0.0144</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.032</backgroundCornerRadius>
         </clock>
         <systemstatus name="systemStatus">
-            <pos>0.972 0.1</pos>
+            <pos>0.9576 0.112</pos>
             <origin>1 0.5</origin>
-            <height>${fsStatus}</height>
+            <height>${fsPill}</height>
             <color>${subColor}</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0144 0.0144</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.032</backgroundCornerRadius>
         </systemstatus>
         <image name="mediaFrameShadow">
             <pos>0.0232 0.228</pos>
@@ -664,9 +680,9 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble1">
-            <pos>0.688 0.2</pos>
+            <pos>0.032 0.28</pos>
             <origin>0.5 0.5</origin>
-            <size>0.12 0.15</size>
+            <size>0.104 0.13</size>
             <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
@@ -674,9 +690,9 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble2">
-            <pos>0.032 0.28</pos>
+            <pos>0.048 0.94</pos>
             <origin>0.5 0.5</origin>
-            <size>0.104 0.13</size>
+            <size>0.096 0.12</size>
             <path>./../assets/images/anim-bubble-b.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
@@ -684,9 +700,9 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble3">
-            <pos>0.048 0.94</pos>
+            <pos>0.976 0.94</pos>
             <origin>0.5 0.5</origin>
-            <size>0.096 0.12</size>
+            <size>0.088 0.11</size>
             <path>./../assets/images/anim-bubble-d.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
@@ -694,20 +710,10 @@
             <zIndex>2</zIndex>
         </animation>
         <animation name="bubble4">
-            <pos>0.976 0.94</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.088 0.11</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <direction>normal</direction>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble5">
             <pos>0.464 0.48</pos>
             <origin>0.5 0.5</origin>
             <size>0.08 0.1</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
+            <path>./../assets/images/anim-bubble-c.json</path>
             <color>${accentColor}</color>
             <opacity>${bubbleOpacity}</opacity>
             <direction>normal</direction>

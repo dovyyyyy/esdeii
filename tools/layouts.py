@@ -197,10 +197,48 @@ def status(L, view, x, y, origin="1 0.5", fs="fsStatus"):
           color="${subColor}", fontPath=FONT_BOLD, scope="view")
 
 
-def help_(L, view, x, y, origin="0 0.5", fs="fsHelp"):
-    L.add(view, "helpsystem", "help", pos=L.pair(x, y), origin=origin, fontPath=FONT_BOLD,
-          fontSize="${" + fs + "}", textColor="${subColor}", iconColor="${subColor}", letterCase="capitalize",
-          entrySpacing="0.012")
+def help_(L, view, x, y, origin="0 0.5", fs="fsHelp", pill=False):
+    p = dict(pos=L.pair(x, y), origin=origin, fontPath=FONT_BOLD, fontSize="${" + fs + "}",
+             textColor="${subColor}", iconColor="${subColor}", letterCase="capitalize", entrySpacing="0.012")
+    if pill:  # button prompts on a rounded pill, like modern handheld launchers
+        p.update(backgroundColor="${panelColor}", backgroundHorizontalPadding=f"{L.rad(0.022)} {L.rad(0.022)}",
+                 backgroundVerticalPadding="0.01 0.01", backgroundCornerRadius=L.rad(0.04))
+    L.add(view, "helpsystem", "help", **p)
+
+
+GLASS = "000000A6"  # dark see-through pill / card on top of artwork
+
+
+def status_bar(L, view, xr, y, w=0.5, h=0.052, z=30):
+    """Clock, date and battery on one dark glass pill (right edge at xr)."""
+    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, GLASS, h / 2, z=z)
+    clock(L, view, xr - w + 0.024, y, "0 0.5", fs="fsPill", color="FFFFFF", font=FONT_BOLD,
+          fmt="%H:%M   %d/%m")
+    L.add(view, "systemstatus", "systemStatus", pos=L.pair(xr - 0.022, y), origin="1 0.5", height="${fsPill}",
+          color="FFFFFF", fontPath=FONT_BOLD, scope="view")
+
+
+def glass_text(L, view, name, x, y, fs, origin="0 0.5", z=41, **extra):
+    """A short line of white text on a dark glass pill (auto width)."""
+    L.text(view, name, x, y, 0, 0, fs, FONT_BOLD, "FFFFFF", origin=origin, backgroundColor=GLASS,
+           backgroundMargins=f"{L.rad(0.016)} {L.rad(0.016)}", backgroundCornerRadius=L.rad(0.04),
+           lineSpacing="1.7", z=z, **extra)
+
+
+def hero(L, view, x, y, w, h, r=0.034, gameselector=None):
+    """Full-bleed game artwork filling a screen: a dark base, the fan art (or
+    screenshot) cropped to fill, and the game video on top in the game list."""
+    L.rect(view, "heroBase", x, y, w, h, "${screenColor}", r, z=6)
+    p = dict(pos=L.pair(x, y), cropSize=L.pair(w, h), imageType="fanart, screenshot, titlescreen",
+             cornerRadius=L.rad(r), zIndex="7")
+    if gameselector:
+        p["gameselector"] = gameselector
+    else:
+        p["scrollFadeIn"] = "true"
+    L.add(view, "image", "heroArt", **p)
+    if not gameselector:
+        L.add(view, "video", "gameVideo", pos=L.pair(x, y), cropSize=L.pair(w, h), videoCornerRadius=L.rad(r),
+              delay="1.5", fadeInTime="0.6", scrollFadeIn="true", zIndex="8")
 
 
 def media(L, x, y, w, h, r=0.016, z=18, view="gamelist", gameselector=None):
@@ -225,27 +263,31 @@ def media(L, x, y, w, h, r=0.016, z=18, view="gamelist", gameselector=None):
               cornerRadius=L.rad(r), zIndex=f(z + 2))
 
 
-def info(L, x0, y0, w, y1, desc_col=None, two_line_name=True, view="gamelist"):
-    """Game name, details grid, rating/badges and description."""
+def info(L, x0, y0, w, y1, desc_col=None, two_line_name=True, view="gamelist", name=True,
+         title="${textColor}", sub="${subColor}", dim="${dimText}"):
+    """Game name, details grid, rating/badges and description. With name=False
+    the details start at y0 (the name is shown elsewhere)."""
     v = view
-    if two_line_name:
-        L.text(v, "gameName", x0, y0, w, 0.1, "fsGameName", FONT_BLACK, "${textColor}", metadata="name",
+    if not name:
+        r1, gap = y0, 0.06
+    elif two_line_name:
+        L.text(v, "gameName", x0, y0, w, 0.1, "fsGameName", FONT_BLACK, title, metadata="name",
                verticalAlignment="top", lineSpacing="1.15")
         r1, gap = y0 + 0.11, 0.062
     else:
-        L.text(v, "gameName", x0, y0, w, 0.05, "fsGameName", FONT_BLACK, "${textColor}", metadata="name")
+        L.text(v, "gameName", x0, y0, w, 0.05, "fsGameName", FONT_BLACK, title, metadata="name")
         r1, gap = y0 + 0.058, 0.06
     col2 = x0 + w / 2 + 0.01
     half = w / 2 - 0.015
     lab = dict(letterCase="uppercase", metadataElement="true")
 
     def cell(xx, y, nm, title, kind, meta, default="Unknown", **extra):
-        L.text(v, nm + "Label", xx, y, half, 0.024, "fsLabel", FONT_BOLD, "${subColor}", text=title, **lab)
+        L.text(v, nm + "Label", xx, y, half, 0.024, "fsLabel", FONT_BOLD, sub, text=title, **lab)
         if kind == "datetime":
             L.add(v, "datetime", nm, pos=L.pair(xx, y + 0.022), size=L.pair(half, 0.032), metadata=meta,
-                  fontPath=FONT_BOLD, fontSize="${fsMeta}", color="${dimText}", defaultValue=default, **extra)
+                  fontPath=FONT_BOLD, fontSize="${fsMeta}", color=dim, defaultValue=default, **extra)
         else:
-            L.text(v, nm, xx, y + 0.022, half, 0.032, "fsMeta", FONT_BOLD, "${dimText}", metadata=meta,
+            L.text(v, nm, xx, y + 0.022, half, 0.032, "fsMeta", FONT_BOLD, dim, metadata=meta,
                    defaultValue=default)
 
     cell(x0, r1, "released", "Released", "datetime", "releasedate", format="%Y-%m-%d")
@@ -253,9 +295,9 @@ def info(L, x0, y0, w, y1, desc_col=None, two_line_name=True, view="gamelist"):
     cell(x0, r1 + gap, "developer", "Developer", "text", "developer")
     cell(col2, r1 + gap, "genre", "Genre", "text", "genre")
     cell(x0, r1 + 2 * gap, "lastPlayed", "Last played", "datetime", "lastplayed", default="Never")
-    L.text(v, "playTimeLabel", col2, r1 + 2 * gap, half, 0.024, "fsLabel", FONT_BOLD, "${subColor}",
+    L.text(v, "playTimeLabel", col2, r1 + 2 * gap, half, 0.024, "fsLabel", FONT_BOLD, sub,
            text="Play time", **lab)
-    L.text(v, "playTime", col2, r1 + 2 * gap + 0.022, half, 0.032, "fsMeta", FONT_BOLD, "${dimText}",
+    L.text(v, "playTime", col2, r1 + 2 * gap + 0.022, half, 0.032, "fsMeta", FONT_BOLD, dim,
            metadata="playtime")
     r3 = r1 + 3 * gap + 0.006
     L.add(v, "rating", "gameRating", pos=L.pair(x0, r3), size="0 0.028",
@@ -267,13 +309,13 @@ def info(L, x0, y0, w, y1, desc_col=None, two_line_name=True, view="gamelist"):
           slots="favorite completed kidgame broken controller altemulator manual", zIndex="45")
     if desc_col:
         dx, dy, dw, dh = desc_col
-        L.text(v, "descriptionLabel", dx, dy, dw, 0.024, "fsLabel", FONT_BOLD, "${subColor}", text="About", **lab)
-        L.text(v, "gameDescription", dx, dy + 0.032, dw, dh - 0.032, "fsDesc", FONT_REG, "${dimText}",
+        L.text(v, "descriptionLabel", dx, dy, dw, 0.024, "fsLabel", FONT_BOLD, sub, text="About", **lab)
+        L.text(v, "gameDescription", dx, dy + 0.032, dw, dh - 0.032, "fsDesc", FONT_REG, dim,
                metadata="description", lineSpacing="1.35", containerStartDelay="5")
     else:
         dy = r3 + 0.04
         if y1 - dy > 0.03:
-            L.text(v, "gameDescription", x0, dy, w, y1 - dy, "fsDesc", FONT_REG, "${dimText}",
+            L.text(v, "gameDescription", x0, dy, w, y1 - dy, "fsDesc", FONT_REG, dim,
                    metadata="description", lineSpacing="1.3", containerStartDelay="5")
 
 
@@ -375,7 +417,6 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     decor = W >= 1.6
     side = min(0.24, (W - 1.30) / 2) if decor else 0.03
     px, pw = side, W - 2 * side
-    wide = pw >= 1.6
     for v in ("system", "gamelist"):  # HOME-menu background pattern chosen by the colour scheme
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + "${bgPattern}", tile="true",
               tileSize="0 ${bgTile}", color="${bgColor}", zIndex="0")
@@ -390,46 +431,32 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
         ly0, ly1 = g["lo"]
         L.panel(view, "upperScreen", px, uy0, pw, uy1 - uy0)
         L.panel(view, "lowerScreen", px, ly0, pw, ly1 - ly0)
-        L.rect(view, "statusDivider", px + 0.02, uy0 + 0.067, pw - 0.04, 0.0028, "${dividerColor}", z=7)
-        sy = uy0 + 0.034
-        clock(L, view, px + 0.03, sy, "0 0.5")
-        if decor:
-            clock(L, view, px + 0.17, sy, "0 0.5", date=True, font=FONT_BOLD, name="date")
-        status(L, view, px + pw - 0.03, sy)
-        help_(L, view, px + 0.01, 0.958)
+        status_bar(L, view, px + pw - 0.022, uy0 + 0.045, w=min(0.5, pw * 0.4))
+        help_(L, view, px + 0.022, 0.958, fs="fsHelp", pill=True)
 
-    # system view: top screen
+    # system view: top screen = the featured game's artwork with the system on top
     uy0, uy1 = geo["system"]["up"]
     ly0, ly1 = geo["system"]["lo"]
     v = "system"
     k = 1.0 if mode == "row" else 0.84
+    uh = uy1 - uy0
     L.add(v, "gameselector", "featured", selection="random", gameCount="1")
-    # system tile and name, centred on the top screen
+    hero(L, v, px, uy0, pw, uh, gameselector="featured")
+    L.rect(v, "heroShade", px, uy0, pw, uh, "000000D9", 0.034, z=8, colorEnd="00000026", gradientType="horizontal")
     tile = 0.36 * k
     cy = (uy0 + 0.07 + uy1) / 2
     tx, ty = px + 0.05, cy - tile / 2
     L.img(v, "systemTile", tx, ty, tile, tile, sysimg + "${system.theme}.png", z=20, default=sysimg + "_default.png")
     nx = tx + tile + 0.045
-    if wide:
-        prev_h = (uy1 - uy0 - 0.12)
-        prev_w = min(0.56, prev_h * 16 / 9)
-        prev_x = px + pw - 0.04 - prev_w
-        name_w = prev_x - 0.04 - nx
-    else:
-        name_w = px + pw - 0.04 - nx
+    name_w = px + pw - 0.04 - nx
     ny = cy - 0.115 * k - 0.012
-    system_name(L, nx, ny, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3ds")
-    system_info(L, v, nx, ny + 0.132 * k, name_w)
+    system_name(L, nx, ny, name_w, 0.125 * (1 if mode == "row" else 0.92), "fsName3ds", color="FFFFFF")
+    L.text(v, "systemInfo", nx, ny + 0.132 * k, name_w, 0.032, "fsSmall", FONT_BOLD, "FFFFFFC0", text="${sysInfo}")
     count_pill(L, nx + 0.012, ny + 0.18 * k + 0.012)
-    if wide:
-        py = uy0 + 0.09 + (uy1 - uy0 - 0.09 - prev_h) / 2 - 0.005
-        media(L, prev_x, py, prev_w, prev_h, view="system", gameselector="featured")
-        L.text(v, "featuredName", prev_x + 0.02, py + prev_h - 0.03, 0, 0, "fsFeat", FONT_BOLD, "FFFFFF",
-               origin="0 1", metadata="name", gameselector="featured", systemNameSuffix="false",
-               backgroundColor="000000A0", backgroundMargins=f"{L.rad(0.012)} {L.rad(0.012)}",
-               backgroundCornerRadius=L.rad(0.02), lineSpacing="1.5", z=24)
-        L.text(v, "featuredLabel", prev_x + 0.008, py - 0.006, prev_w, 0.026, "fsSmall", FONT_BOLD,
-               "${subColor}", origin="0 1", text="Featured", letterCase="uppercase")
+    glass_text(L, v, "featuredName", px + pw - 0.03, uy1 - 0.035, "fsPill", origin="1 0.5", metadata="name",
+               gameselector="featured", systemNameSuffix="false")
+    L.text(v, "featuredLabel", px + pw - 0.03, uy1 - 0.072, 0.4, 0.03, "fsLabel", FONT_BOLD, "FFFFFFB0",
+           origin="1 0.5", text="Featured", letterCase="uppercase", horizontalAlignment="right")
 
     # system view: bottom screen
     if mode == "row":
@@ -465,24 +492,27 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     uy0, uy1 = geo["gamelist"]["up"]
     ly0, ly1 = geo["gamelist"]["lo"]
     v = "gamelist"
-    L.text(v, "systemLabel", px + pw / 2 + (0.04 if decor else -0.02), uy0 + 0.034, pw * (0.42 if decor else 0.3),
-           0.032, "fsStatus", FONT_BOLD, "${subColor}", origin="0.5 0.5", text="${system.fullName}",
-           horizontalAlignment="center")
-    by0, by1 = uy0 + 0.088, uy1 - 0.022
-    mh = by1 - by0
-    mw = min(mh * 16 / 9, pw * 0.44)
-    mx = px + 0.025
-    media(L, mx, by0, mw, mh)
-    x0 = mx + mw + 0.035
-    xr = px + pw - 0.03
-    if wide:
-        dw = 0.44
-        info(L, x0, by0, xr - x0 - dw - 0.035, by1, desc_col=(xr - dw, by0, dw, mh))
-    else:
-        info(L, x0, by0, xr - x0, by1, two_line_name=False)
-    ipos = L.pair(px + pw - 0.01, 0.958) if decor else L.pair(px + pw - 0.24, uy0 + 0.034)
-    L.add(v, "gamelistinfo", "gamelistInfo", pos=ipos, origin="1 0.5", size=L.pair(pw * 0.4 if decor else 0.2, 0.034),
-          fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="right", zIndex="45")
+    # top screen = the selected game's artwork and video, details on a glass card
+    uh = uy1 - uy0
+    hero(L, v, px, uy0, pw, uh)
+    L.rect(v, "heroShade", px, uy0 + uh * 0.3, pw, uh * 0.7, "00000000", 0.034, z=9, colorEnd="000000C8",
+           gradientType="vertical")
+    glass_text(L, v, "systemLabel", px + 0.022, uy0 + 0.045, "fsPill", text="${system.fullName}")
+    cw = min(0.52, pw * 0.42)
+    cx0 = px + pw - cw - 0.022
+    cy0, cy1 = uy0 + 0.09, uy1 - 0.022
+    L.rect(v, "infoCard", cx0, cy0, cw, cy1 - cy0, GLASS, 0.026, z=10)
+    info(L, cx0 + 0.025, cy0 + 0.02, cw - 0.05, cy1 - 0.018, name=False, sub="FFFFFFA8", dim="FFFFFF")
+    cov_h = min(0.19, uh * 0.42)
+    cov_w = cov_h * (0.9 if L.box3d else 0.74)
+    L.add(v, "image", "heroCover", pos=L.pair(px + 0.03, uy1 - 0.03), origin="0 1", maxSize=L.pair(cov_w, cov_h),
+          imageType=L.box, cornerRadius=L.rad(0.008), scrollFadeIn="true", zIndex="12")
+    nx = px + 0.03 + cov_w + 0.025
+    L.text(v, "gameName", nx, uy1 - 0.03 - 0.11, cx0 - 0.03 - nx, 0.11, "fsGameName", FONT_BLACK, "FFFFFF",
+           metadata="name", verticalAlignment="bottom", lineSpacing="1.15")
+    L.add(v, "gamelistinfo", "gamelistInfo", pos=L.pair(px + pw - 0.022, 0.958), origin="1 0.5",
+          size=L.pair(pw * 0.3, 0.034), fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}",
+          horizontalAlignment="right", zIndex="45")
     picker(L, layout, px + 0.028, ly0 + 0.012, pw - 0.056, ly1 - ly0 - 0.024, dict(item=0.158, rows=2, scale="1.12"))
     bubbles(L)
     return L
@@ -592,8 +622,6 @@ def wiiu_dock(L, view, W, m):
         L.add(view, "gamelistinfo", "dockInfo", pos=L.pair(m + 0.04, 0.91), origin="0 0.5", size=L.pair(sw, 0.034),
               fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left",
               zIndex="62")
-    L.add(view, "clock", "date", pos=L.pair(W - m - 0.04, 0.91), origin="1 0.5", fontPath=FONT_BOLD,
-          fontSize="${fsSmall}", color="${subColor}", format="%Y-%m-%d", horizontalAlignment="right", scope="view")
 
 
 def wiiu_top(L, view, W, m):
@@ -601,8 +629,13 @@ def wiiu_top(L, view, W, m):
         for i in range(6):
             L.rect(view, f"pageDot{i}", W / 2 - 0.111 + i * 0.04, 0.198, 0.022, 0.022,
                    "${accentColor}" if i == 0 else "${decoColor}", 0.011, z=8)
-    clock(L, view, W - m, 0.05, "1 0.5", fs="fsStatus")
-    status(L, view, W - m, 0.1)
+    # clock and battery on rounded pills, like a handheld launcher's status bar
+    pill = dict(backgroundColor="${panelColor}", backgroundHorizontalPadding=f"{L.rad(0.018)} {L.rad(0.018)}",
+                backgroundVerticalPadding="0.008 0.008", backgroundCornerRadius=L.rad(0.04))
+    L.add(view, "clock", "clock", pos=L.pair(W - m - 0.018, 0.05), origin="1 0.5", fontPath=FONT_BOLD,
+          fontSize="${fsPill}", color="${textColor}", format="%H:%M   %d/%m", scope="view", **pill)
+    L.add(view, "systemstatus", "systemStatus", pos=L.pair(W - m - 0.018, 0.112), origin="1 0.5",
+          height="${fsPill}", color="${subColor}", fontPath=FONT_BOLD, scope="view", **pill)
 
 
 def build_wiiu(W, style, layout, box="cover, 3dbox"):

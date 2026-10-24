@@ -7,8 +7,8 @@ One theme, five looks. Pick them in **Menu → UI Settings → Theme variant**.
 | **Channels** | wide channel tiles with empty slots and a curved clock bar with a blinking clock |
 | **Home** | framed square tiles with a Start cursor and a dock |
 | **Home Glossy** | the same with glossy icons |
-| **Dual Grid** | two screens, systems in a grid of icons |
-| **Dual Row** | two screens, systems in a row with a breathing cursor |
+| **Dual Grid** | two screens: game artwork on top, systems in a grid of icons below |
+| **Dual Row** | two screens: game artwork on top, systems in a row with a breathing cursor |
 
 ### Channels
 ![Channels](previews/esdeii-channel-wall.png)
@@ -76,6 +76,13 @@ game swells into a bright chord.
   the game list, fading in as you move; the Home and Dual looks show the
   featured game's artwork behind the systems.
 - Rounded console-style lettering (M PLUS Rounded 1c).
+- **Artwork top screen** (Dual looks, inspired by iiSU and Cocoon): the top
+  screen is filled edge to edge with the game's fan art or screenshot, and
+  its video plays there after a moment. The details sit on a dark glass card,
+  with the box art and title in the corner. In the system list it shows the
+  featured game's artwork behind the system.
+- **Status pills**: clock, date and battery on rounded pills (Dual and Home
+  looks), and the button prompts on a pill in the Dual looks.
 - **Empty slots** fill the rest of every grid, like the blank channels on
   a console menu (plain, without any logo).
 - Small animations: blinking clock colon, a nudging

@@ -82,21 +82,29 @@
             <lineSpacing>1.6</lineSpacing>
         </text>
         <clock name="clock">
-            <pos>0.9738 0.05</pos>
+            <pos>0.9603 0.05</pos>
             <origin>1 0.5</origin>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
-            <fontSize>${fsStatus}</fontSize>
-            <color>${subColor}</color>
-            <format>%H:%M</format>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsPill}</fontSize>
+            <color>${textColor}</color>
+            <format>%H:%M   %d/%m</format>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0135 0.0135</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.03</backgroundCornerRadius>
         </clock>
         <systemstatus name="systemStatus">
-            <pos>0.9738 0.1</pos>
+            <pos>0.9603 0.112</pos>
             <origin>1 0.5</origin>
-            <height>${fsStatus}</height>
+            <height>${fsPill}</height>
             <color>${subColor}</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0135 0.0135</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.03</backgroundCornerRadius>
         </systemstatus>
         <image name="emptySlot0">
             <pos>0.1122 0.235</pos>
@@ -369,21 +377,29 @@
             <zIndex>45</zIndex>
         </gamelistinfo>
         <clock name="clock">
-            <pos>0.9738 0.05</pos>
+            <pos>0.9603 0.05</pos>
             <origin>1 0.5</origin>
-            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
-            <fontSize>${fsStatus}</fontSize>
-            <color>${subColor}</color>
-            <format>%H:%M</format>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
+            <fontSize>${fsPill}</fontSize>
+            <color>${textColor}</color>
+            <format>%H:%M   %d/%m</format>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0135 0.0135</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.03</backgroundCornerRadius>
         </clock>
         <systemstatus name="systemStatus">
-            <pos>0.9738 0.1</pos>
+            <pos>0.9603 0.112</pos>
             <origin>1 0.5</origin>
-            <height>${fsStatus}</height>
+            <height>${fsPill}</height>
             <color>${subColor}</color>
             <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
+            <backgroundColor>${panelColor}</backgroundColor>
+            <backgroundHorizontalPadding>0.0135 0.0135</backgroundHorizontalPadding>
+            <backgroundVerticalPadding>0.008 0.008</backgroundVerticalPadding>
+            <backgroundCornerRadius>0.03</backgroundCornerRadius>
         </systemstatus>
         <image name="mediaFrameShadow">
             <pos>0.0218 0.228</pos>
