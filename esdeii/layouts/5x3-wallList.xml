@@ -201,54 +201,20 @@
             <format>%a %d/%m</format>
             <scope>view</scope>
         </clock>
-        <image name="homeButton">
-            <pos>0.115 0.872</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.09 0.15</size>
-            <path>./../assets/images/button-home.png</path>
-            <stationary>always</stationary>
-            <zIndex>61</zIndex>
-        </image>
-        <animation name="mailGlow">
-            <pos>0.885 0.868</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0882 0.147</size>
-            <path>./../assets/images/anim-glow.json</path>
-            <color>${accentColor}</color>
-            <stationary>always</stationary>
-            <zIndex>60.5</zIndex>
-        </animation>
-        <image name="mailButton">
-            <pos>0.885 0.872</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.09 0.15</size>
-            <path>./../assets/images/button-mail.png</path>
-            <stationary>always</stationary>
-            <zIndex>61</zIndex>
-        </image>
-        <image name="sdCard">
-            <pos>0.184 0.905</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.03 0.05</size>
-            <path>./../assets/images/sd-card.png</path>
-            <color>${subColor}</color>
-            <stationary>always</stationary>
-            <zIndex>61</zIndex>
-        </image>
         <text name="barCount">
-            <pos>0.205 0.905</pos>
-            <size>0.211 0.04</size>
+            <pos>0.042 0.905</pos>
+            <size>0.29 0.04</size>
             <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
-            <fontSize>${fsSmall}</fontSize>
+            <fontSize>${fsCount}</fontSize>
             <color>${subColor}</color>
             <zIndex>62</zIndex>
             <origin>0 0.5</origin>
             <systemdata>gamecount</systemdata>
         </text>
         <systemstatus name="systemStatus">
-            <pos>0.828 0.905</pos>
+            <pos>0.958 0.905</pos>
             <origin>1 0.5</origin>
-            <height>${fsSmall}</height>
+            <height>${fsStatus}</height>
             <color>${subColor}</color>
             <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
             <scope>view</scope>
@@ -579,54 +545,20 @@
             <format>%a %d/%m</format>
             <scope>view</scope>
         </clock>
-        <image name="homeButton">
-            <pos>0.115 0.872</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.09 0.15</size>
-            <path>./../assets/images/button-home.png</path>
-            <stationary>always</stationary>
-            <zIndex>61</zIndex>
-        </image>
-        <animation name="mailGlow">
-            <pos>0.885 0.868</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0882 0.147</size>
-            <path>./../assets/images/anim-glow.json</path>
-            <color>${accentColor}</color>
-            <stationary>always</stationary>
-            <zIndex>60.5</zIndex>
-        </animation>
-        <image name="mailButton">
-            <pos>0.885 0.872</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.09 0.15</size>
-            <path>./../assets/images/button-mail.png</path>
-            <stationary>always</stationary>
-            <zIndex>61</zIndex>
-        </image>
-        <image name="sdCard">
-            <pos>0.184 0.905</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.03 0.05</size>
-            <path>./../assets/images/sd-card.png</path>
-            <color>${subColor}</color>
-            <stationary>always</stationary>
-            <zIndex>61</zIndex>
-        </image>
         <gamelistinfo name="gamelistInfo">
-            <pos>0.205 0.905</pos>
+            <pos>0.042 0.905</pos>
             <origin>0 0.5</origin>
-            <size>0.211 0.04</size>
+            <size>0.29 0.04</size>
             <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
-            <fontSize>${fsSmall}</fontSize>
+            <fontSize>${fsCount}</fontSize>
             <color>${subColor}</color>
             <horizontalAlignment>left</horizontalAlignment>
             <zIndex>62</zIndex>
         </gamelistinfo>
         <systemstatus name="systemStatus">
-            <pos>0.828 0.905</pos>
+            <pos>0.958 0.905</pos>
             <origin>1 0.5</origin>
-            <height>${fsSmall}</height>
+            <height>${fsStatus}</height>
             <color>${subColor}</color>
             <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
             <scope>view</scope>

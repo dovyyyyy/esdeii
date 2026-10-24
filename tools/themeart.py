@@ -347,10 +347,7 @@ def build_all(img_dir, fontpath, frames_dir=None):
     patterns(img_dir)
     slot_empty_wide(os.path.join(img_dir, "slot-empty-wide.png"), fontpath)
     slot_empty_square(os.path.join(img_dir, "slot-empty-square.png"), fontpath)
-    round_button(os.path.join(img_dir, "button-home.png"), text="ii", fontpath=fontpath)
-    round_button(os.path.join(img_dir, "button-mail.png"), "mail")
-    sd_card(os.path.join(img_dir, "sd-card.png"))
-    for fn, name in ((lottie_colon, "anim-colon"), (lottie_arrow, "anim-arrow"), (lottie_glow_ring, "anim-glow"),
+    for fn, name in ((lottie_colon, "anim-colon"), (lottie_arrow, "anim-arrow"),
                      (lottie_cursor, "anim-cursor")):
         fn(os.path.join(img_dir, name + ".json"), os.path.join(frames_dir, name + ".png"))
     wii_selector(os.path.join(img_dir, "select-wide.png"))

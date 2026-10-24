@@ -4,7 +4,7 @@ One theme, five looks. Pick them in **Menu → UI Settings → Theme variant**.
 
 | Look | What it is |
 |---|---|
-| **Channel wall** | wide channel tiles with empty slots, a curved clock bar with round buttons and a blinking clock |
+| **Channel wall** | wide channel tiles with empty slots and a curved clock bar with a blinking clock |
 | **Home screen** | framed square tiles with a Start cursor and a dock |
 | **Home screen, glossy icons** | the same with glossy icons |
 | **Dual screen, icon grid** | two screens and a hinge, systems in a grid of icons |
@@ -59,7 +59,7 @@ To update, download again and replace the folder.
 
 - **Empty slots** fill the rest of every grid, like the blank channels on
   a console menu.
-- Small animations: blinking clock colon, a glowing mail button, a nudging
+- Small animations: blinking clock colon, a nudging
   page arrow on the channel wall and a breathing cursor in the icon row.
   They are tiny, so they cost almost nothing to draw.
 - The clock, date and battery hide while the ES-DE menu is open.

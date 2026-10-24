@@ -395,8 +395,8 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
 
 # ================================================================== ESDEII (living-room menu)
 def wii_bottom(L, view, W, m):
-    """Curved clock bar: round buttons in the raised corners, SD card, a clock
-    with a blinking colon and the date underneath."""
+    """Curved clock bar: game count, a clock with a blinking colon, the date
+    underneath, and battery / Wi-Fi."""
     by = 0.752
     L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}", stationary="always")
     L.img(view, "menuBarLine", 0, by, W, 1 - by, IMG + "wii-bar-line.png", z=60.1, color="${accentColor}",
@@ -410,32 +410,15 @@ def wii_bottom(L, view, W, m):
           size="0 ${fsColon}", path=IMG + "anim-colon.json", color="${subColor}", stationary="always", zIndex="62")
     L.add(view, "clock", "date", pos=L.pair(W / 2, 0.962), origin="0.5 0.5", fontPath=FONT_BOLD,
           fontSize="${fsSmall}", color="${subColor}", format="%a %d/%m", scope="view")
-    # round corner buttons (decorative); the mail button glows now and then
-    bs = 0.15
-    bx = max(m + bs / 2, min(W * 0.115, 0.24))
-    byc = 0.872
-    L.add(view, "image", "homeButton", pos=L.pair(bx, byc), origin="0.5 0.5", size=L.pair(bs, bs),
-          path=IMG + "button-home.png", stationary="always", zIndex="61")
-    L.add(view, "animation", "mailGlow", pos=L.pair(W - bx, byc - 0.004), origin="0.5 0.5",
-          size=L.pair(bs * 0.98, bs * 0.98), path=IMG + "anim-glow.json", color="${accentColor}",
-          stationary="always", zIndex="60.5")
-    L.add(view, "image", "mailButton", pos=L.pair(W - bx, byc), origin="0.5 0.5", size=L.pair(bs, bs),
-          path=IMG + "button-mail.png", stationary="always", zIndex="61")
-    roomy = W >= 1.5
-    tx = bx + bs / 2 + 0.02
-    if roomy:
-        L.add(view, "image", "sdCard", pos=L.pair(tx + 0.02, 0.905), origin="0.5 0.5", size=L.pair(0.05, 0.05),
-              path=IMG + "sd-card.png", color="${subColor}", stationary="always", zIndex="61")
-        tx += 0.055
-    side_w = max(0.12, W / 2 - 0.14 - tx)
+    side_w = max(0.2, W / 2 - 0.3 - m)
     if view == "system":
-        L.text(view, "barCount", tx, 0.905, side_w, 0.04, "fsSmall", FONT_BOLD, "${subColor}",
+        L.text(view, "barCount", m + 0.02, 0.905, side_w, 0.04, "fsCount", FONT_BOLD, "${subColor}",
                origin="0 0.5", systemdata="gamecount", z=62)
     else:
-        L.add(view, "gamelistinfo", "gamelistInfo", pos=L.pair(tx, 0.905), origin="0 0.5",
-              size=L.pair(side_w, 0.04), fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}",
+        L.add(view, "gamelistinfo", "gamelistInfo", pos=L.pair(m + 0.02, 0.905), origin="0 0.5",
+              size=L.pair(side_w, 0.04), fontPath=FONT_BOLD, fontSize="${fsCount}", color="${subColor}",
               horizontalAlignment="left", zIndex="62")
-    status(L, view, W - bx - bs / 2 - 0.02, 0.905, fs="fsSmall")
+    status(L, view, W - m - 0.02, 0.905)
     # button prompts sit in the dip above the bar, clear of the title
     help_(L, view, W / 2, 0.795, origin="0.5 0.5", fs="fsSmall")
 
