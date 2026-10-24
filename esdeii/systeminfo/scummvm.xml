@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Various  ·  2001  ·  Game engine</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>3BAA5E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

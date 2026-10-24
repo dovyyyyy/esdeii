@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Thomson  ·  1986  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>5A7FA8</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

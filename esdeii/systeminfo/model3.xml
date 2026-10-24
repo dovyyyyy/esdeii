@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Sega  ·  1996  ·  Arcade</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>345FA8</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

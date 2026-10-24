@@ -1,58 +1,50 @@
 """Approximate mock renderer for the esdeii layouts (not ES-DE itself).
 
-Draws panels, text, carousel, grid and list from the generated layout data so
-proportions and spacing can be checked without a device.
+    python3 tools/preview.py <layouts.json> <repo root> <out dir> "theme|ar|variant,scheme,view,out.png" ...
 """
 import json, math, os, re, sys
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
+from PIL import Image, ImageDraw, ImageFont
 
 DATA = json.load(open(sys.argv[1]))
-THEME = sys.argv[2]
+ROOT = sys.argv[2]
 OUTDIR = sys.argv[3]
-FONTDIR = os.path.join(THEME, "assets/fonts")
-IMGDIR = os.path.join(THEME, "assets/images")
-SYSDIR = os.path.join(THEME, "systems")
 H = 1080
-
 SAMPLE = dict(theme="snes", full="Nintendo SNES (Super Nintendo)", count="142 games, 12 favorites",
-              game="Stellar Quest: The Lost Kingdom", dev="Moonbeam Works", genre="Platform",
-              players="1-2", date="1995-11-21",
-              desc=("A bright side-scrolling adventure across floating islands. Collect star shards, "
-                    "rescue the sky villagers and outsmart the clockwork king in over sixty stages "
-                    "packed with secrets, bonus rooms and hidden warp pipes."))
-CAROUSEL = ["nes", "famicom", "gb", "gbc", "snes", "n64", "gba", "nds", "n3ds", "gc", "wii", "psx"]
-GAMES = ["Stellar Quest", "Turbo Kart Rally", "Puzzle Pop Deluxe", "Dungeon Bells", "Ocean Racer 2",
-         "Sky Garden", "Mecha Duel X", "Pixel Golf", "Haunted Manor", "Frost Byte", "Neon Runner",
-         "Castle Clash", "Bubble Bay", "Rocket Rangers", "Farm Friends", "Comet Chasers"]
+              info="Nintendo  ·  1991  ·  Home console", game="Stellar Quest: The Lost Kingdom",
+              dev="Moonbeam Works", genre="Platform", players="1-2", date="1995-11-21", playtime="12 hours",
+              desc=("A bright side-scrolling adventure across floating islands. Collect star shards, rescue the "
+                    "sky villagers and outsmart the clockwork king in over sixty stages packed with secrets, "
+                    "bonus rooms and hidden warp pipes."))
+SYSTEMS = ["nes", "famicom", "gb", "gbc", "snes", "n64", "gba", "nds", "n3ds", "gc", "wii", "wiiu", "switch",
+           "psx", "ps2", "psp", "genesis", "dreamcast", "xbox", "arcade", "auto-favorites", "c64", "dos", "segacd"]
+GAMES = ["Stellar Quest", "Turbo Kart Rally", "Puzzle Pop Deluxe", "Dungeon Bells", "Ocean Racer 2", "Sky Garden",
+         "Mecha Duel X", "Pixel Golf", "Haunted Manor", "Frost Byte", "Neon Runner", "Castle Clash", "Bubble Bay",
+         "Rocket Rangers", "Farm Friends", "Comet Chasers"]
 COVERS = ["E5484D", "4A90E2", "2FA84F", "F2A33A", "7B61D9", "1FB5A8", "E35D8F", "3D4250"]
-DEFZ = dict(image=30, video=30, animation=35, badges=35, text=40, datetime=40, gamelistinfo=45,
-            rating=45, carousel=50, grid=50, textlist=50, clock=900, systemstatus=900, helpsystem=900)
+DEFZ = dict(image=30, video=30, badges=35, text=40, datetime=40, gamelistinfo=45, rating=45, carousel=50, grid=50,
+            textlist=50, clock=900, systemstatus=900, helpsystem=900)
 
 
 def hexc(s):
     s = s.strip()
     r, g, b = (int(s[i:i + 2], 16) for i in (0, 2, 4))
-    a = int(s[6:8], 16) if len(s) == 8 else 255
-    return (r, g, b, a)
-
-
-def font(path, px):
-    return ImageFont.truetype(path, max(6, int(px)))
-
-
-def fontp(p):
-    return os.path.join(FONTDIR, os.path.basename(p))
+    return (r, g, b, int(s[6:8], 16) if len(s) == 8 else 255)
 
 
 class R:
-    def __init__(self, W, scheme):
-        self.W = W
-        self.Wp = round(W * H)
+    def __init__(self, theme, W, vars_):
+        self.theme, self.W, self.Wp, self.vars = theme, W, round(W * H), vars_
         self.img = Image.new("RGBA", (self.Wp, H), (0, 0, 0, 255))
-        self.vars = scheme
+
+    def font(self, p, px):
+        return ImageFont.truetype(os.path.join(ROOT, self.theme, "assets/fonts", os.path.basename(p)), max(6, int(px)))
+
+    def path(self, p):
+        p = p.replace("${system.theme}", SAMPLE["theme"])
+        return os.path.normpath(os.path.join(ROOT, self.theme, "layouts", p))
 
     def res(self, s):
-        return re.sub(r"\$\{(\w+)\}", lambda m: self.vars.get(m.group(1), m.group(0)), s)
+        return re.sub(r"\$\{([\w.]+)\}", lambda m: self.vars.get(m.group(1), m.group(0)), s)
 
     def pair(self, s):
         a, b = (float(v) for v in s.split())
@@ -62,53 +54,50 @@ class R:
         x, y = self.pair(p)
         return x * self.Wp, y * H
 
-    def box(self, props, wh=None):
-        x, y = self.px(props.get("pos", "0 0"))
-        w, h = wh if wh else self.px(props.get("size", props.get("cropSize", "0 0")))
-        ox, oy = self.pair(props.get("origin", "0 0"))
+    def box(self, p, wh=None):
+        x, y = self.px(p.get("pos", "0 0"))
+        w, h = wh if wh else self.px(p.get("size", p.get("cropSize", p.get("maxSize", "0 0"))))
+        ox, oy = self.pair(p.get("origin", "0 0"))
         return x - ox * w, y - oy * h, w, h
 
     def layer(self):
         return Image.new("RGBA", self.img.size, (0, 0, 0, 0))
 
-    def comp(self, lay, opacity=1.0):
-        if opacity < 1:
-            a = lay.split()[3].point(lambda v: int(v * opacity))
-            lay.putalpha(a)
+    def comp(self, lay, op=1.0):
+        if op < 1:
+            lay.putalpha(lay.split()[3].point(lambda v: int(v * op)))
         self.img.alpha_composite(lay)
 
-    def rrect(self, x, y, w, h, rad, color):
+    def rrect(self, x, y, w, h, rad, color, op=1.0):
         lay = self.layer()
-        ImageDraw.Draw(lay).rounded_rectangle([x, y, x + w, y + h], radius=max(0, min(rad, w / 2, h / 2)),
-                                             fill=color)
-        self.comp(lay)
+        ImageDraw.Draw(lay).rounded_rectangle([x, y, x + w, y + h], radius=max(0, min(rad, w / 2, h / 2)), fill=color)
+        self.comp(lay, op)
 
-    def paste(self, im, x, y, w, h, tint=None, radius=0):
+    def paste(self, im, x, y, w, h, tint=None, radius=0, op=1.0):
         im = im.convert("RGBA").resize((max(1, int(w)), max(1, int(h))), Image.LANCZOS)
-        if tint:
+        if tint and tint != (255, 255, 255, 255):
             r, g, b, a = tint
-            px = im.split()
-            im = Image.merge("RGBA", [px[0].point(lambda v: v * r // 255), px[1].point(lambda v: v * g // 255),
-                                      px[2].point(lambda v: v * b // 255), px[3].point(lambda v: v * a // 255)])
+            ch = im.split()
+            im = Image.merge("RGBA", [ch[0].point(lambda v: v * r // 255), ch[1].point(lambda v: v * g // 255),
+                                      ch[2].point(lambda v: v * b // 255), ch[3].point(lambda v: v * a // 255)])
         if radius:
             m = Image.new("L", im.size, 0)
             ImageDraw.Draw(m).rounded_rectangle([0, 0, im.size[0] - 1, im.size[1] - 1], radius=radius, fill=255)
-            a = Image.composite(im.split()[3], Image.new("L", im.size, 0), m)
-            im.putalpha(a)
+            im.putalpha(Image.composite(im.split()[3], Image.new("L", im.size, 0), m))
         lay = self.layer()
         lay.paste(im, (int(x), int(y)), im)
-        self.comp(lay)
+        self.comp(lay, op)
 
-    def textbox(self, s, x, y, w, h, fsize, fpath, color, halign="left", valign="center",
-                ls=1.5, bg=None, bgm=(0, 0), bgr=0, case="none", wrap=True):
+    def text(self, s, x, y, w, h, fs, fp, color, halign="left", valign="center", ls=1.5, bg=None, bgm=(0, 0),
+             bgr=0, case="none", wrap=True):
         if case == "uppercase":
             s = s.upper()
-        f = font(fontp(fpath), fsize * H * 1.18)
+        f = self.font(fp, fs * H * 1.18)
         d = ImageDraw.Draw(self.img)
         lines = []
-        if w > 0 and wrap and (h == 0 or h > fsize * H * 1.6):
-            words, cur = s.split(), ""
-            for wd in words:
+        if w > 0 and wrap and (h == 0 or h > fs * H * 1.6):
+            cur = ""
+            for wd in s.split():
                 t = (cur + " " + wd).strip()
                 if d.textlength(t, font=f) <= w:
                     cur = t
@@ -121,35 +110,24 @@ class R:
             if w > 0:
                 while d.textlength(t, font=f) > w and len(t) > 3:
                     t = t[:-2]
-                if t != s:
-                    t = t[:-1] + "…"
+                t = t if t == s else t[:-1] + "…"
             lines = [t]
-        lh = fsize * H * ls
+        lh = fs * H * ls
         if h > 0:
-            maxl = max(1, int((h + 0.5 * lh) // lh))
-            lines = lines[:maxl]
+            lines = lines[:max(1, int((h + 0.5 * lh) // lh))]
         tw = max(d.textlength(l, font=f) for l in lines)
         th = lh * len(lines)
-        if w == 0:
-            w = tw
-        if h == 0:
-            h = th
-        if valign == "top":
-            ty = y
-        elif valign == "bottom":
-            ty = y + h - th
-        else:
-            ty = y + (h - th) / 2
+        w, h = (w or tw), (h or th)
+        ty = y if valign == "top" else (y + h - th if valign == "bottom" else y + (h - th) / 2)
         if bg:
             self.rrect(x - bgm[0], y, w + bgm[0] + bgm[1], h, bgr, bg)
         for i, l in enumerate(lines):
             lw = d.textlength(l, font=f)
             lx = x if halign == "left" else (x + (w - lw) / 2 if halign == "center" else x + w - lw)
             ImageDraw.Draw(self.img).text((lx, ty + i * lh + lh / 2), l, font=f, fill=color, anchor="lm")
-        return w, h
 
 
-def fake_screenshot(w, h, seed=0):
+def screenshot(w, h):
     im = Image.new("RGB", (160, 90))
     d = ImageDraw.Draw(im)
     for yy in range(90):
@@ -157,104 +135,109 @@ def fake_screenshot(w, h, seed=0):
     d.ellipse([10, 60, 90, 120], fill=(80, 170, 80))
     d.ellipse([70, 55, 170, 130], fill=(60, 150, 70))
     d.rectangle([0, 78, 160, 90], fill=(170, 110, 60))
-    for i in range(8):
-        d.rectangle([i * 20, 76, i * 20 + 18, 78], fill=(120, 200, 90))
     d.rectangle([60, 40, 92, 48], fill=(220, 140, 70))
     d.rectangle([66, 66, 74, 77], fill=(230, 60, 60))
     d.ellipse([120, 10, 140, 30], fill=(255, 230, 120))
     for cx in (20, 50, 110):
         d.ellipse([cx, 14, cx + 22, 24], fill=(255, 255, 255))
-    return im.resize((int(w), int(h)), Image.NEAREST)
+    return im.resize((max(1, int(w)), max(1, int(h))), Image.NEAREST).convert("RGBA")
 
 
-def cover(w, h, i):
+def cover(w, h, i, font):
     c = hexc(COVERS[i % len(COVERS)])
-    im = Image.new("RGBA", (int(w), int(h)), c)
+    im = Image.new("RGBA", (max(1, int(w)), max(1, int(h))), c)
     d = ImageDraw.Draw(im)
     d.rectangle([0, 0, w, h * 0.16], fill=(255, 255, 255, 230))
     d.ellipse([w * 0.2, h * 0.32, w * 0.8, h * 0.78], fill=(255, 255, 255, 90))
-    f = font(fontp("Nunito-Black.ttf"), h * 0.1)
-    t = GAMES[i % len(GAMES)].split()[0]
-    d.text((w / 2, h * 0.88), t, font=f, fill=(255, 255, 255), anchor="mm")
+    d.text((w / 2, h * 0.88), GAMES[i % len(GAMES)].split()[0], font=font(h * 0.1), fill=(255, 255, 255), anchor="mm")
     return im
 
 
-def render(key, scheme_name, view):
+def render(key, scheme, view):
     lay = DATA["layouts"][key]
-    vars_ = dict(DATA["schemes"][scheme_name]); vars_.update({k: str(v) for k, v in DATA["fonts"].items()})
-    r = R(lay["W"], vars_)
+    theme = key.split("|")[0]
+    vars_ = dict(DATA["schemes"][scheme])
+    vars_.update({k: str(v) for k, v in DATA["fonts"].items()})
+    vars_["sysInfo"] = SAMPLE["info"]
+    r = R(theme, lay["W"], vars_)
+    cf = lambda px_: r.font("Nunito-Black.ttf", px_)
     els = lay["views"][view]
-    order = sorted(range(len(els)), key=lambda i: float(els[i][2].get("zIndex", DEFZ.get(els[i][0], 30))))
+    order = sorted(range(len(els)), key=lambda i: float(r.res(str(els[i][2].get("zIndex", DEFZ.get(els[i][0], 30))))))
     for i in order:
         et, name, p = els[i]
         p = {k: r.res(str(v)) for k, v in p.items()}
+        op = float(p.get("opacity", 1))
+        if p.get("visible") == "false":
+            continue
         if et == "image":
-            path = p.get("path", "")
             col = hexc(p.get("color", "FFFFFFFF"))
             rad = float(p.get("cornerRadius", 0)) * r.Wp
-            if "imageType" in p and "cover" in p["imageType"]:
-                mw_, mh_ = r.px(p["maxSize"])
-                cw_, ch_ = mh_ * 0.72, mh_
-                x, y, w, h = r.box(p, (cw_, ch_))
-                k_ = int(p.get("gameselectorEntry", 0))
-                r.paste(cover(cw_, ch_, k_ + 3), x, y, cw_, ch_, radius=float(p.get("cornerRadius", 0)) * r.Wp)
-                continue
             if "imageType" in p:
-                x, y, w, h = r.box(p)
-                r.paste(fake_screenshot(w, h).convert("RGBA"), x, y, w, h, radius=rad)
+                if "cover" in p["imageType"].split(",")[0]:
+                    mw, mh = r.px(p["maxSize"])
+                    cw, ch = mh * 0.72, mh
+                    x, y, w, h = r.box(p, (cw, ch))
+                    r.paste(cover(cw, ch, int(p.get("gameselectorEntry", 0)) + 3, cf), x, y, cw, ch, radius=rad)
+                elif name != "mediaFallback":
+                    x, y, w, h = r.box(p)
+                    r.paste(screenshot(w, h), x, y, w, h, radius=rad)
                 continue
-            path = path.replace("${system.theme}", SAMPLE["theme"]).replace("${", "")
-            fn = os.path.join(THEME, path.replace("./../", "").replace("./", ""))
+            fn = r.path(p["path"])
+            if not os.path.exists(fn):
+                fn = r.path(p.get("default", p["path"]))
             if p.get("tile") == "true":
                 tile = Image.open(fn).convert("RGBA")
                 th = float(p["tileSize"].split()[1]) * H
                 tw = th * tile.size[0] / tile.size[1]
-                t = tile.resize((int(tw), int(th)))
+                t = tile.resize((max(1, int(tw)), max(1, int(th))))
                 big = Image.new("RGBA", r.img.size)
-                for xx in range(0, r.Wp, int(tw)):
-                    for yy in range(0, H, int(th)):
+                for xx in range(0, r.Wp, max(1, int(tw))):
+                    for yy in range(0, H, max(1, int(th))):
                         big.paste(t, (xx, yy))
                 r.paste(big, 0, 0, r.Wp, H, tint=col)
                 continue
             x, y, w, h = r.box(p)
-            if path.endswith("white.png"):
-                r.rrect(x, y, w, h, rad, col)
+            if p["path"].endswith("white.png"):
+                r.rrect(x, y, w, h, rad, col, op)
             else:
-                r.paste(Image.open(fn), x, y, w, h, tint=col if col != (255, 255, 255, 255) else None, radius=rad)
+                r.paste(Image.open(fn), x, y, w, h, tint=col, radius=rad, op=op)
         elif et == "video":
             x, y, w, h = r.box(p)
-            r.paste(fake_screenshot(w, h).convert("RGBA"), x, y, w, h,
-                    radius=float(p.get("imageCornerRadius", 0)) * r.Wp)
+            r.paste(screenshot(w, h), x, y, w, h, radius=float(p.get("imageCornerRadius", 0)) * r.Wp)
         elif et in ("text", "datetime", "gamelistinfo"):
             x, y, w, h = r.box(p)
             if et == "datetime":
-                s = SAMPLE["date"]
+                s = SAMPLE["date"] if p.get("metadata") == "releasedate" else "2 days ago"
             elif et == "gamelistinfo":
                 s = "142 GAMES"
             elif "systemdata" in p:
                 s = SAMPLE["count"]
             elif "metadata" in p:
-                s = dict(name=SAMPLE["game"], description=SAMPLE["desc"], developer=SAMPLE["dev"],
-                         genre=SAMPLE["genre"], players=SAMPLE["players"]).get(p["metadata"], "?")
+                s = dict(name=SAMPLE["game"], description=SAMPLE["desc"], developer=SAMPLE["dev"], genre=SAMPLE["genre"],
+                         players=SAMPLE["players"], playtime=SAMPLE["playtime"]).get(p["metadata"], "?")
             else:
                 s = p.get("text", "").replace("${system.fullName}", SAMPLE["full"])
             bg = hexc(p["backgroundColor"]) if "backgroundColor" in p else None
             bgm = tuple(float(v) * r.Wp for v in p.get("backgroundMargins", "0 0").split())
-            r.textbox(s, x, y, w, h, float(p.get("fontSize", 0.045)), p.get("fontPath", "Nunito-SemiBold.ttf"),
-                      hexc(p.get("color", "000000")), p.get("horizontalAlignment", "left"),
-                      p.get("verticalAlignment", "center"), float(p.get("lineSpacing", 1.5)),
-                      bg, bgm, float(p.get("backgroundCornerRadius", 0)) * r.Wp, p.get("letterCase", "none"),
-                      wrap=et == "text")
+            if w == 0:  # auto-sized text: measure, then apply the origin like ES-DE does
+                fnt = r.font(p.get("fontPath", "x/Nunito-SemiBold.ttf"), float(p.get("fontSize", 0.045)) * H * 1.18)
+                w = ImageDraw.Draw(r.img).textlength(s, font=fnt)
+                h = float(p.get("fontSize", 0.045)) * H * float(p.get("lineSpacing", 1.5))
+                ox, oy = r.pair(p.get("origin", "0 0"))
+                x0_, y0_ = r.px(p["pos"])
+                x, y = x0_ - ox * w, y0_ - oy * h
+            r.text(s, x, y, w, h, float(p.get("fontSize", 0.045)), p.get("fontPath", "x/Nunito-SemiBold.ttf"),
+                   hexc(p.get("color", "000000")), p.get("horizontalAlignment", "left"),
+                   p.get("verticalAlignment", "center"), float(p.get("lineSpacing", 1.5)), bg, bgm,
+                   float(p.get("backgroundCornerRadius", 0)) * r.Wp, p.get("letterCase", "none"), wrap=et == "text")
         elif et == "rating":
             x, y = r.px(p["pos"])
             hh = float(p["size"].split()[1]) * H
             for k in range(5):
-                fn = "star-filled.svg" if k < 4 else "star-unfilled.svg"
                 st = Image.new("RGBA", (100, 100))
-                sd = ImageDraw.Draw(st)
                 pts = [(50 + 40 * math.cos(-math.pi / 2 + j * math.pi / 5) * (1 if j % 2 == 0 else 0.45),
                         52 + 40 * math.sin(-math.pi / 2 + j * math.pi / 5) * (1 if j % 2 == 0 else 0.45)) for j in range(10)]
-                sd.polygon(pts, fill=(255, 194, 26) if k < 4 else (185, 192, 202))
+                ImageDraw.Draw(st).polygon(pts, fill=(255, 194, 26) if k < 4 else (185, 192, 202))
                 r.paste(st, x + k * hh, y, hh, hh)
         elif et == "badges":
             x, y, w, h = r.box(p)
@@ -267,91 +250,86 @@ def render(key, scheme_name, view):
             m = float(p["maxItemCount"])
             step = w / m
             sc = float(p["itemScale"])
-            sel = CAROUSEL.index(SAMPLE["theme"])
+            sel = 4
             cx, cy = x + w / 2, y + h / 2
-            n = int(m / 2) + 2
+            n = int(m / 2) + 1
             for k in list(range(-n, 0)) + list(range(n, 0, -1)) + [0]:
-                idx = (sel + k) % len(CAROUSEL)
                 s = sc if k == 0 else 1.0
                 ww, hh = iw * s, ih * s
-                ix = cx + k * step - ww / 2
-                if ix + ww < x or ix > x + w:
+                if cx + k * step + ww / 2 < x or cx + k * step - ww / 2 > x + w:
                     continue
                 if "imageType" in p:
-                    ch_ = hh
-                    cw_ = ch_ * 0.72
-                    r.paste(cover(cw_, ch_, idx), cx + k * step - cw_ / 2, cy - ch_ / 2, cw_, ch_,
+                    ch = hh
+                    cw = min(ww, ch * 0.72)
+                    r.paste(cover(cw, ch, sel + k, cf), cx + k * step - cw / 2, cy - ch / 2, cw, ch,
                             radius=float(p.get("imageCornerRadius", 0)) * r.Wp)
-                    if k != 0:
-                        r.rrect(cx + k * step - cw_ / 2, cy - ch_ / 2, cw_, ch_, 4, (0, 0, 0, 60))
-                    continue
-                style = p["staticImage"].split("systems/")[1].split("/")[0]
-                im = Image.open(os.path.join(SYSDIR, style, CAROUSEL[idx] + ".png"))
-                if k != 0:
-                    im = Image.eval(im.convert("RGBA"), lambda v: v)
-                r.paste(im, ix, cy - hh / 2, ww, hh)
+                    if k:
+                        r.rrect(cx + k * step - cw / 2, cy - ch / 2, cw, ch, 4, (0, 0, 0, 60))
+                else:
+                    fn = r.path(p["staticImage"]).replace("snes", SYSTEMS[(sel + k) % len(SYSTEMS)])
+                    r.paste(Image.open(fn), cx + k * step - ww / 2, cy - hh / 2, ww, hh)
         elif et == "grid":
             x, y, w, h = r.box(p)
             iw, ih = r.pair(p["itemSize"])
             iw, ih = iw * r.Wp, ih * H
             sx, sy = r.pair(p["itemSpacing"])
             sx, sy = sx * r.Wp, sy * H
-            cols = int((w + sx) // (iw + sx))
-            rows = int((h + sy) // (ih + sy))
+            cols = max(1, int((w + sx + 1) // (iw + sx)))
+            rows = max(1, int((h + sy + 1) // (ih + sy)))
             ox = x + (w - (cols * iw + (cols - 1) * sx)) / 2
             sc = float(p["itemScale"])
-            bgc = hexc(p["backgroundColor"])
-            selc = hexc(p["selectorColor"])
-            k = 0
-            items = []
-            for rr_ in range(rows):
-                for cc in range(cols):
-                    items.append((rr_, cc, k))
-                    k += 1
             selk = 2
+            items = [(rr_, cc, rr_ * cols + cc) for rr_ in range(rows) for cc in range(cols)]
             for rr_, cc, k in sorted(items, key=lambda t: t[2] == selk):
                 s = sc if k == selk else 1
                 ww, hh = iw * s, ih * s
                 ix = ox + cc * (iw + sx) + iw / 2 - ww / 2
                 iy = y + rr_ * (ih + sy) + ih / 2 - hh / 2
-                if k == selk:
-                    r.rrect(ix, iy, ww, hh, float(p["selectorCornerRadius"]) * r.Wp * s, selc)
-                br = float(p["backgroundRelativeScale"])
-                r.rrect(ix + ww * (1 - br) / 2, iy + hh * (1 - br) / 2, ww * br, hh * br,
-                        float(p["backgroundCornerRadius"]) * r.Wp * s * br, bgc)
-                irs = float(p["imageRelativeScale"])
-                ch = hh * irs
-                cw = ch * 0.72
-                r.paste(cover(cw, ch, k), ix + (ww - cw) / 2, iy + (hh - ch) / 2, cw, ch,
-                        radius=float(p["imageCornerRadius"]) * r.Wp)
+                if k == selk and "selectorImage" not in p:
+                    r.rrect(ix, iy, ww, hh, float(p["selectorCornerRadius"]) * r.Wp * s, hexc(p["selectorColor"]))
+                if "backgroundImage" in p:
+                    r.paste(Image.open(r.path(p["backgroundImage"])), ix, iy, ww, hh)
+                elif "backgroundColor" in p:
+                    br = float(p.get("backgroundRelativeScale", 1))
+                    r.rrect(ix + ww * (1 - br) / 2, iy + hh * (1 - br) / 2, ww * br, hh * br,
+                            float(p["backgroundCornerRadius"]) * r.Wp * s * br, hexc(p["backgroundColor"]))
+                if "staticImage" in p:
+                    fn = r.path(p["staticImage"]).replace("/snes.png", "/" + SYSTEMS[k % len(SYSTEMS)] + ".png")
+                    r.paste(Image.open(fn), ix, iy, ww, hh)
+                else:
+                    irs = float(p.get("imageRelativeScale", 1))
+                    ch = hh * irs
+                    cw = ch * 0.72
+                    r.paste(cover(cw, ch, k, cf), ix + (ww - cw) / 2, iy + (hh - ch) / 2, cw, ch,
+                            radius=float(p.get("imageCornerRadius", 0)) * r.Wp)
+                if k == selk and "selectorImage" in p:
+                    r.paste(Image.open(r.path(p["selectorImage"])), ix, iy, ww, hh, tint=hexc(p["selectorColor"]))
         elif et == "textlist":
             x, y, w, h = r.box(p)
             fs = float(p["fontSize"])
             lh = fs * H * float(p["lineSpacing"])
-            n = int(h // lh)
             hm = float(p.get("horizontalMargin", 0)) * r.Wp
-            for k in range(n):
+            for k in range(int(h // lh)):
                 ly = y + k * lh
-                sel = k == 2
-                if sel:
-                    m = float(p["selectedBackgroundMargins"].split()[0]) * r.Wp
-                    r.rrect(x - m, ly + lh * 0.12, w + 2 * m, lh * 0.76,
+                if k == 2:
+                    mm = float(p["selectedBackgroundMargins"].split()[0]) * r.Wp
+                    r.rrect(x - mm, ly + lh * 0.12, w + 2 * mm, lh * 0.76,
                             float(p["selectedBackgroundCornerRadius"]) * r.Wp, hexc(p["selectedBackgroundColor"]))
-                col = hexc(p["selectedColor"] if sel else p["primaryColor"])
-                f = font(fontp(p["fontPath"]), fs * H * 1.18)
-                ImageDraw.Draw(r.img).text((x + hm, ly + lh / 2), GAMES[k % len(GAMES)], font=f, fill=col, anchor="lm")
+                col = hexc(p["selectedColor"] if k == 2 else p["primaryColor"])
+                ImageDraw.Draw(r.img).text((x + hm, ly + lh / 2), GAMES[k % len(GAMES)],
+                                           font=r.font(p["fontPath"], fs * H * 1.18), fill=col, anchor="lm")
         elif et == "clock":
             x, y = r.px(p["pos"])
-            f = font(fontp(p["fontPath"]), float(p["fontSize"]) * H * 1.18)
-            col = hexc(p["color"])[:3] + (int(255 * float(p.get("opacity", 1))),)
-            lay_ = r.layer()
-            ImageDraw.Draw(lay_).text((x, y), "21:47" if "%H" in p["format"] else "2026-10-24", font=f, fill=col, anchor="lm")
-            r.comp(lay_)
+            f = r.font(p["fontPath"], float(p["fontSize"]) * H * 1.18)
+            s = "21:47" if "%H" in p["format"] else "2026-10-24"
+            ox, oy = r.pair(p.get("origin", "0 0"))
+            tw = ImageDraw.Draw(r.img).textlength(s, font=f)
+            ImageDraw.Draw(r.img).text((x - ox * tw, y), s, font=f, fill=hexc(p["color"]), anchor="lm")
         elif et == "systemstatus":
             x, y = r.px(p["pos"])
-            hh = float(r.res(p["height"])) * H
+            hh = float(p["height"]) * H
             col = hexc(p["color"])
-            f = font(fontp(p["fontPath"]), hh * 1.0)
+            f = r.font(p["fontPath"], hh)
             d = ImageDraw.Draw(r.img)
             tw = d.textlength("86%", font=f)
             d.text((x, y), "86%", font=f, fill=col, anchor="rm")
@@ -366,22 +344,24 @@ def render(key, scheme_name, view):
             x, y = r.px(p["pos"])
             fs = float(p["fontSize"]) * H
             col = hexc(p["textColor"])
-            f = font(fontp(p["fontPath"]), fs * 1.18)
-            fb = font(fontp(p["fontPath"]), fs * 0.75)
+            f = r.font(p["fontPath"], fs * 1.18)
+            fb = r.font(p["fontPath"], fs * 0.75)
             d = ImageDraw.Draw(r.img)
             items = [("+", "Choose"), ("A", "Select"), ("B", "Back"), ("X", "Random"), ("Y", "Favorite"), ("≡", "Menu")]
-            cx = x
-            for ic, label in items:
+            total = sum(fs * 1.24 + 8 + d.textlength(lb, font=f) + fs * 0.9 for _, lb in items)
+            ox, _ = r.pair(p.get("origin", "0 0"))
+            cx = x - ox * total
+            for ic, lb in items:
                 d.ellipse([cx, y - fs * 0.62, cx + fs * 1.24, y + fs * 0.62], fill=col)
                 d.text((cx + fs * 0.62, y), ic, font=fb, fill=hexc(r.vars["bgColor"]), anchor="mm")
                 cx += fs * 1.24 + 8
-                d.text((cx, y), label, font=f, fill=col, anchor="lm")
-                cx += d.textlength(label, font=f) + fs * 0.9
+                d.text((cx, y), lb, font=f, fill=col, anchor="lm")
+                cx += d.textlength(lb, font=f) + fs * 0.9
     return r.img.convert("RGB")
 
 
 os.makedirs(OUTDIR, exist_ok=True)
-jobs = [a.split(",") for a in sys.argv[4:]]
-for key, scheme, view, out in jobs:
+for job in sys.argv[4:]:
+    key, scheme, view, out = job.split(",")
     render(key, scheme, view).save(os.path.join(OUTDIR, out))
     print("rendered", out)

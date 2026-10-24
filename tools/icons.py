@@ -7,6 +7,7 @@ console menu look from the reference screenshots). Three art styles:
   plaza   - bold colour art panel, 3D white object, dark name band
 Glyph silhouettes live in shapes.py.
 """
+import math
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 import shapes
@@ -297,3 +298,87 @@ STYLES = {"glossy": tile_glossy, "channel": tile_channel, "plaza": tile_plaza}
 # visible body of the tile relative to the png size (used to place the cursor ring)
 BODY_FRAC = (BODY[2] - BODY[0]) / TILE
 BODY_OFFSET_FRAC = ((BODY[1] + BODY[3]) / 2 - TILE / 2) / TILE
+
+
+# ---------------------------------------------------------------- wide channel tiles (Wii menu theme)
+WT_W, WT_H = 480, 300
+WBODY = (14, 10, 466, 282)
+WRAD = 42
+WART = (WBODY[0] + 12, WBODY[1] + 12, WBODY[2] - 12, WBODY[3] - 12)
+WIRAD = 30
+
+
+def _rr(box, rad, size):
+    ss = 4
+    m = Image.new("L", (size[0] * ss, size[1] * ss), 0)
+    x0, y0, x1, y1 = box
+    ImageDraw.Draw(m).rounded_rectangle([x0 * ss, y0 * ss, x1 * ss, y1 * ss], radius=rad * ss, fill=255)
+    return m.resize(size, Image.LANCZOS)
+
+
+def _vgrad(c0, c1, y0, y1, size):
+    g = Image.new("RGBA", size)
+    d = ImageDraw.Draw(g)
+    for y in range(size[1]):
+        t = min(max((y - y0) / max(1, (y1 - y0)), 0), 1)
+        d.line([(0, y), (size[0], y)], fill=tuple(mix(c0, c1, t)) + (255,))
+    return g
+
+
+def _obj3d_on(img, kind, S, x, y, top, bottom, edge, clip, drop):
+    """object3d for arbitrary canvas sizes (draws on a TILE canvas, then pastes)."""
+    tmp = Image.new("RGBA", (TILE, TILE), (0, 0, 0, 0))
+    object3d(tmp, kind, S, (TILE - S) // 2, (TILE - S) // 2 - 6, top, bottom, edge, drop=drop)
+    lay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    lay.paste(tmp, (x - (TILE - S) // 2, y - (TILE - S) // 2 + 6), tmp)
+    if clip is not None:
+        a = mul(lay.split()[3], clip)
+        lay.putalpha(a)
+    img.alpha_composite(lay)
+
+
+def tile_channel_wide(label, kind, colour, fontpath):
+    size = (WT_W, WT_H)
+    c = hexrgb(colour)
+    ink = mix(c, (0, 0, 0), 0.30) if lum(c) > 0.55 else c
+    img = Image.new("RGBA", size, (0, 0, 0, 0))
+    x0, y0, x1, y1 = WBODY
+    sh = Image.new("L", size, 0)
+    ImageDraw.Draw(sh).rounded_rectangle([x0 + 4, y0 + 8, x1 - 4, y1 + 8], radius=WRAD, fill=70)
+    img.paste((20, 30, 45, 255), (0, 0), sh.filter(ImageFilter.GaussianBlur(7)))
+    img.paste((176, 184, 194, 255), (0, 0), _rr(WBODY, WRAD, size))
+    body = _rr((x0 + 2.5, y0 + 2.5, x1 - 2.5, y1 - 2.5), WRAD - 2.5, size)
+    img.paste(_vgrad((255, 255, 255), (228, 233, 238), y0, y1, size), (0, 0), body)
+    ax0, ay0, ax1, ay1 = WART
+    art = _rr(WART, WIRAD, size)
+    img.paste((190, 198, 207, 255), (0, 0), _rr((ax0 - 2, ay0 - 2, ax1 + 2, ay1 + 2), WIRAD + 2, size))
+    bg = _vgrad((255, 255, 255), mix(c, (255, 255, 255), 0.82), ay0, ay1, size)
+    # flowing channel lines
+    ln = Image.new("L", (size[0] * 2, size[1] * 2), 0)
+    ld = ImageDraw.Draw(ln)
+    aw, ah = ax1 - ax0, ay1 - ay0
+    for k, (dy, w) in enumerate(((0.70, 10), (0.78, 6), (0.86, 4))):
+        pts = []
+        for i in range(41):
+            t = i / 40
+            xx = ax0 + t * aw
+            yy = ay0 + ah * dy + math.sin(t * math.pi * 1.4 + k) * ah * 0.06
+            pts.append((xx * 2, yy * 2))
+        ld.line(pts, fill=255, width=w * 2)
+    bg.paste(mix(c, (255, 255, 255), 0.35) + (255,), (0, 0), scale(ln.resize(size, Image.LANCZOS), 0.8))
+    img.paste(bg, (0, 0), art)
+    S = int(ah * 0.72)
+    _obj3d_on(img, kind, S, ax0 + int(aw * 0.07), ay0 + (ah - S) // 2 - 8, mix(c, (255, 255, 255), 0.25),
+              mix(c, (0, 0, 0), 0.08), mix(c, (0, 0, 0), 0.40), art, (40, 50, 70, 60))
+    tx0 = ax0 + int(aw * 0.07) + S + 10
+    f = fit_font(fontpath, label, (ax1 - 16) - tx0, 66, 20)
+    draw_label(img, label, f, (tx0 + ax1 - 14) / 2, ay0 + ah * 0.45, (110, 117, 126, 255))
+    # glass sheen
+    gl = Image.new("L", (size[0] * 2, size[1] * 2), 0)
+    ImageDraw.Draw(gl).ellipse([(ax0 - 80) * 2, (ay0 - 260) * 2, (ax1 + 80) * 2, (ay0 + ah * 0.40) * 2], fill=255)
+    img.paste((255, 255, 255, 255), (0, 0), scale(mul(gl.resize(size, Image.LANCZOS), art), 0.30))
+    return img
+
+
+WSTYLES = {"channelwide": tile_channel_wide}
+WBODY_FRAC = ((WBODY[2] - WBODY[0]) / WT_W, (WBODY[3] - WBODY[1]) / WT_H)

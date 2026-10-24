@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>SNK  ·  1999  ·  Handheld</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>E35D8F</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

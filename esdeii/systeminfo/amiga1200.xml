@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Commodore  ·  1992  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>4570CC</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

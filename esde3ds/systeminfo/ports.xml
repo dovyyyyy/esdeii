@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Various  ·  Platform</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>6B7280</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

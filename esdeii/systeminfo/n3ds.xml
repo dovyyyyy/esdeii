@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Nintendo  ·  2011  ·  Handheld</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>E04A5F</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

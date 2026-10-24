@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Various  ·  1983  ·  Arcade</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>7C4DFF</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

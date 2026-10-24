@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>SpecNext  ·  2017  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>2E2E3A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

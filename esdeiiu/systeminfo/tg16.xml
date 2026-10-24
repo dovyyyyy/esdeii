@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>NEC  ·  1989  ·  Home console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>E4572E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

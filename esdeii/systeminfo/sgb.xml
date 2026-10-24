@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Nintendo  ·  1994  ·  Add-on</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>9A8F84</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

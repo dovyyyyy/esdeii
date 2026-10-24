@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Tano  ·  1983  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>B04A4A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Various  ·  2021  ·  Platform</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>2F8F83</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

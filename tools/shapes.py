@@ -430,3 +430,8 @@ G["console"] = [
 
 def glyph(kind, size):
     return render(G.get(kind, G["console"]), size)
+
+# envelope and house for decorative menu buttons
+G["mail"] = [("add", RR(8, 22, 92, 78, 8)),
+             ("cut", P("M 14 28 L 50 55 L 86 28 L 86 33 L 50 60 L 14 33 Z"))]
+G["home"] = [("add", P("M 50 8 L 94 46 L 84 46 L 84 90 L 60 90 L 60 64 L 40 64 L 40 90 L 16 90 L 16 46 L 6 46 Z"))]

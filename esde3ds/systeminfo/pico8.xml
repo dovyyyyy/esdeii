@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Lexaloffle  ·  2015  ·  Fantasy console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>FF3B6B</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

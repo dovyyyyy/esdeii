@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Tiger  ·  1997  ·  Handheld</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>4B7F5A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

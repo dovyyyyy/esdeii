@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Epoch  ·  1984  ·  Home console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>C0503E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

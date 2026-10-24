@@ -1,88 +1,84 @@
-# esdeii — a dual-screen theme for ES-DE
+# esdeii — three console-menu themes for ES-DE
 
-A dual-screen handheld inspired theme: two rounded "screens" joined by a hinge, a
-graph-paper background and speaker grilles beside the top screen, and
-glossy console-menu style system icons in a glassy white frame.
+Three themes in one download, each with its own look, icons and sounds:
 
-![Preview](preview.png)
+| Theme | Look | Sounds |
+|---|---|---|
+| **ESDEII** | living-room console menu: wall of wide channel tiles, curved clock bar | clicks and bell dings |
+| **ESDEIIU** | tablet console home screen: framed tiles with a Start cursor, dock | pops and marimba |
+| **ESDE3DS** | dual-screen handheld: two screens, hinge, row of glossy icons | soft chimes |
 
-*(Preview is a mockup, not a real ES-DE screenshot.)*
+### ESDEII
+![ESDEII](previews/esdeii.png)
+
+### ESDEIIU
+![ESDEIIU](previews/esdeiiu.png)
+
+### ESDE3DS
+![ESDE3DS](previews/esde3ds.png)
+
+*(Previews are mockups, not real ES-DE screenshots.)*
 
 ## Install (Android)
 
-1. Download this repo (**Code → Download ZIP**) and unzip it, or `git clone` it.
-2. Put the folder into the `themes` folder inside your ES-DE data folder
-   (the one you picked during ES-DE setup), e.g.
-   `Internal storage/ES-DE/themes/esdeii`. If it unzips as `esdeii-main`,
-   that's fine too.
-3. Restart ES-DE, open **Menu → UI Settings → Theme** and pick **ESDEII**.
+1. Download the latest version:
+   https://github.com/dovyyyyy/esdeii/archive/refs/heads/main.zip
+2. Unzip it and copy the folders **esdeii**, **esdeiiu** and **esde3ds** into
+   the `themes` folder inside your ES-DE data folder, e.g.
+   `Internal storage/ES-DE/themes/`. (You only need the ones you want.)
+3. Restart ES-DE, open **Menu → UI Settings → Theme** and pick
+   **ESDEII**, **ESDEIIU** or **ESDE3DS**.
 
-To update, replace the folder with a fresh download (or `git pull`).
+To update, download again and replace the folders.
 
 ## Customisation (Menu → UI Settings)
 
-**Theme variant** — pick an icon style and a game layout:
-
-| Icon style | Look |
-|---|---|
-| Glossy | colourful gradient tile, white 3D console art |
-| Channel | white tile, coloured 3D console art, colour swoosh |
-| Plaza | bold colour tile, white 3D console art, dark name band |
-
-| Game layout | Look |
-|---|---|
-| Icon grid | 2-row grid of box covers |
-| Game list | text list with a highlight pill |
-| Cover shelf | big scrolling row of box covers |
-
-**Theme color scheme** — Ice White, Cosmo Black, Silver Menu, Flame Red,
-Aqua Blue, Mint Green, Lavender, Sunset Orange, Sakura Pink, Midnight Blue,
-Retro Pocket, plus **Ice White / Cosmo Black + system colours**, where the
-accent colour changes to match each console's icon.
-
-**Theme font size** — small, medium, large.
-
-**Theme transitions** — esdeii slide, fade or instant.
-
-**Theme aspect ratio** — leave on Automatic. Layouts are included for
-16:9, 16:10, 3:2, 4:3, 5:3, 5:4, 8:7, 19.5:9, 20:9 and 21:9.
-
-Turn on **Display clock** and the system status indicators to fill the
-status bar.
+- **Theme variant**: how games are shown — icon grid, game list or cover
+  shelf. ESDEIIU and ESDE3DS also let you pick the icon style
+  (Plaza, Glossy, Channel).
+- **Theme color scheme**: 13 schemes (Silver Menu, Cloud White, Ice White,
+  Cosmo Black, Flame Red, Aqua Blue, Mint Green, Lavender, Sunset Orange,
+  Sakura Pink, Midnight Blue, Retro Pocket) plus **Light / Dark + system
+  colours**, where the accent matches each console.
+- **Theme font size**: small, medium, large.
+- **Theme transitions**: slide, fade or instant.
+- **Theme aspect ratio**: leave on Automatic (16:9, 16:10, 3:2, 4:3, 5:3,
+  5:4, 8:7, 19.5:9, 20:9 and 21:9 are included).
+- Navigation sounds can be switched off in ES-DE's **Sound settings**.
 
 ## Features
 
-- **Jump back in**: the three games you played most recently in each system,
-  shown as covers on the system screen.
-- **Featured game**: a random game from the system with its screenshot
-  (wide screens).
-- Game details: release date, players, developer, genre, last played,
-  play time, rating, badges and a scrolling description.
-- Game videos play on the top screen after a short delay.
-- Clock and date, battery and Wi-Fi in the status bar.
-- Custom chime navigation sounds.
+- System info line: maker, release year and type for every console.
+- **Jump back in** (ESDE3DS): your three most recently played games.
+- **Featured game**: a random game from the system.
+- Game details: release date, players, developer, genre, last played, play
+  time, rating, badges and a scrolling description.
+- Game videos on the main screen; if a game has no screenshot (for example
+  Android apps), its icon/cover is shown there instead.
+- Clock, date, battery and Wi-Fi.
+
+## Background music
+
+The `music` folder has three original tracks and setup steps for playing
+them in ES-DE with a toggle — see [music/README.md](music/README.md).
 
 ## Media used
 
-- Grid, shelf and "Jump back in" use **box covers**; games without one show
-  their name.
-- The top screen uses the **screenshot**, then title screen, then miximage,
-  and the game **video**.
+- Grids, shelves and "Jump back in" use **box covers**.
+- The main screen uses the **screenshot**, then title screen, then miximage,
+  then the cover, plus the game **video**.
 
 ## Changing things
 
-- System icons live in `systems/glossy`, `systems/channel` and `systems/plaza`,
-  named after the ES-DE system (`snes.png`, `n3ds.png` ...). Replace any with
-  your own 360x360 PNG. Systems without a file get a coloured tile with
-  their name.
-- Colour schemes are at the top of `theme.xml`; per-system accent colours
-  are in `systemcolors/`.
-- `layouts/` is generated. To change a layout, edit `tools/make_xml.py` and
-  run `python3 tools/make_xml.py .` from the repo root.
-  `tools/make_assets.py` regenerates icons, graphics and sounds.
+- System icons live in each theme's `systems/` folder, named after the ES-DE
+  system (`snes.png`, `n3ds.png` ...). Replace any with your own PNG of the
+  same size.
+- Everything is generated by `tools/build.py` (layouts in `tools/layouts.py`,
+  icons in `tools/icons.py` and `tools/shapes.py`, sounds and music in
+  `tools/audio.py`).
 
 ## Credits
 
 Nunito font by Vernon Adams et al., SIL Open Font License
-(`assets/fonts/OFL.txt`). Icons, sounds and graphics were made for this
-theme. Not affiliated with any console maker.
+(`assets/fonts/OFL.txt`). Icons, artwork, sounds and music were made for
+these themes. Not affiliated with any console maker.

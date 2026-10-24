@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Sony  ·  2004  ·  Handheld</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>4A4A58</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

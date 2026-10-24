@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Valve  ·  2003  ·  Platform</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>2A3F5A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

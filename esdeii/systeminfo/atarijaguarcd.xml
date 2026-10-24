@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Atari  ·  1995  ·  Add-on</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>B8323A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

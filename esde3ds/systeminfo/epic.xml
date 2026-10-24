@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Epic Games  ·  2018  ·  Platform</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>3A3A3A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

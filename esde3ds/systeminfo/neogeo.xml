@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>SNK  ·  1990  ·  Arcade</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>D9A520</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

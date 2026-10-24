@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Sharp  ·  1987  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>6A6E7E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

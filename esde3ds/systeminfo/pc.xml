@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>IBM  ·  1981  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>5A6B80</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

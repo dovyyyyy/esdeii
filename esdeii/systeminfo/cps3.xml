@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Capcom  ·  1996  ·  Arcade</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>255CC2</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Atari  ·  1993  ·  Home console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>D23A3A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

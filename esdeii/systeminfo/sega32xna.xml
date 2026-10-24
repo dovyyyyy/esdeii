@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Sega  ·  1994  ·  Add-on</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>E2A13A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

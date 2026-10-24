@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Palm  ·  1996  ·  Platform</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>5E6E7E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

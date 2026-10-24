@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Atari  ·  1979  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>9C6B3C</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

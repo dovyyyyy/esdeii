@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Sun Microsystems  ·  2002  ·  Platform</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>D9772E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

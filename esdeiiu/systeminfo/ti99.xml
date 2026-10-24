@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Texas Instruments  ·  1981  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>6B6F78</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

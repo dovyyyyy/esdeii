@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Bandai  ·  1996  ·  Add-on</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>D96BA8</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

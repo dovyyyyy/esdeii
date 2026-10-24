@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Belogic  ·  2008  ·  Home console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>D04B6E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

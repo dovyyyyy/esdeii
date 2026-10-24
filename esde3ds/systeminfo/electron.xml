@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Acorn  ·  1983  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>5B6474</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

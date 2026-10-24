@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>NEC  ·  1981  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>5E7A99</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

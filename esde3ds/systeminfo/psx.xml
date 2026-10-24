@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Sony  ·  1994  ·  Home console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>8C96A3</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

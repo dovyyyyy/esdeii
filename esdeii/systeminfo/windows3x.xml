@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Microsoft  ·  1990  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>2F80ED</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

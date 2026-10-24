@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Fujitsu  ·  1982  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>6B6F8E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

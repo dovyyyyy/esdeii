@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Atari  ·  1989  ·  Handheld</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>F29B30</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

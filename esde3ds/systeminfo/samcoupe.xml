@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>MGT  ·  1989  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>4C8C8C</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Commodore  ·  1993  ·  Home console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>E57B2E</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

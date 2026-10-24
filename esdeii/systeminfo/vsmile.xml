@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>VTech  ·  2004  ·  Home console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>2FA3D8</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

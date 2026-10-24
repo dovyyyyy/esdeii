@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Fairchild  ·  1976  ·  Home console</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>8A6A4A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

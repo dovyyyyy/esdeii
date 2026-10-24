@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Panasonic  ·  1990  ·  Computer</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>C04848</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

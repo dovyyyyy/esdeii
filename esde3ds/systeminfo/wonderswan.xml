@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Bandai  ·  1999  ·  Handheld</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>6F7C8A</accentColor>
+        </variables>
+    </colorScheme>
+</theme>

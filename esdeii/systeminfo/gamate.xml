@@ -1,0 +1,10 @@
+<theme>
+    <variables>
+        <sysInfo>Bit Corporation  ·  1990  ·  Handheld</sysInfo>
+    </variables>
+    <colorScheme name="lightSystem, darkSystem">
+        <variables>
+            <accentColor>6B7480</accentColor>
+        </variables>
+    </colorScheme>
+</theme>
