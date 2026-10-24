@@ -4,6 +4,8 @@ Everything is synthesised here from scratch (no samples):
   chime - soft square-ish chimes (handheld feel)
   click - short clicky taps and bright bell dings (living-room console menu feel)
   pop   - bubbly pops and marimba tones (tablet console feel)
+  menu  - one consistent family of soft glassy clicks and airy swooshes, all in
+          the same key and the same small room (living-room console menu feel)
 Music: three original loops, rendered to OGG with ffmpeg.
 """
 import os, subprocess, wave
@@ -213,7 +215,85 @@ def pack_pop():
     }
 
 
-PACKS = {"chime": pack_chime, "click": pack_click, "pop": pack_pop}
+# ---------------------------------------------------------------- "menu" pack
+# Every sound is built from the same two ingredients - a soft glassy pluck and an
+# airy swoosh - in one key (D major pentatonic) and one small room, then levelled
+# so nothing jumps out. Moving the cursor always makes exactly the same click.
+D5, A5, D6, E6, FS6, A6, B6, D7 = 587.33, 880.0, 1174.66, 1318.51, 1479.98, 1760.0, 1975.53, 2349.32
+
+
+def glass(freq, dur=0.12, vol=1.0, decay=0.03):
+    """Soft rounded pluck: a sine with gentle overtones and a tiny tactile tick."""
+    n = int(SR * dur)
+    t = np.arange(n) / SR
+    s = (np.sin(2 * np.pi * freq * t) + 0.16 * np.sin(2 * np.pi * freq * 2 * t) * np.exp(-t / (decay * 0.5)) +
+         0.05 * np.sin(2 * np.pi * freq * 3 * t) * np.exp(-t / (decay * 0.3)))
+    s *= env_ad(n, 0.0015, decay)
+    k = int(SR * 0.004)
+    tickn = highpass(np.random.default_rng(int(freq)).standard_normal(k), 3000) * np.exp(-np.arange(k) / (SR * 0.0006))
+    s[:k] += tickn * 0.25
+    return fade(s * vol, 0.0004, min(dur * 0.3, 0.02))
+
+
+def swoosh(dur=0.25, f0=900.0, f1=6000.0, vol=1.0, q=2.2, peak=0.4, seed=1):
+    """Airy whoosh: noise through a band-pass that glides from f0 to f1."""
+    n = int(SR * dur)
+    x = np.random.default_rng(seed).standard_normal(n)
+    fc = f0 * (f1 / f0) ** (np.arange(n) / n)  # exponential glide
+    y = np.zeros(n)
+    low = band = 0.0
+    damp = 1.0 / q
+    for i in range(n):  # state-variable filter
+        g = 2 * np.sin(np.pi * min(fc[i], SR / 6) / SR)
+        high = x[i] - low - damp * band
+        band += g * high
+        low += g * band
+        y[i] = band
+    u = np.arange(n) / n
+    shape = np.where(u < peak, np.sin(u / peak * np.pi / 2) ** 2, np.cos((u - peak) / (1 - peak) * np.pi / 2) ** 2)
+    y = lowpass(y, 7500)  # soft and airy, never hissy
+    return fade(y * shape * vol / (np.std(y) + 1e-9), 0.002, 0.01)
+
+
+def level(x, rms_db, window=0.15, ceiling_db=-1.0):
+    """Scale so the loudest `window` seconds sit at rms_db, then keep peaks under the ceiling."""
+    k = max(1, int(SR * window))
+    loud = np.sqrt(np.max(np.convolve(x ** 2, np.ones(k) / k, mode="valid"))) if len(x) > k else np.sqrt(np.mean(x ** 2))
+    x = x * (10 ** (rms_db / 20) / (loud + 1e-12))
+    pk = np.max(np.abs(x))
+    lim = 10 ** (ceiling_db / 20)
+    return x * (lim / pk) if pk > lim else x
+
+
+def pack_menu():
+    at = lambda sec: int(SR * sec)
+    sounds = {
+        # cursor moves: the same short pluck every time, a touch brighter for games
+        "scroll": glass(A6, 0.06, 1.0, 0.011),
+        "systembrowse": mixdown([(0, glass(FS6, 0.09, 1.0, 0.016)), (0, swoosh(0.09, 2200, 5000, 0.12, seed=2))]),
+        "quicksysselect": mixdown([(0, swoosh(0.18, 1400, 5000, 0.35, seed=3)), (at(0.06), glass(A6, 0.1, 0.9, 0.02))]),
+        # open: click, a rising swoosh and a two-note ding
+        "select": mixdown([(0, glass(D6, 0.4, 1.0, 0.07)), (at(0.045), glass(A6, 0.5, 0.85, 0.1)),
+                           (0, swoosh(0.28, 700, 4500, 0.3, seed=4))]),
+        # back: a falling swoosh and the same notes going down
+        "back": mixdown([(0, swoosh(0.24, 4500, 700, 0.3, peak=0.3, seed=5)), (0, glass(A6, 0.3, 0.9, 0.05)),
+                         (at(0.06), glass(D6, 0.4, 0.85, 0.08))]),
+        "favorite": mixdown([(at(i * 0.05), glass(f, 0.4, 0.8, 0.06)) for i, f in enumerate((D6, FS6, A6, D7))]),
+        # start a game: a long rising swoosh into a bright chord
+        "launch": mixdown([(0, swoosh(0.6, 450, 6000, 0.45, peak=0.7, seed=6))] +
+                          [(at(0.34 + i * 0.035), glass(f, 0.9, 0.7, 0.22)) for i, f in enumerate((D6, FS6, A6, D7))]),
+    }
+    targets = {"scroll": -23, "systembrowse": -22, "quicksysselect": -21, "select": -19, "back": -20,
+               "favorite": -20, "launch": -19}
+    out = {}
+    for k, v in sounds.items():
+        short = k in ("scroll", "systembrowse", "quicksysselect")  # must stay short for fast scrolling
+        v = room(v, 0.07, 0.1) if short else room(v, 0.3, 0.16)
+        out[k] = level(v, targets[k])
+    return out
+
+
+PACKS = {"chime": pack_chime, "click": pack_click, "pop": pack_pop, "menu": pack_menu}
 
 
 def write_pack(name, out_dir):

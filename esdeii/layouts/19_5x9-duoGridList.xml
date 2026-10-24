@@ -8,93 +8,8 @@
             <tile>true</tile>
             <tileSize>0 ${bgTile}</tileSize>
             <color>${bgColor}</color>
-            <stationary>always</stationary>
             <zIndex>0</zIndex>
         </image>
-        <animation name="bubble0">
-            <pos>0.06 0.18</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.1015 0.22</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>0.8</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble1">
-            <pos>0.27 0.62</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0738 0.16</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>1</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble2">
-            <pos>0.45 0.12</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0554 0.12</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>0.9</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble3">
-            <pos>0.62 0.48</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.1154 0.25</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>0.7</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble4">
-            <pos>0.83 0.16</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0785 0.17</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>1.1</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble5">
-            <pos>0.92 0.7</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0923 0.2</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>0.8</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble6">
-            <pos>0.12 0.86</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0646 0.14</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>1.2</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
         <image name="upperScreenShadow">
             <pos>0.108 0.038</pos>
             <size>0.784 0.447</size>
@@ -183,16 +98,16 @@
         <clock name="clock">
             <pos>0.1246 0.069</pos>
             <origin>0 0.5</origin>
-            <fontPath>./../assets/fonts/Nunito-Black.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>${fsStatus}</fontSize>
             <color>${subColor}</color>
             <format>%H:%M</format>
             <scope>view</scope>
         </clock>
         <clock name="date">
-            <pos>0.1731 0.069</pos>
+            <pos>0.1892 0.069</pos>
             <origin>0 0.5</origin>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsStatus}</fontSize>
             <color>${subColor}</color>
             <format>%Y-%m-%d</format>
@@ -203,13 +118,13 @@
             <origin>1 0.5</origin>
             <height>${fsStatus}</height>
             <color>${subColor}</color>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
         </systemstatus>
         <helpsystem name="help">
             <pos>0.1154 0.958</pos>
             <origin>0 0.5</origin>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsHelp}</fontSize>
             <textColor>${subColor}</textColor>
             <iconColor>${subColor}</iconColor>
@@ -234,7 +149,7 @@
         <text name="systemName">
             <pos>0.2818 0.125</pos>
             <size>0.312 0.115</size>
-            <fontPath>./../assets/fonts/Nunito-Black.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>${fsName3ds}</fontSize>
             <color>${textColor}</color>
             <zIndex>40</zIndex>
@@ -245,7 +160,7 @@
         <text name="systemInfo">
             <pos>0.2818 0.2359</pos>
             <size>0.312 0.032</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -255,7 +170,7 @@
         <text name="gameCount">
             <pos>0.2874 0.2762</pos>
             <size>0 0</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsCount}</fontSize>
             <color>${accentText}</color>
             <zIndex>41</zIndex>
@@ -268,7 +183,7 @@
         <text name="recentLabel">
             <pos>0.2818 0.3308</pos>
             <size>0.312 0.03</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -337,7 +252,7 @@
         <text name="featuredName">
             <pos>0.6215 0.42</pos>
             <size>0 0</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsFeat}</fontSize>
             <color>FFFFFF</color>
             <zIndex>24</zIndex>
@@ -353,7 +268,7 @@
         <text name="featuredLabel">
             <pos>0.616 0.129</pos>
             <size>0.2585 0.026</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -487,7 +402,7 @@
             <selectorColor>${accentColor}</selectorColor>
             <selectorLayer>top</selectorLayer>
             <text>${system.fullName}</text>
-            <fontPath>./../assets/fonts/Nunito-Black.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>0.022</fontSize>
             <textColor>FFFFFF</textColor>
             <textBackgroundColor>${accentColor}</textBackgroundColor>
@@ -497,6 +412,76 @@
             <unfocusedItemOpacity>1</unfocusedItemOpacity>
             <zIndex>50</zIndex>
         </grid>
+        <animation name="bubble0">
+            <pos>0.9692 0.9</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0923 0.2</size>
+            <path>./../assets/images/anim-bubble-a.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble1">
+            <pos>0.0277 0.42</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0785 0.17</size>
+            <path>./../assets/images/anim-bubble-c.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble2">
+            <pos>0.9231 0.08</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0692 0.15</size>
+            <path>./../assets/images/anim-bubble-b.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble3">
+            <pos>0.0738 0.92</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.06 0.13</size>
+            <path>./../assets/images/anim-bubble-d.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble4">
+            <pos>0.7569 0.94</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0554 0.12</size>
+            <path>./../assets/images/anim-bubble-c.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble5">
+            <pos>0.8769 0.5</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0508 0.11</size>
+            <path>./../assets/images/anim-bubble-a.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble6">
+            <pos>0.4246 0.5</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0462 0.1</size>
+            <path>./../assets/images/anim-bubble-b.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
     </view>
     <view name="gamelist">
         <image name="background">
@@ -506,93 +491,8 @@
             <tile>true</tile>
             <tileSize>0 ${bgTile}</tileSize>
             <color>${bgColor}</color>
-            <stationary>always</stationary>
             <zIndex>0</zIndex>
         </image>
-        <animation name="bubble0">
-            <pos>0.06 0.18</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.1015 0.22</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>0.8</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble1">
-            <pos>0.27 0.62</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0738 0.16</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>1</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble2">
-            <pos>0.45 0.12</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0554 0.12</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>0.9</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble3">
-            <pos>0.62 0.48</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.1154 0.25</size>
-            <path>./../assets/images/anim-bubble-a.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>0.7</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble4">
-            <pos>0.83 0.16</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0785 0.17</size>
-            <path>./../assets/images/anim-bubble-c.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>1.1</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble5">
-            <pos>0.92 0.7</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0923 0.2</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>0.8</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
-        <animation name="bubble6">
-            <pos>0.12 0.86</pos>
-            <origin>0.5 0.5</origin>
-            <size>0.0646 0.14</size>
-            <path>./../assets/images/anim-bubble-b.json</path>
-            <color>${accentColor}</color>
-            <opacity>${bubbleOpacity}</opacity>
-            <speed>1.2</speed>
-            <direction>alternate</direction>
-            <stationary>always</stationary>
-            <zIndex>2</zIndex>
-        </animation>
         <image name="upperScreenShadow">
             <pos>0.108 0.038</pos>
             <size>0.784 0.462</size>
@@ -681,16 +581,16 @@
         <clock name="clock">
             <pos>0.1246 0.069</pos>
             <origin>0 0.5</origin>
-            <fontPath>./../assets/fonts/Nunito-Black.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>${fsStatus}</fontSize>
             <color>${subColor}</color>
             <format>%H:%M</format>
             <scope>view</scope>
         </clock>
         <clock name="date">
-            <pos>0.1731 0.069</pos>
+            <pos>0.1892 0.069</pos>
             <origin>0 0.5</origin>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsStatus}</fontSize>
             <color>${subColor}</color>
             <format>%Y-%m-%d</format>
@@ -701,13 +601,13 @@
             <origin>1 0.5</origin>
             <height>${fsStatus}</height>
             <color>${subColor}</color>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <scope>view</scope>
         </systemstatus>
         <helpsystem name="help">
             <pos>0.1154 0.958</pos>
             <origin>0 0.5</origin>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsHelp}</fontSize>
             <textColor>${subColor}</textColor>
             <iconColor>${subColor}</iconColor>
@@ -717,7 +617,7 @@
         <text name="systemLabel">
             <pos>0.5185 0.069</pos>
             <size>0.327 0.032</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsStatus}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -764,7 +664,7 @@
         <text name="gameName">
             <pos>0.4174 0.123</pos>
             <size>0.2387 0.1</size>
-            <fontPath>./../assets/fonts/Nunito-Black.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf</fontPath>
             <fontSize>${fsGameName}</fontSize>
             <color>${textColor}</color>
             <zIndex>40</zIndex>
@@ -775,7 +675,7 @@
         <text name="releasedLabel">
             <pos>0.4174 0.233</pos>
             <size>0.1124 0.024</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -787,7 +687,7 @@
             <pos>0.4174 0.255</pos>
             <size>0.1124 0.032</size>
             <metadata>releasedate</metadata>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
             <defaultValue>Unknown</defaultValue>
@@ -796,7 +696,7 @@
         <text name="playersLabel">
             <pos>0.5414 0.233</pos>
             <size>0.1124 0.024</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -807,7 +707,7 @@
         <text name="players">
             <pos>0.5414 0.255</pos>
             <size>0.1124 0.032</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
             <zIndex>40</zIndex>
@@ -817,7 +717,7 @@
         <text name="developerLabel">
             <pos>0.4174 0.295</pos>
             <size>0.1124 0.024</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -828,7 +728,7 @@
         <text name="developer">
             <pos>0.4174 0.317</pos>
             <size>0.1124 0.032</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
             <zIndex>40</zIndex>
@@ -838,7 +738,7 @@
         <text name="genreLabel">
             <pos>0.5414 0.295</pos>
             <size>0.1124 0.024</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -849,7 +749,7 @@
         <text name="genre">
             <pos>0.5414 0.317</pos>
             <size>0.1124 0.032</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
             <zIndex>40</zIndex>
@@ -859,7 +759,7 @@
         <text name="lastPlayedLabel">
             <pos>0.4174 0.357</pos>
             <size>0.1124 0.024</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -871,7 +771,7 @@
             <pos>0.4174 0.379</pos>
             <size>0.1124 0.032</size>
             <metadata>lastplayed</metadata>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
             <defaultValue>Never</defaultValue>
@@ -879,7 +779,7 @@
         <text name="playTimeLabel">
             <pos>0.5414 0.357</pos>
             <size>0.1124 0.024</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -890,7 +790,7 @@
         <text name="playTime">
             <pos>0.5414 0.379</pos>
             <size>0.1124 0.032</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsMeta}</fontSize>
             <color>${dimText}</color>
             <zIndex>40</zIndex>
@@ -919,7 +819,7 @@
         <text name="descriptionLabel">
             <pos>0.6723 0.123</pos>
             <size>0.2031 0.024</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsLabel}</fontSize>
             <color>${subColor}</color>
             <zIndex>40</zIndex>
@@ -930,7 +830,7 @@
         <text name="gameDescription">
             <pos>0.6723 0.155</pos>
             <size>0.2031 0.308</size>
-            <fontPath>./../assets/fonts/Nunito-SemiBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Medium.ttf</fontPath>
             <fontSize>${fsDesc}</fontSize>
             <color>${dimText}</color>
             <zIndex>40</zIndex>
@@ -942,7 +842,7 @@
             <pos>0.8846 0.958</pos>
             <origin>1 0.5</origin>
             <size>0.3114 0.034</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsSmall}</fontSize>
             <color>${subColor}</color>
             <horizontalAlignment>right</horizontalAlignment>
@@ -951,7 +851,7 @@
         <textlist name="gamelisttextlist">
             <pos>0.1283 0.537</pos>
             <size>0.7434 0.366</size>
-            <fontPath>./../assets/fonts/Nunito-ExtraBold.ttf</fontPath>
+            <fontPath>./../assets/fonts/MPLUSRounded1c-Bold.ttf</fontPath>
             <fontSize>${fsList}</fontSize>
             <lineSpacing>1.75</lineSpacing>
             <primaryColor>${textColor}</primaryColor>
@@ -966,5 +866,75 @@
             <indicators>symbols</indicators>
             <zIndex>50</zIndex>
         </textlist>
+        <animation name="bubble0">
+            <pos>0.9692 0.9</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0923 0.2</size>
+            <path>./../assets/images/anim-bubble-a.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble1">
+            <pos>0.0277 0.1</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0785 0.17</size>
+            <path>./../assets/images/anim-bubble-c.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble2">
+            <pos>0.0738 0.92</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0692 0.15</size>
+            <path>./../assets/images/anim-bubble-b.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble3">
+            <pos>0.9138 0.08</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.06 0.13</size>
+            <path>./../assets/images/anim-bubble-d.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble4">
+            <pos>0.12 0.5</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0554 0.12</size>
+            <path>./../assets/images/anim-bubble-c.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble5">
+            <pos>0.8769 0.5</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0508 0.11</size>
+            <path>./../assets/images/anim-bubble-a.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
+        <animation name="bubble6">
+            <pos>0.4985 0.52</pos>
+            <origin>0.5 0.5</origin>
+            <size>0.0462 0.1</size>
+            <path>./../assets/images/anim-bubble-b.json</path>
+            <color>${accentColor}</color>
+            <opacity>${bubbleOpacity}</opacity>
+            <direction>normal</direction>
+            <zIndex>2</zIndex>
+        </animation>
     </view>
 </theme>

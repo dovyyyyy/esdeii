@@ -62,21 +62,21 @@
         <label>Dark + system colours</label>
     </colorScheme>
 
+    <transitions name="esdeiiSmooth">
+        <label>Smooth</label>
+        <systemToSystem>instant</systemToSystem>
+        <gamelistToGamelist>slide</gamelistToGamelist>
+        <systemToGamelist>slide</systemToGamelist>
+        <gamelistToSystem>slide</gamelistToSystem>
+        <startupToSystem>fade</startupToSystem>
+        <startupToGamelist>fade</startupToGamelist>
+    </transitions>
     <transitions name="esdeiiSnappy">
         <label>Snappy</label>
         <systemToSystem>instant</systemToSystem>
         <gamelistToGamelist>instant</gamelistToGamelist>
         <systemToGamelist>instant</systemToGamelist>
         <gamelistToSystem>instant</gamelistToSystem>
-        <startupToSystem>fade</startupToSystem>
-        <startupToGamelist>fade</startupToGamelist>
-    </transitions>
-    <transitions name="esdeiiSlide">
-        <label>Slide</label>
-        <systemToSystem>instant</systemToSystem>
-        <gamelistToGamelist>instant</gamelistToGamelist>
-        <systemToGamelist>slide</systemToGamelist>
-        <gamelistToSystem>slide</gamelistToSystem>
         <startupToSystem>fade</startupToSystem>
         <startupToGamelist>fade</startupToGamelist>
     </transitions>

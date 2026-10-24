@@ -179,7 +179,7 @@ def render(key, scheme, view):
     vars_.update({k: str(v) for k, v in DATA["fonts"].items()})
     vars_["sysInfo"] = SAMPLE["info"]
     r = R(theme, lay["W"], vars_)
-    cf = lambda px_: r.font("Nunito-Black.ttf", px_)
+    cf = lambda px_: r.font("MPLUSRounded1c-ExtraBold.ttf", px_)
     els = lay["views"][view]
     order = sorted(range(len(els)), key=lambda i: float(r.res(str(els[i][2].get("zIndex", DEFZ.get(els[i][0], 30))))))
     for i in order:
@@ -267,13 +267,13 @@ def render(key, scheme, view):
             bg = hexc(p["backgroundColor"]) if "backgroundColor" in p else None
             bgm = tuple(float(v) * r.Wp for v in p.get("backgroundMargins", "0 0").split())
             if w == 0:  # auto-sized text: measure, then apply the origin like ES-DE does
-                fnt = r.font(p.get("fontPath", "x/Nunito-SemiBold.ttf"), float(p.get("fontSize", 0.045)) * H * 1.18)
+                fnt = r.font(p.get("fontPath", "x/MPLUSRounded1c-Medium.ttf"), float(p.get("fontSize", 0.045)) * H * 1.18)
                 w = ImageDraw.Draw(r.img).textlength(s, font=fnt)
                 h = float(p.get("fontSize", 0.045)) * H * float(p.get("lineSpacing", 1.5))
                 ox, oy = r.pair(p.get("origin", "0 0"))
                 x0_, y0_ = r.px(p["pos"])
                 x, y = x0_ - ox * w, y0_ - oy * h
-            r.text(s, x, y, w, h, float(p.get("fontSize", 0.045)), p.get("fontPath", "x/Nunito-SemiBold.ttf"),
+            r.text(s, x, y, w, h, float(p.get("fontSize", 0.045)), p.get("fontPath", "x/MPLUSRounded1c-Medium.ttf"),
                    hexc(p.get("color", "000000")), p.get("horizontalAlignment", "left"),
                    p.get("verticalAlignment", "center"), float(p.get("lineSpacing", 1.5)), bg, bgm,
                    float(p.get("backgroundCornerRadius", 0)) * r.Wp, p.get("letterCase", "none"), wrap=et == "text")

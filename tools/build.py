@@ -1,6 +1,6 @@
 """Build all esdeii themes into the repo root.
 
-    python3 tools/build.py <repo root> <Nunito[wght].ttf> <OFL.txt> [cache dir] [--json out.json]
+    python3 tools/build.py <repo root> <M PLUS Rounded 1c font folder> <OFL.txt> [cache dir] [--json out.json]
 
 Creates esdeii/ and esde3ds/, each a complete ES-DE theme.
 """
@@ -10,13 +10,12 @@ from xml.sax.saxutils import escape
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from PIL import Image, ImageDraw
 from fontTools.ttLib import TTFont
-from fontTools.varLib import instancer
 
 import audio, icons, layouts, shapes, themeart
 from systems_data import SYSTEMS, DEFAULT_TILE
 from systems_info import INFO, line as info_line
 
-ROOT, NUNITO_VF, NUNITO_OFL = sys.argv[1:4]
+ROOT, FONT_SRC, FONT_OFL = sys.argv[1:4]
 CACHE = sys.argv[4] if len(sys.argv) > 4 and not sys.argv[4].startswith("--") else tempfile.mkdtemp()
 JSON_OUT = sys.argv[sys.argv.index("--json") + 1] if "--json" in sys.argv else None
 os.makedirs(CACHE, exist_ok=True)
@@ -93,7 +92,7 @@ GAME_VIEWS = [("Grid", "icon grid"), ("Shelf", "cover shelf"), ("List", "game li
 BOX_ART = [("", "box art", "cover, 3dbox"), ("3D", "3D boxes", "3dbox, cover")]
 
 THEMES = {
-    "esdeii": dict(looks=LOOKS, sounds="click",
+    "esdeii": dict(looks=LOOKS, sounds="menu",
                    schemes=["silverMenu", "cloudWhite", "iceWhite"] + REST + SYSTEM_ACCENT,
                    blurb="console menu style (channel wall, home screen and dual screen)"),
 }
@@ -104,27 +103,52 @@ FS_BASE = dict(fsTitle=0.056, fsName3ds=0.05, fsWiiHeader=0.05, fsWiiClock=0.075
                fsLabel=0.019, fsMeta=0.027, fsDesc=0.025, fsList=0.031, fsStatus=0.03, fsHelp=0.028,
                fsCount=0.03, fsSmall=0.022, fsFeat=0.026, fsColon=0.07)
 TRANSITIONS = [  # the first one is used when "Automatic" is selected
-    ("snappy", "Snappy", dict(systemToGamelist="instant", gamelistToSystem="instant", startupToSystem="fade",
+    # whole pages glide in and out, like flipping through the console menu
+    ("smooth", "Smooth", dict(systemToSystem="instant", gamelistToGamelist="slide", systemToGamelist="slide",
+                              gamelistToSystem="slide", startupToSystem="fade", startupToGamelist="fade")),
+    ("snappy", "Snappy", dict(systemToSystem="instant", gamelistToGamelist="instant",
+                              systemToGamelist="instant", gamelistToSystem="instant", startupToSystem="fade",
                               startupToGamelist="fade")),
-    ("slide", "Slide", dict(systemToGamelist="slide", gamelistToSystem="slide", startupToSystem="fade",
-                            startupToGamelist="fade")),
-    ("fade", "Fade", dict(systemToGamelist="fade", gamelistToSystem="fade", startupToSystem="fade",
-                          startupToGamelist="fade")),
+    ("fade", "Fade", dict(systemToSystem="instant", gamelistToGamelist="instant", systemToGamelist="fade",
+                          gamelistToSystem="fade", startupToSystem="fade", startupToGamelist="fade")),
 ]
 
 
 # ---------------------------------------------------------------- cached assets
+FONT_WEIGHTS = ("Medium", "Bold", "ExtraBold")  # body text, labels, titles
+FONT_FILE = "MPLUSRounded1c-{}.ttf"
+TILE_FONT = FONT_FILE.format("ExtraBold")
+# Latin (incl. Lithuanian, Vietnamese ...), Greek, Cyrillic, kana, punctuation and common symbols.
+# Kanji and other scripts are left to ES-DE's built-in fallback fonts, which keeps the theme small.
+FONT_UNICODES = [*range(0x20, 0x250), *range(0x2B0, 0x370), *range(0x370, 0x530), *range(0x1E00, 0x1F00),
+                 *range(0x2000, 0x2200), *range(0x2200, 0x2300), *range(0x2460, 0x2800), *range(0x3000, 0x3100),
+                 *range(0xFF00, 0xFFF0)]
+
+
 def fonts():
+    """Rounded console-menu font. FONT_SRC is a folder with the M PLUS Rounded 1c
+    TTFs (github.com/google/fonts, ofl/mplusrounded1c); they are subset to keep
+    the theme light. Without it the fonts already in the theme are reused."""
+    from fontTools import subset
     d = os.path.join(CACHE, "fonts")
-    if not os.path.exists(os.path.join(d, "Nunito-Black.ttf")) and not os.path.exists(NUNITO_VF):
-        # no variable font given: reuse the static instances already in the repo
-        shutil.copytree(os.path.join(ROOT, "esdeii", "assets", "fonts"), d, dirs_exist_ok=True)
-    if not os.path.exists(os.path.join(d, "Nunito-Black.ttf")):
-        os.makedirs(d, exist_ok=True)
-        for name, wght in (("Nunito-SemiBold", 600), ("Nunito-ExtraBold", 800), ("Nunito-Black", 900)):
-            inst = instancer.instantiateVariableFont(TTFont(NUNITO_VF), {"wght": wght}, updateFontNames=False)
-            inst.save(os.path.join(d, name + ".ttf"))
-        shutil.copy(NUNITO_OFL, os.path.join(d, "OFL.txt"))
+    if os.path.exists(os.path.join(d, TILE_FONT)):
+        return d
+    os.makedirs(d, exist_ok=True)
+    if not os.path.isdir(FONT_SRC):
+        for n in [FONT_FILE.format(w) for w in FONT_WEIGHTS] + ["OFL.txt"]:
+            shutil.copy(os.path.join(ROOT, "esdeii", "assets", "fonts", n), d)
+        return d
+    for w in FONT_WEIGHTS:
+        opts = subset.Options()
+        opts.layout_features = ["*"]
+        opts.name_IDs = ["*"]
+        opts.notdef_outline = True
+        font = TTFont(os.path.join(FONT_SRC, FONT_FILE.format(w)))
+        sub = subset.Subsetter(opts)
+        sub.populate(unicodes=FONT_UNICODES)
+        sub.subset(font)
+        font.save(os.path.join(d, FONT_FILE.format(w)))
+    shutil.copy(FONT_OFL, os.path.join(d, "OFL.txt"))
     return d
 
 
@@ -179,7 +203,7 @@ def images(fontdir):
     g.rounded_rectangle([16, 16, 343, 483], radius=16, fill=(238, 241, 245, 255))
     im.paste((176, 184, 194, 255), (95, 165), shapes.glyph("cart", 170))
     im.save(os.path.join(d, "nocover.png"), optimize=True)
-    themeart.build_all(d, os.path.join(fontdir, "Nunito-Black.ttf"), os.path.join(CACHE, "frames"))
+    themeart.build_all(d, os.path.join(fontdir, TILE_FONT), os.path.join(CACHE, "frames"))
     open(os.path.join(d, "done"), "w").close()
     return d
 
@@ -192,7 +216,7 @@ def icon_set(style, fontdir):
     fn = icons.STYLES.get(style) or icons.WSTYLES[style]
     for name, (label, kind, colour) in list(SYSTEMS.items()) + [("_default", DEFAULT_TILE)]:
         g = icons.GLYPHS.get(name, icons.CATEGORY_GLYPH.get(kind, "console"))
-        fn(label, g, colour, os.path.join(fontdir, "Nunito-Black.ttf")).save(os.path.join(d, name + ".png"),
+        fn(label, g, colour, os.path.join(fontdir, TILE_FONT)).save(os.path.join(d, name + ".png"),
                                                                             optimize=True)
     print("  icons:", style)
     return d
@@ -268,9 +292,7 @@ def write_theme(key, cfg, fontdir, imgdir, dump):
         cap += [f'    <colorScheme name="{sk}">', f"        <label>{S[sk][0]}</label>", "    </colorScheme>"]
     cap.append("")
     for tname, tlabel, rows in TRANSITIONS:
-        cap += [f'    <transitions name="{key}{tname.capitalize()}">', f"        <label>{tlabel}</label>",
-                "        <systemToSystem>instant</systemToSystem>",
-                "        <gamelistToGamelist>instant</gamelistToGamelist>"]
+        cap += [f'    <transitions name="{key}{tname.capitalize()}">', f"        <label>{tlabel}</label>"]
         cap += [f"        <{k}>{v}</{k}>" for k, v in rows.items()] + ["    </transitions>"]
     cap.append("")
     for name, label, _ in variants:

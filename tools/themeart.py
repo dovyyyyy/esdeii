@@ -200,17 +200,6 @@ def _scanlines(size, box, rad, step=6):
     return fill
 
 
-def _emboss_text(img, text, fontpath, cx, cy, px, mask):
-    """Faint embossed lettering (light highlight below, soft shadow above)."""
-    f = ImageFont.truetype(fontpath, px)
-    for (dx, dy), col in (((0, 2), (255, 255, 255, 150)), ((0, -1), (196, 201, 208, 150)),
-                          ((0, 0), (226, 229, 233, 255))):
-        t = Image.new("RGBA", img.size, (0, 0, 0, 0))
-        ImageDraw.Draw(t).text((cx + dx, cy + dy), text, font=f, fill=col, anchor="mm")
-        t.putalpha(mul(t.split()[3], mask))
-        img.alpha_composite(t)
-
-
 def slot_empty_wide(path, fontpath):
     """Empty channel slot (wide), shown where the wall has no channel."""
     W, H = icons.WT_W, icons.WT_H
@@ -219,7 +208,6 @@ def slot_empty_wide(path, fontpath):
     img.paste((196, 202, 210, 255), (0, 0), icons._rr(icons.WBODY, icons.WRAD, (W, H)))
     inner = icons._rr((x0 + 3, y0 + 3, x1 - 3, y1 - 3), icons.WRAD - 3, (W, H))
     img.paste(_scanlines((W, H), icons.WBODY, icons.WRAD), (0, 0), inner)
-    _emboss_text(img, "ii", fontpath, (x0 + x1) / 2, (y0 + y1) / 2 + 4, 120, inner)
     img.save(path, optimize=True)
 
 
@@ -231,7 +219,6 @@ def slot_empty_square(path, fontpath):
     img.paste((196, 202, 210, 255), (0, 0), rr_mask(icons.BODY, icons.RAD))
     inner = rr_mask(icons.inset(icons.BODY, 3), icons.RAD - 3)
     img.paste(_scanlines((S, S), icons.BODY, icons.RAD), (0, 0), inner)
-    _emboss_text(img, "ii", fontpath, (x0 + x1) / 2, (y0 + y1) / 2 + 4, 110, inner)
     img.save(path, optimize=True)
 
 
@@ -337,21 +324,28 @@ def lottie_cursor(path, frame_png, S=400):
     im.save(frame_png)
 
 
-def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=15, seconds=4):
-    """One soft bubble drifting inside a small canvas. The theme places several of
-    these around the screen (played back and forth with direction=alternate).
-    Each one is small and only `fps * seconds` frames long, so ES-DE renders the
-    frames once, keeps them in its Lottie frame cache and just replays them -
-    unlike the old full-screen animation, which was re-rendered every frame."""
-    C, d = 200, 120
+def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=12, seconds=7.0, delay=0.0, fade_s=1.4):
+    """One soft bubble that fades in, drifts slowly upward and fades out again.
+
+    The theme places several of these around the screen. ES-DE restarts every
+    animation when you move to another system or open a game list, so each
+    bubble starts invisible and fades in: a restart looks like new bubbles
+    rising instead of bubbles jumping back to where they began. The end of the
+    loop is invisible too, so the jump back to the start is never seen.
+    Each one is small and short, so ES-DE renders the frames once, keeps them
+    in its Lottie frame cache and just replays them."""
+    C, d = 200, 116
     paint = ({"ty": "st", "c": _st([1, 1, 1, 1]), "o": _st(100), "w": _st(8), "lc": 2, "lj": 2, "nm": "s"}
              if ring else FILL)
-    op = fps * seconds
+    op = int(round(fps * seconds))
+    a = int(round(fps * delay))
+    fi = int(round(fps * fade_s))
     dx, dy = drift
     shape = [{"ty": "el", "d": 1, "s": _st([d, d]), "p": _st([0, 0]), "nm": "e"}, paint]
-    _write_lottie(path, C, C, fps, op, [
-        _layer(1, shape, op, opacity=_st(20),
-               position=_anim([(0, [C / 2 - dx, C / 2 - dy, 0]), (op, [C / 2 + dx, C / 2 + dy, 0])]))])
+    opacity = _anim([(0, 0), (a, 0), (a + fi, 20), (op - fi, 20), (op, 0)])
+    pos = _anim([(0, [C / 2 - dx, C / 2 - dy, 0]), (op, [C / 2 + dx, C / 2 + dy, 0])])
+    scale_ = _anim([(0, [92, 92, 100]), (op, [104, 104, 100])])
+    _write_lottie(path, C, C, fps, op, [_layer(1, shape, op, opacity=opacity, position=pos, scale_=scale_)])
     im = Image.new("RGBA", (C, C), (0, 0, 0, 0))
     box = [C / 2 - d / 2, C / 2 - d / 2, C / 2 + d / 2, C / 2 + d / 2]
     if ring:
@@ -361,8 +355,12 @@ def lottie_bubble(path, frame_png, ring=False, drift=(0, 0), fps=15, seconds=4):
     im.save(frame_png)
 
 
-BUBBLES = {"anim-bubble-a": dict(drift=(30, -24)), "anim-bubble-b": dict(ring=True, drift=(-26, -30)),
-           "anim-bubble-c": dict(drift=(8, 36))}
+# Different lengths and start delays, so the bubbles never pulse in step and
+# appear one after another after ES-DE restarts them.
+BUBBLES = {"anim-bubble-a": dict(drift=(22, -34), seconds=7.0, delay=0.0),
+           "anim-bubble-b": dict(ring=True, drift=(-20, -32), seconds=8.5, delay=1.1),
+           "anim-bubble-c": dict(drift=(10, -36), seconds=6.0, delay=2.2),
+           "anim-bubble-d": dict(ring=True, drift=(16, -30), seconds=9.5, delay=3.2)}
 
 
 def build_all(img_dir, fontpath, frames_dir=None):

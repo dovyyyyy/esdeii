@@ -7,9 +7,10 @@ width, so they are divided by W as well.
 """
 import icons
 
-FONT_REG = "./../assets/fonts/Nunito-SemiBold.ttf"
-FONT_BOLD = "./../assets/fonts/Nunito-ExtraBold.ttf"
-FONT_BLACK = "./../assets/fonts/Nunito-Black.ttf"
+# Rounded console-menu lettering (M PLUS Rounded 1c, SIL OFL)
+FONT_REG = "./../assets/fonts/MPLUSRounded1c-Medium.ttf"
+FONT_BOLD = "./../assets/fonts/MPLUSRounded1c-Bold.ttf"
+FONT_BLACK = "./../assets/fonts/MPLUSRounded1c-ExtraBold.ttf"
 IMG = "./../assets/images/"
 SYS = "./../systems/"
 
@@ -25,6 +26,14 @@ class Layout:
         self.box = box                       # scraped box art type(s) for grids, shelves and covers
         self.box3d = box.startswith("3dbox")
         self.views = {"system": [], "gamelist": []}
+        # solid areas (height units: x0, y0, x1, y1) per view; bubbles may pass behind these
+        self.opaque = {"system": [], "gamelist": []}
+        self.opaque_names = {"system": set(), "gamelist": set()}
+
+    def solid(self, view, names, x0, y0, x1, y1):
+        """Mark an area as fully covered by an opaque element."""
+        self.opaque[view].append((x0, y0, x1, y1))
+        self.opaque_names[view].update(names)
 
     def x(self, v):
         return v / self.W
@@ -56,6 +65,9 @@ class Layout:
             self.rect(view, name + "Shadow", x0 - b, y0 - b + 0.009, w + 2 * b, h + 2 * b, "${shadowColor}", r + b, z)
         self.rect(view, name + "Border", x0 - b, y0 - b, w + 2 * b, h + 2 * b, border, r + b, z + 0.1)
         self.rect(view, name, x0, y0, w, h, face, r, z + 0.2, **extra)
+        # the rounded corners are not solid, so only count the panel minus its corner radius
+        self.solid(view, (name + "Shadow", name + "Border", name), x0 + r * 0.3, y0 + r * 0.3,
+                   x0 + w - r * 0.3, y0 + h - r * 0.3)
 
     def text(self, view, name, x0, y0, w, h, fs, font=FONT_REG, color="${textColor}", z=40, origin=None, **extra):
         p = dict(pos=self.pair(x0, y0), size=self.pair(w, h), fontPath=font,
@@ -67,29 +79,100 @@ class Layout:
 
 
 # ================================================================== shared pieces
-# Drifting bubbles: (x as fraction of width, y, size, file, speed). Small separate
-# animations instead of one full-screen one, so ES-DE can cache their frames.
-BUBBLE_SPOTS = [(0.06, 0.18, 0.22, "a", 0.8), (0.27, 0.62, 0.16, "c", 1.0), (0.45, 0.12, 0.12, "b", 0.9),
-                (0.62, 0.48, 0.25, "a", 0.7), (0.83, 0.16, 0.17, "c", 1.1), (0.92, 0.7, 0.2, "b", 0.8),
-                (0.12, 0.86, 0.14, "b", 1.2)]
+# Drifting bubbles: small separate animations instead of one full-screen one, so
+# ES-DE can cache their frames. They are placed per view in the free background
+# only - never behind the clock, text, the game grid or anything else that is not
+# solid - so they can't show through or look as if they sit on top of it.
+BUBBLE_SIZES = (0.2, 0.17, 0.15, 0.13, 0.12, 0.11, 0.1)
+BUBBLE_KINDS = "acbdcab"
+BUBBLE_MARGIN = 0.012
 
 
-def bubbles(L, views=("system", "gamelist"), z="2"):
-    for v in views:
-        for i, (fx, y, size, kind, speed) in enumerate(BUBBLE_SPOTS):
-            L.add(v, "animation", f"bubble{i}", pos=L.pair(fx * L.W, y), origin="0.5 0.5", size=L.pair(size, size),
+def _nums(v):
+    try:
+        return [float(t) for t in str(v).split()]
+    except ValueError:
+        return None
+
+
+def _rect(L, etype, p):
+    """Rough area (height units) an element covers, or None if it draws nothing."""
+    if etype in ("gameselector", "sound") or "pos" not in p:
+        return None
+    x, y = _nums(p["pos"])
+    x *= L.W
+    size = _nums(p.get("size") or p.get("maxSize") or "")
+    w = h = 0.0
+    if size:
+        w, h = size[0] * L.W, size[1]
+    est = {"clock": (0.2, 0.08), "datetime": (0.3, 0.05), "systemstatus": (0.26, 0.06),
+           "helpsystem": (min(L.W * 0.9, 1.3), 0.06), "text": (0.3, 0.06), "animation": (0.06, 0.08)}
+    if w <= 0 or h <= 0:
+        ew, eh = est.get(etype, (0.2, 0.06))
+        w, h = (w if w > 0 else ew), (h if h > 0 else eh)
+    ox, oy = _nums(p.get("origin", "0 0")) or (0, 0)
+    x0, y0 = x - ox * w, y - oy * h
+    return (x0, y0, x0 + w, y0 + h)
+
+
+def _inside(a, b):
+    return a[0] >= b[0] and a[1] >= b[1] and a[2] <= b[2] and a[3] <= b[3]
+
+
+def _overlap(a, b):
+    return max(0.0, min(a[2], b[2]) - max(a[0], b[0])) * max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+
+
+def _hits(a, b, m=0.0):
+    return a[0] < b[2] + m and a[2] > b[0] - m and a[1] < b[3] + m and a[3] > b[1] - m
+
+
+def bubbles(L, z="2"):
+    """Call last, once everything else in the layout has been added."""
+    for v, els in L.views.items():
+        blocks = []
+        for etype, name, p in els:
+            if name.startswith(("background", "bubble")) or name in L.opaque_names[v]:
+                continue
+            r = _rect(L, etype, p)
+            if r and not any(_inside(r, o) for o in L.opaque[v]):
+                blocks.append(r)
+        placed = []
+        step = 0.02
+        cands = [(i * step, j * step) for i in range(1, int(L.W / step)) for j in range(1, int(1 / step))]
+        for size in BUBBLE_SIZES:
+            best, best_d = None, -1.0
+            for cx, cy in cands:
+                box = (cx - size / 2, cy - size / 2, cx + size / 2, cy + size / 2)
+                if box[0] < -size * 0.25 or box[2] > L.W + size * 0.25 or box[1] < 0 or box[3] > 1:
+                    continue
+                if any(_hits(box, b, BUBBLE_MARGIN) for b in blocks):
+                    continue
+                if sum(_overlap(box, o) for o in L.opaque[v]) > 0.4 * size * size:
+                    continue  # would be mostly hidden behind a panel
+                d = min([((cx - px) ** 2 + (cy - py) ** 2) ** 0.5 - (size + ps) / 2 for px, py, ps in placed],
+                        default=1.0)
+                if d < 0.04:
+                    continue
+                d += 0.001 * (cy + cx)  # deterministic tie-break
+                if d > best_d:
+                    best, best_d = (cx, cy), d
+            if best:
+                placed.append((best[0], best[1], size))
+        for i, (cx, cy, size) in enumerate(placed):
+            kind = BUBBLE_KINDS[i % len(BUBBLE_KINDS)]
+            L.add(v, "animation", f"bubble{i}", pos=L.pair(cx, cy), origin="0.5 0.5", size=L.pair(size, size),
                   path=IMG + f"anim-bubble-{kind}.json", color="${accentColor}", opacity="${bubbleOpacity}",
-                  speed=f(speed), direction="alternate", stationary="always", zIndex=z)
+                  direction="normal", zIndex=z)
 
 
 def background(L, path, tile_h=0.09, overlay=None):
     for v in ("system", "gamelist"):
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + path, tile="true",
-              tileSize=f"0 {f(tile_h)}", color="${bgColor}", stationary="always", zIndex="0")
+              tileSize=f"0 {f(tile_h)}", color="${bgColor}", zIndex="0")
         if overlay:
             L.add(v, "image", "backgroundOverlay", pos="0 0", size="1 1", path=IMG + overlay,
-                  stationary="always", opacity="${overlayOpacity}", zIndex="1")
-    bubbles(L)
+                  opacity="${overlayOpacity}", zIndex="1")
 
 
 def clock(L, view, x, y, origin, fs="fsStatus", date=False, color="${subColor}", font=FONT_BLACK, name="clock",
@@ -284,8 +367,7 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     wide = pw >= 1.6
     for v in ("system", "gamelist"):  # HOME-menu background pattern chosen by the colour scheme
         L.add(v, "image", "background", pos="0 0", size="1 1", path=IMG + "${bgPattern}", tile="true",
-              tileSize="0 ${bgTile}", color="${bgColor}", stationary="always", zIndex="0")
-    bubbles(L)
+              tileSize="0 ${bgTile}", color="${bgColor}", zIndex="0")
 
     sys_geo = dict(up=(0.035, 0.555), lo=(0.595, 0.915)) if mode == "row" else \
         dict(up=(0.035, 0.47), lo=(0.51, 0.915))
@@ -309,7 +391,7 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
         sy = uy0 + 0.034
         clock(L, view, px + 0.03, sy, "0 0.5")
         if decor:
-            clock(L, view, px + 0.135, sy, "0 0.5", date=True, font=FONT_BOLD, name="date")
+            clock(L, view, px + 0.17, sy, "0 0.5", date=True, font=FONT_BOLD, name="date")
         status(L, view, px + pw - 0.03, sy)
         help_(L, view, px + 0.01, 0.958)
 
@@ -407,6 +489,7 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     L.add(v, "gamelistinfo", "gamelistInfo", pos=ipos, origin="1 0.5", size=L.pair(pw * 0.4 if decor else 0.2, 0.034),
           fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="right", zIndex="45")
     picker(L, layout, px + 0.028, ly0 + 0.012, pw - 0.056, ly1 - ly0 - 0.024, dict(item=0.158, rows=2, scale="1.12"))
+    bubbles(L)
     return L
 
 
@@ -415,16 +498,18 @@ def wii_bottom(L, view, W, m):
     """Curved clock bar: game count, a clock with a blinking colon, the date
     underneath, and battery / Wi-Fi."""
     by = 0.752
-    L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}", stationary="always")
+    L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}")
+    # the bar image is solid below its curved top edge
+    L.solid(view, ("menuBar", "menuBarLine"), 0, by + (1 - by) * 110 / 300, W, 1.0)
     L.img(view, "menuBarLine", 0, by, W, 1 - by, IMG + "wii-bar-line.png", z=60.1, color="${accentColor}",
-          stationary="always", opacity="0.85")
+          opacity="0.85")
     # clock: hours | blinking colon | minutes (hidden while the ES-DE menu is open)
     cy, gap = 0.893, 0.014
     for name, fmt, x, org in (("clockHours", "%H", W / 2 - gap, "1 0.5"), ("clockMinutes", "%M", W / 2 + gap, "0 0.5")):
         L.add(view, "clock", name, pos=L.pair(x, cy), origin=org, fontPath=FONT_BLACK, fontSize="${fsWiiClock}",
               color="${subColor}", format=fmt, scope="view")
     L.add(view, "animation", "clockColon", pos=L.pair(W / 2, cy - 0.004), origin="0.5 0.5",
-          size="0 ${fsColon}", path=IMG + "anim-colon.json", color="${subColor}", stationary="always", zIndex="62")
+          size="0 ${fsColon}", path=IMG + "anim-colon.json", color="${subColor}", zIndex="62")
     L.add(view, "clock", "date", pos=L.pair(W / 2, 0.962), origin="0.5 0.5", fontPath=FONT_BOLD,
           fontSize="${fsSmall}", color="${subColor}", format="%a %d/%m", scope="view")
     side_w = max(0.2, W / 2 - 0.3 - m)
@@ -488,13 +573,15 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
     picker(L, layout, rx, top - 0.005, rw, bot - top + 0.01,
            dict(item=0.178, rows=3, spacing=0.016, scale="1.05", slot=slot, selector="select-square.png"))
     wii_bottom(L, v, W, m)
+    bubbles(L)
     return L
 
 
 # ================================================================== ESDEIIU (tablet console home)
 def wiiu_dock(L, view, W, m):
     L.rect(view, "dockShadow", m, 0.872, W - 2 * m, 0.09, "${shadowColor}", 0.045, z=58)
-    L.rect(view, "dock", m, 0.865, W - 2 * m, 0.09, "${panelColor}", 0.045, z=58.1, opacity="0.92")
+    L.rect(view, "dock", m, 0.865, W - 2 * m, 0.09, "${panelColor}", 0.045, z=58.1)
+    L.solid(view, ("dock", "dockShadow"), m + 0.02, 0.865, W - m - 0.02, 0.955)
     roomy = W >= 1.6
     help_(L, view, W / 2, 0.91, origin="0.5 0.5", fs="fsSmall" if roomy else "fsHelp")
     if not roomy:
@@ -589,6 +676,7 @@ def build_wiiu(W, style, layout, box="cover, 3dbox"):
            dict(item=0.145, rows=2, spacing=0.012, scale="1.04", slot="slot-square.png",
                 selector="select-start.png", selectorColor="FFFFFFFF"))
     wiiu_dock(L, v, W, m)
+    bubbles(L)
     return L
 
 

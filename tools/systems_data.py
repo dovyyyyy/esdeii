@@ -1,5 +1,5 @@
 # System metadata for the esdeii theme tiles: label, glyph, colour.
-# Glyphs are original simple drawings; labels are plain text in Nunito.
+# Glyphs are original simple drawings; labels are plain text in M PLUS Rounded 1c.
 
 SYSTEMS = {
     # ---- Nintendo
