@@ -4,7 +4,7 @@ One theme, five looks. Pick them in **Menu → UI Settings → Theme variant**.
 
 | Look | What it is |
 |---|---|
-| **Channels** | wide channel tiles with empty slots and a curved clock bar with a blinking clock |
+| **Channels** | wide channel tiles with empty slots and a curved clock bar with a big clock |
 | **Home** | framed square tiles with a Start cursor and a dock |
 | **Home Glossy** | the same with glossy icons |
 | **Dual Grid** | two screens: game artwork on top, systems in a grid of icons below |
@@ -56,7 +56,8 @@ To update, download again and replace the folder.
   put under the clock, battery and button prompts) or *Snappy* (instant).
   ES-DE always draws the clock, battery and button prompts on top of
   everything and never moves them, so the theme keeps the surfaces under
-  them still instead of sliding them away.
+  them still instead of sliding them away. The game count on them slides in
+  and out smoothly in both directions.
 - **Theme aspect ratio** — leave on Automatic (16:9, 16:10, 3:2, 4:3, 5:3,
   5:4, 8:7, 19.5:9, 20:9 and 21:9 are included).
 - Navigation sounds can be turned off in ES-DE's **Sound settings**.
@@ -75,16 +76,19 @@ game swells into a bright chord.
   They only float in completely free space, never near the clock, date,
   battery or button prompts and never behind any panel, text or games (so on
   layouts that fill the screen there are fewer of them, or none), and never
-  in the middle of the bottom of the screen. Each one glides slowly to one
-  side, eases to a stop and glides back, in an endless loop.
+  in the middle of the bottom of the screen. Each one glides slowly out to one
+  side, back through the middle to the other side and back again, in an
+  endless loop (when ES-DE restarts it, it only moves back a little).
+- A few bubbles also float **behind the systems** you choose from, in the gaps
+  between the icons (never over an icon).
 - Faint artwork of the selected game (fan art, else the screenshot) behind
   the game list, fading in as you move. The system list never shows game
   artwork.
 - Rounded console-style lettering (M PLUS Rounded 1c).
 - **Artwork top screen** (Dual looks, inspired by iiSU and Cocoon): the top
   screen is filled edge to edge with the game's fan art or screenshot, and
-  its video plays there after a moment. The details sit on a dark glass card,
-  with the box art and title in the corner. In the system list the top screen
+  the details sit on a dark glass card. On the left: the title, then the box
+  art and a small screen with the screenshot and video, each in its own space. In the system list the top screen
   shows the system plus a framed **Featured** game (a picture in a frame, not
   a background).
 - **Status pills**: clock, date and battery on rounded pills (Dual and Home
@@ -103,8 +107,9 @@ game swells into a bright chord.
 - Game details: release date, players, developer, genre, last played, play
   time, rating, badges and a scrolling description.
 - Game videos (start after a moment), with the scraped **game logo** in the
-  corner. Videos always keep their own shape: they are fitted inside the
-  screen area, never stretched or cropped.
+  corner. Every video screen is about 3:2 - between the 4:3 and 16:9 shapes
+  of game videos - so videos fill it with no black borders and only a thin
+  edge trimmed.
 - Games without a screenshot (for example Android apps) show their box art
   instead.
 

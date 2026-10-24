@@ -143,8 +143,9 @@ def bubbles(L, z="2"):
                 m = 0.05
                 r = (r[0] - m, r[1] - m, r[2] + m, r[3] + m)
             blocks.append(r)
-        # and never in the middle of the bottom, where the clocks and prompts are
-        blocks.append((L.W / 2 - 0.42, 0.6, L.W / 2 + 0.42, 1.0))
+        # and never in the middle of the bottom where the big clock is (Channels)
+        if getattr(L, "bottom_clock", False):
+            blocks.append((L.W / 2 - 0.45, 0.6, L.W / 2 + 0.45, 1.0))
         placed = []
         step = 0.02
         cands = [(i * step, j * step) for i in range(1, int(L.W / step)) for j in range(1, int(1 / step))]
@@ -169,7 +170,66 @@ def bubbles(L, z="2"):
             kind = BUBBLE_KINDS[i % len(BUBBLE_KINDS)]
             L.add(v, "animation", f"bubble{i}", pos=L.pair(cx, cy), origin="0.5 0.5", size=L.pair(size, size),
                   path=IMG + f"anim-bubble-{kind}.json", color="${accentColor}", opacity="${bubbleOpacity}",
-                  direction="alternate", zIndex=z)
+                  zIndex=z)
+        if v == "system":
+            picker_bubbles(L, blocks, placed)
+
+
+def picker_bubbles(L, blocks, placed, n=4):
+    """A few extra bubbles behind the systems you choose from: drawn just above
+    the screen/panel but below the system icons, so they float in the gaps
+    between the icons and never cover one."""
+    v = "system"
+    area = None
+    for etype, name, p in L.views[v]:
+        if name in ("systemgrid", "systemcarousel"):
+            area = _rect(L, etype, p)
+    if not area:
+        return
+    # the panel the systems sit on and the empty slots don't count - the
+    # bubbles are drawn on top of the panel, below the icons
+    skip = L.opaque_names[v]
+    grow = (area[0] - 0.1, area[1] - 0.1, area[2] + 0.1, area[3] + 0.1)
+    others = []
+    for etype, name, p in L.views[v]:
+        if name.startswith(("background", "bubble", "backdrop", "emptySlot")) or name in skip:
+            continue
+        r = _rect(L, etype, p)
+        if not r or _inside(r, grow):
+            continue
+        if etype in ("clock", "datetime", "systemstatus", "helpsystem"):
+            r = (r[0] - 0.05, r[1] - 0.05, r[2] + 0.05, r[3] + 0.05)
+        others.append(r)
+    if getattr(L, "bottom_clock", False):
+        others.append((L.W / 2 - 0.45, 0.6, L.W / 2 + 0.45, 1.0))
+    spots = []
+    step = 0.02
+    for size in (0.22, 0.2, 0.18, 0.16, 0.14):
+        best, best_d = None, -1.0
+        for i in range(int(area[0] / step), int(area[2] / step) + 1):
+            for j in range(int(area[1] / step), int(area[3] / step) + 1):
+                cx, cy = i * step, j * step
+                box = (cx - size / 2, cy - size / 2, cx + size / 2, cy + size / 2)
+                if not _inside(box, (area[0] - 0.01, area[1] - 0.01, area[2] + 0.01, area[3] + 0.01)):
+                    continue
+                if any(_hits(box, b, BUBBLE_MARGIN) for b in others):
+                    continue
+                d = min([((cx - px) ** 2 + (cy - py) ** 2) ** 0.5 - (size + ps) / 2
+                         for px, py, ps in spots + placed], default=1.0)
+                if d < 0.03:
+                    continue
+                d += 0.001 * (cy + cx)
+                if d > best_d:
+                    best, best_d = (cx, cy), d
+        if best:
+            spots.append((best[0], best[1], size))
+        if len(spots) >= n:
+            break
+    for i, (cx, cy, size) in enumerate(spots):
+        kind = BUBBLE_KINDS[(i + 3) % len(BUBBLE_KINDS)]
+        L.add(v, "animation", f"bubbleBehind{i}", pos=L.pair(cx, cy), origin="0.5 0.5", size=L.pair(size, size),
+              path=IMG + f"anim-bubble-{kind}.json", color="${accentColor}", opacity="${bubbleOpacity}",
+              zIndex="6")
 
 
 def background(L, path, tile_h=0.09, overlay=None):
@@ -222,7 +282,8 @@ def status_bar(L, view, xr, y, w=0.5, h=0.052, z=30, glass=True):
     # move, so their pill stays put too (stationary) and looks the same in
     # both views, while the screens slide underneath.
     bg, fg = GLASS, "FFFFFF"
-    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, bg, h / 2, z=z, stationary="always")
+    L.rect(view, "statusPill", xr - w, y - h / 2, w, h, bg, h / 2, z=z, stationary="always",
+           renderDuringTransitions="true" if view == "system" else "false")
     clock(L, view, xr - w + 0.024, y, "0 0.5", fs="fsPill", color=fg, font=FONT_BOLD, fmt="%H:%M   %d/%m")
     L.add(view, "systemstatus", "systemStatus", pos=L.pair(xr - 0.022, y), origin="1 0.5", height="${fsPill}",
           color=fg, fontPath=FONT_BOLD, scope="view")
@@ -258,12 +319,12 @@ def media(L, x, y, w, h, r=0.016, z=18, view="gamelist", gameselector=None):
         cov["gameselector"] = gameselector
     L.add(view, "image", "mediaFallback", **cov)
     if view == "gamelist":
-        # The screenshot fills the screen (cropped); the video is fitted inside
-        # it at its own shape (never cropped or stretched), on the dark screen.
-        L.add(view, "video", "gameVideo", pos=L.pair(x + w / 2, y + h / 2), origin="0.5 0.5", zIndex=f(z + 2),
-              imageType="screenshot, titlescreen, miximage", scrollFadeIn="true", maxSize=L.pair(w, h),
-              imageCropSize=L.pair(w, h), imageCornerRadius=L.rad(r), videoCornerRadius=L.rad(r),
-              pillarboxes="false", delay="1.0", fadeInTime="0.35")
+        # Screenshot and video fill the whole screen frame (no black borders).
+        # Every frame is about 3:2 - between the 4:3 and 16:9 shapes of game
+        # videos - so only a thin edge is ever trimmed, nothing gets blown up.
+        L.add(view, "video", "gameVideo", pos=L.pair(x, y), zIndex=f(z + 2),
+              imageType="screenshot, titlescreen, miximage", scrollFadeIn="true", cropSize=L.pair(w, h),
+              imageCornerRadius=L.rad(r), videoCornerRadius=L.rad(r), delay="1.0", fadeInTime="0.35")
         # scraped game logo (marquee) in the corner of the screen, like a title banner
         L.add(view, "image", "gameLogo", pos=L.pair(x + 0.022, y + h - 0.02), origin="0 1",
               maxSize=L.pair(w * 0.42, h * 0.3), imageType="marquee", scrollFadeIn="true", zIndex=f(z + 3))
@@ -525,19 +586,20 @@ def build_3ds(W, style, layout, box="cover, 3dbox"):
     cy0, cy1 = uy0 + 0.09, uy1 - 0.022
     L.rect(v, "infoCard", cx0, cy0, cw, cy1 - cy0, GLASS, 0.026, z=10)
     info(L, cx0 + 0.025, cy0 + 0.02, cw - 0.05, cy1 - 0.018, name=False, sub="FFFFFFA8", dim="FFFFFF")
-    cov_h = min(0.19, uh * 0.42)
-    cov_w = cov_h * (0.9 if L.box3d else 0.74)
-    L.add(v, "image", "heroCover", pos=L.pair(px + 0.03, uy1 - 0.03), origin="0 1", maxSize=L.pair(cov_w, cov_h),
+    # left side: the title on top, then the box art and a small screen with the
+    # screenshot / video - each in its own space, nothing overlaps
+    lx0, lx1 = px + 0.024, cx0 - 0.024
+    L.text(v, "gameName", lx0, cy0 - 0.005, lx1 - lx0, 0.1, "fsGameName", FONT_BLACK, "FFFFFF",
+           metadata="name", verticalAlignment="top", lineSpacing="1.15")
+    sy0 = cy0 + 0.11
+    sh = cy1 - sy0
+    cov_w = min(sh * (0.9 if L.box3d else 0.74), (lx1 - lx0) * 0.3)
+    L.add(v, "image", "heroCover", pos=L.pair(lx0, cy1), origin="0 1", maxSize=L.pair(cov_w, sh),
           imageType=L.box, cornerRadius=L.rad(0.008), scrollFadeIn="true", zIndex="12")
-    nx = px + 0.03 + cov_w + 0.025
-    L.text(v, "gameName", nx, uy1 - 0.03 - 0.11, cx0 - 0.03 - nx, 0.11, "fsGameName", FONT_BLACK, "FFFFFF",
-           metadata="name", verticalAlignment="bottom", lineSpacing="1.15")
-    # the video plays in the free area left of the card, fitted at its own shape
-    # (never cropped or stretched), covering the box art and title while it runs
-    vx0, vx1, vy0, vy1 = px + 0.022, cx0 - 0.022, cy0, cy1
-    L.add(v, "video", "gameVideo", pos=L.pair((vx0 + vx1) / 2, (vy0 + vy1) / 2), origin="0.5 0.5",
-          maxSize=L.pair(vx1 - vx0, vy1 - vy0), imageType="none", delay="1.5", fadeInType="transparent",
-          fadeInTime="0.6", scrollFadeIn="true", videoCornerRadius=L.rad(0.016), zIndex="13")
+    sx0 = lx0 + cov_w + 0.022
+    sw = min(sh * 1.5, lx1 - sx0)
+    sh2 = sw / 1.5
+    media(L, sx0, cy1 - sh2, sw, sh2, r=0.014, z=12)
     L.add(v, "gamelistinfo", "gamelistInfo", pos=L.pair(px + pw - 0.022, 0.958), origin="1 0.5",
           size=L.pair(pw * 0.3, 0.034), fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}",
           horizontalAlignment="right", zIndex="45")
@@ -551,21 +613,19 @@ def wii_bottom(L, view, W, m):
     """Curved clock bar: game count, a clock with a blinking colon, the date
     underneath, and battery / Wi-Fi."""
     by = 0.752
+    L.bottom_clock = True
     # The clock, date, battery and button prompts are drawn by ES-DE on top of
     # everything and never move, so the bar under them stays put too
     # (stationary) while the pages slide.
-    L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}", stationary="always")
+    still = dict(stationary="always", renderDuringTransitions="true" if view == "system" else "false")
+    L.img(view, "menuBar", 0, by, W, 1 - by, IMG + "wii-bar.png", z=60, color="${panelColor}", **still)
     # the bar image is solid below its curved top edge
     L.solid(view, ("menuBar", "menuBarLine"), 0, by + (1 - by) * 110 / 300, W, 1.0)
     L.img(view, "menuBarLine", 0, by, W, 1 - by, IMG + "wii-bar-line.png", z=60.1, color="${accentColor}",
-          opacity="0.85", stationary="always")
-    # clock: hours | blinking colon | minutes (hidden while the ES-DE menu is open)
-    cy, gap = 0.893, 0.014
-    for name, fmt, x, org in (("clockHours", "%H", W / 2 - gap, "1 0.5"), ("clockMinutes", "%M", W / 2 + gap, "0 0.5")):
-        L.add(view, "clock", name, pos=L.pair(x, cy), origin=org, fontPath=FONT_BLACK, fontSize="${fsWiiClock}",
-              color="${subColor}", format=fmt, scope="view")
-    L.add(view, "animation", "clockColon", pos=L.pair(W / 2, cy - 0.004), origin="0.5 0.5",
-          size="0 ${fsColon}", path=IMG + "anim-colon.json", color="${subColor}", stationary="always", zIndex="62")
+          opacity="0.85", **still)
+    # big clock in the middle (hidden while the ES-DE menu is open)
+    L.add(view, "clock", "clock", pos=L.pair(W / 2, 0.893), origin="0.5 0.5", fontPath=FONT_BLACK,
+          fontSize="${fsWiiClock}", color="${subColor}", format="%H:%M", scope="view")
     L.add(view, "clock", "date", pos=L.pair(W / 2, 0.962), origin="0.5 0.5", fontPath=FONT_BOLD,
           fontSize="${fsSmall}", color="${subColor}", format="%a %d/%m", scope="view")
     side_w = max(0.2, W / 2 - 0.3 - m)
@@ -621,9 +681,21 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
     lw = min(0.86, (W - 2 * m) * 0.52)
     top, bot = 0.15, 0.725
     L.panel(v, "infoCard", m, top, lw, bot - top, r=0.03)
-    mh = min((lw - 0.04) / 1.78, 0.25)
-    media(L, m + 0.02, top + 0.02, lw - 0.04, mh)
-    info(L, m + 0.03, top + 0.02 + mh + 0.022, lw - 0.06, bot - 0.02, two_line_name=False)
+    x0, iw = m + 0.025, lw - 0.05
+    L.text(v, "gameName", x0, top + 0.02, iw, 0.055, "fsGameName", FONT_BLACK, "${textColor}", metadata="name")
+    ry = top + 0.088
+    mh = min(0.23, iw * 0.42 / 1.5)
+    mw = mh * 1.5
+    fw = iw - mw - 0.03
+    if fw >= 0.36:  # screen on the left, details beside it, description underneath
+        media(L, x0, ry, mw, mh)
+        dy = ry + mh + 0.025
+        info(L, x0 + mw + 0.03, ry, fw, ry + mh, name=False, desc_col=(x0, dy, iw, bot - 0.02 - dy))
+    else:  # narrow screens: screen centred on top, details below
+        mh = min(0.2, iw / 1.5)
+        mw = mh * 1.5
+        media(L, x0 + (iw - mw) / 2, ry, mw, mh)
+        info(L, x0, ry + mh + 0.022, iw, bot - 0.02, name=False)
     rx = m + lw + 0.04
     rw = W - m - rx
     slot = "slot-square.png"
@@ -637,8 +709,9 @@ def build_wii(W, style, layout, box="cover, 3dbox"):
 # ================================================================== ESDEIIU (tablet console home)
 def wiiu_dock(L, view, W, m):
     # the dock holds the button prompts (drawn by ES-DE, never moving), so it stays put too
-    L.rect(view, "dockShadow", m, 0.872, W - 2 * m, 0.09, "${shadowColor}", 0.045, z=58, stationary="always")
-    L.rect(view, "dock", m, 0.865, W - 2 * m, 0.09, "${panelColor}", 0.045, z=58.1, stationary="always")
+    still = dict(stationary="always", renderDuringTransitions="true" if view == "system" else "false")
+    L.rect(view, "dockShadow", m, 0.872, W - 2 * m, 0.09, "${shadowColor}", 0.045, z=58, **still)
+    L.rect(view, "dock", m, 0.865, W - 2 * m, 0.09, "${panelColor}", 0.045, z=58.1, **still)
     L.solid(view, ("dock", "dockShadow"), m + 0.02, 0.865, W - m - 0.02, 0.955)
     roomy = W >= 1.6
     help_(L, view, W / 2, 0.91, origin="0.5 0.5", fs="fsSmall" if roomy else "fsHelp")
@@ -721,7 +794,7 @@ def build_wiiu(W, style, layout, box="cover, 3dbox"):
               fontPath=FONT_BOLD, fontSize="${fsSmall}", color="${subColor}", horizontalAlignment="left", zIndex="45")
     wiiu_top(L, v, W, m)
     top, bot = 0.225, 0.52
-    mw = min((bot - top) * 16 / 9, (W - 2 * m) * 0.46)
+    mw = min((bot - top - 0.03) * 1.5, (W - 2 * m) * 0.46)
     L.panel(v, "mediaFrame", m, top, mw + 0.03, bot - top, r=0.035, face="FFFFFF", border="B9C1CB")
     media(L, m + 0.015, top + 0.015, mw, bot - top - 0.03, r=0.022)
     cx = m + mw + 0.06
